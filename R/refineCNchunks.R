@@ -6,9 +6,11 @@ indexGiro <- function(dataA, dataB){
 
   a <-  max(max(Tinput[2,] / (pmax(Tinput[1,],0) + 1e-4)), max(Tinput[1,] / (pmax(Tinput[2,],0) + 1e-4)));  
 }
+
 refineCN <- function (DataA, DataB, Refs, fB1=0.33,fB2=0.66)
 {
-  require(MASS);
+  require("MASS") || stop("Package not loaded: MASS");
+
   save(DataA, DataB,Refs, file="CalMaTeTry.Rdata")
   if(is.null(dim(DataA)) || is.null(dim(DataB)) || length(Refs) != ncol(DataB)){
     stop("Wrong input to refineCN function")
@@ -55,7 +57,7 @@ refineCN <- function (DataA, DataB, Refs, fB1=0.33,fB2=0.66)
   #  [1  1] [   ] = [MatSum[1]   MatSum[2]] (We have already applied it) MatSum is 1,1
   #  [1 -1] [ P ]   [MatDiff[1] MatDiff[2]]
   # solve(matrix(c(1,1,1,-1),2,2)) gives matrix(c(.5, .5, .5, -.5),2,2)
-  P <- matrix(c(.5, .5, .5, -.5),2,2) %*% matrix(c(c(1,1), matDiff),2,2,byrow=T)
+  P <- matrix(c(.5, .5, .5, -.5),2,2) %*% matrix(c(c(1,1), matDiff),2,2,byrow=TRUE)
   Salida <- P%*%Tinput;
 
   # Volver a dar la vuelta

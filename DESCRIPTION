@@ -4,7 +4,7 @@ Date: 2010-05-03
 Title: NNN
 Author: Angel Rubio <arubio@ceit.es>, Maria Ortiz <mortiz@ceit.es>, Henrik Bengtsson <henrikb@braju.com>
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
-Depends: R (>= 2.10.0), MASS
+Depends: R (>= 2.10.0), MASS, aroma.core (>= 1.5.0)
 Description: NNN.
 License: Private for now
 URL: http://r-forge.r-project.org/projects/snpsprocessing/

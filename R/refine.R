@@ -1,6 +1,7 @@
 refineCN <- function (Tinput, Refs = 1:dim(Tinput)[2],fB1=0.33,fB2=0.66)
 {
-  require(MASS);
+  require("MASS") || stop("Package not loaded: MASS");
+
   #Axis change
   
   a <- max(max(Tinput[2,] / (pmax(Tinput[1,],0) + 1e-4)), max(Tinput[1,] / (pmax(Tinput[2,],0) + 1e-4)));

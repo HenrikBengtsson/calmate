@@ -4,8 +4,9 @@
 
 
 .First.lib <- function(libname, pkgname) {
-  pd <- packageDescription(pkgname);
+  pkg <- Package(pkgname);
+  assign(pkgname, pkg, pos=getPosition(pkg));
 
-  packageStartupMessage(pkgname, " v", pd$Version, " (", 
-    pd$Date, ") successfully loaded. See ?", pkgname, " for help.");
+  packageStartupMessage(getName(pkg), " v", getVersion(pkg), " (", 
+    getDate(pkg), ") successfully loaded. See ?", pkgname, " for help.");
 }
