@@ -1,6 +1,8 @@
 refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
 {
-  
+
+  require("MASS") || stop("Package not loaded: MASS");
+
 #  save(input, file="input.Rdata")
   input <- input[[1]];
   inputData <- input$inputData[[1]];
@@ -10,8 +12,6 @@ refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
   DataA <- inputData[1:nSamples];
   DataB <- inputData[(nSamples+1):(2*nSamples)];
   
-  require("MASS") || stop("Package not loaded: MASS");
-
   if(length(DataA)!= length(DataB) || length(Refs) != length(DataB)){
     stop("Wrong input to refineCN function")
   }
@@ -32,8 +32,7 @@ refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
   AllHomo <- sum(abs(naiveGenoDiff))/2 == length(naiveGenoDiff);
 
   #Twist Tinput in case only one allele appears
-  if (AllHomo==TRUE)
-  {
+  if(AllHomo){
     n=round(ncol(Tinput)/2);
     Tinput[c(2,1),1:n] <- Tinput[,1:n];
   }
@@ -61,10 +60,7 @@ refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
   Salida <- P%*%Tinput;
 
   # Setting Tinput as it was
-  if (AllHomo==TRUE)
-  {
-    Salida[c(2,1),1:n] <- Salida[,1:n];
-  }
+  if (AllHomo){Salida[c(2,1),1:n] <- Salida[,1:n];}
   return(Salida);
 
 }

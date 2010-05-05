@@ -3,6 +3,7 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
 
   #Checking the reference information
   createdRefs <- FALSE;
+  nSamples <- 0;
   if(is.null(dim(DataA))){
     nSamples <- length(DataA);
     nSNPs <- 1;
@@ -27,7 +28,7 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
       Refs <- aux;
       createdRefs <- TRUE;
     }
-    if(createdRefs == FALSE){
+    if(!createdRefs){
       stop("Wrong reference information")
     }else{
       Refs <- t(as.matrix(Refs));
@@ -48,7 +49,7 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
         createdRefs <- TRUE;            
       }
       #non of these cases
-      if(createdRefs == FALSE){
+      if(!createdRefs){
         stop("Wrong reference information")
       }else{
         #generate the reference matrix
@@ -59,9 +60,6 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
     }
   }
 
-
-#  inputData <- cbind(DataA, DataB)
-  
   inputData <- apply(cbind(DataA,DataB),1,list)
   inputRefs <- apply(Refs,1,list)
   input <- cbind(inputData, inputRefs);   
