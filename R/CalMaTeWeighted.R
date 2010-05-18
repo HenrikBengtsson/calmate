@@ -1,57 +1,60 @@
-CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
-{
-
+CalMaTeWeighted <- function(DataA, DataB, Refs=0) {
   #Checking the reference information
   createdRefs <- FALSE;
   nSamples <- 0;
-  if(is.null(dim(DataA))){
+  if (is.null(dim(DataA))) {
     nSamples <- length(DataA);
     nSNPs <- 1;
-  }else{
+  } else {
     nSamples <- ncol(DataA);
     nSNPs <- nrow(DataA);
   }
+
   #there are not given references
-  if(is.null(dim(Refs)) && length(Refs)==1) 
-  {
+  if (is.null(dim(Refs)) && length(Refs) == 1) {
     Refs <- rep(TRUE, times=nSamples)
     createdRefs <- TRUE;    
   }
+
   #in the case it is only one SNP
-  if(is.null(dim(DataA)) && is.null(dim(Refs))){
-    if(is.logical(Refs) && length(Refs) == nSamples){
+  if (is.null(dim(DataA)) && is.null(dim(Refs))) {
+    if (is.logical(Refs) && length(Refs) == nSamples) {
       createdRefs <- TRUE;
     }
-    if(!is.logical(Refs)){
+
+    if (!is.logical(Refs)) {
       aux <- rep(FALSE, times=nSamples);
       aux[Refs] <- TRUE;
       Refs <- aux;
       createdRefs <- TRUE;
     }
-    if(!createdRefs){
+
+    if (!createdRefs) {
       stop("Wrong reference information")
-    }else{
+    } else {
       Refs <- t(as.matrix(Refs));
       DataA <- t(as.matrix(DataA));
       DataB <- t(as.matrix(DataB));
     }    
-  }else{
+  } else {
     #it is not a matrix as the one that contains the data
-    if(is.null(dim(Refs)) || dim(Refs)!=dim(DataA) || !is.logical(Refs)){ 
+    if (is.null(dim(Refs)) || dim(Refs) != dim(DataA) || !is.logical(Refs)) { 
       #it is an index vector
-      if(length(Refs) != nSamples && !is.logical(Refs)){
+      if (length(Refs) != nSamples && !is.logical(Refs)) {
         aux <- matrix(data=FALSE, ncol=ncol(DataB), nrow=nrow(DataA))
         aux[,Refs] <- TRUE;
         Refs <- aux;
       }
+
       #it is a logical reference vector with more than one sample as reference
-      if(is.logical(Refs) && length(Refs) == ncol(DataA) && sum(Refs) > 1){
+      if (is.logical(Refs) && length(Refs) == ncol(DataA) && sum(Refs) > 1) {
         createdRefs <- TRUE;            
       }
+
       #non of these cases
-      if(!createdRefs){
+      if (!createdRefs) {
         stop("Wrong reference information")
-      }else{
+      } else {
         #generate the reference matrix
         pr <- rep(Refs, times=nrow(DataA));
         dim(pr) <- c(length(Refs), nrow(DataA));
@@ -69,4 +72,4 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
 #  refineCN_rlmWeighted(input[rr]);}, chunkSize=500e3)
 
   return(refineData)
-}
+} # CalMaTeWeighted()

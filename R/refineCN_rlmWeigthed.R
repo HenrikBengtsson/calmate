@@ -1,6 +1,4 @@
-refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
-{
-
+refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
   require("MASS") || stop("Package not loaded: MASS");
 
 #  save(input, file="input.Rdata")
@@ -12,19 +10,19 @@ refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
   DataA <- inputData[1:nSamples];
   DataB <- inputData[(nSamples+1):(2*nSamples)];
   
-  if(length(DataA)!= length(DataB) || length(Refs) != length(DataB)){
+  if (length(DataA) != length(DataB) || length(Refs) != length(DataB)) {
     stop("Wrong input to refineCN function")
   }
+
   #Axis change
-    
-  Tinput <- matrix(data=0, nrow = 2, ncol = nSamples);
+  Tinput <- matrix(data=0, nrow=2, ncol=nSamples);
   Tinput[1,] <- DataA;
   Tinput[2,] <- DataB;  
   
   a <- max(max(Tinput[2,] / (pmax(Tinput[1,],0) + 1e-4)), max(Tinput[1,] / (pmax(Tinput[2,],0) + 1e-4)));
   Giro <- matrix(c(1, 1/a, 1/a, 1), nrow=2, ncol=2);
   Giro <- solve(Giro);
-  Tinput <- Giro%*%Tinput;
+  Tinput <- Giro %*% Tinput;
 
   #Check if all the samples are homozygous
   fracB <- Tinput[2,Refs] / (Tinput[1,Refs] + Tinput[2,Refs]);
@@ -32,8 +30,8 @@ refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
   AllHomo <- sum(abs(naiveGenoDiff))/2 == length(naiveGenoDiff);
 
   #Twist Tinput in case only one allele appears
-  if(AllHomo){
-    n=round(ncol(Tinput)/2);
+  if (AllHomo) {
+    n <- round(ncol(Tinput)/2);
     Tinput[c(2,1),1:n] <- Tinput[,1:n];
   }
 
@@ -57,10 +55,12 @@ refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
   #  [1 -1] [ P ]   [MatDiff[1] MatDiff[2]]
   # solve(matrix(c(1,1,1,-1),2,2)) gives matrix(c(.5, .5, .5, -.5),2,2)
   P <- matrix(c(.5, .5, .5, -.5), nrow=2, ncol=2) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE)
-  Salida <- P%*%Tinput;
+  Salida <- P %*% Tinput;
 
   # Setting Tinput as it was
-  if (AllHomo){Salida[c(2,1),1:n] <- Salida[,1:n];}
-  return(Salida);
+  if (AllHomo) {
+    Salida[c(2,1),1:n] <- Salida[,1:n];
+  }
 
-}
+  return(Salida);
+} # refineCN_rlmWeighted()
