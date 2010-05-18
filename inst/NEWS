@@ -1,6 +1,14 @@
 Package: calmate
 ================
 
+Version: 0.1.2 [2010-05-18]
+o CLEAN UP: Source code cleanup and standardization.
+o ROBUSTNESS: Added a redundancy test.
+
+
+Version: 0.1.1 [2010-05-04]
+
+
 Version: 0.1.0 [2010-05-04]
 o Made into an R package.
 
