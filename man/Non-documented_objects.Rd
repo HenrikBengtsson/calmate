@@ -18,6 +18,8 @@
 \alias{indexGiro}
 \alias{refineCN}
 \alias{refineCN_rlmWeighted}
+\alias{weightedCalMaTeByASCN}
+\alias{weightedCalMaTeByASCN.array}
 
 \description{
   This page contains aliases for all "non-documented" objects that

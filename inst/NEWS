@@ -1,6 +1,12 @@
 Package: calmate
 ================
 
+Version: 0.2.0 [2010-05-18]
+o Added weightedCalMaTeByASCN() which takes an Jx2xI array
+  of allele-specific signals, where J is the number of SNPs,
+  2 is the number of alleles, and I is the number of samples.
+
+
 Version: 0.1.2 [2010-05-18]
 o CLEAN UP: Source code cleanup and standardization.
 o ROBUSTNESS: Added a redundancy test.

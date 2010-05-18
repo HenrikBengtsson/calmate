@@ -31,7 +31,7 @@ stopifnot(identical(getNames(dsT), getNames(dsB)));
 # Study array #1 and chromosome 22
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 array <- 1;
-chr <- 1;
+chr <- 17;
 
 chrTag <- sprintf("Chr%02d", chr);
 
@@ -46,44 +46,43 @@ units <- getUnitsOnChromosome(ugp, chr);
 pos <- getPositions(ugp, units=units);
 
 # Extract (total, fracB) signals
-theta <- extractMatrix(dfT, units=units, drop=TRUE);
-beta <- extractMatrix(dfB, units=units, drop=TRUE);
+theta <- extractMatrix(dsT, units=units);
+beta <- extractMatrix(dsB, units=units);
 
 # Convert to allele-specific SNP signals (thetaA, thetaB)
 thetaB <- theta * beta;
 thetaA <- theta - thetaB;
-thetaAB <- matrix(c(thetaA, thetaB), ncol=2, byrow=FALSE);
-colnames(thetaAB) <- c("A", "B");
-rm(thetaA, thetaB);
+dimnames <- c(dimnames(thetaA), list(c("A", "B")));
+dim <- c(dim(thetaA), 2);
+thetaAB <- array(c(thetaA, thetaB), dim=dim, dimnames=dimnames);
+thetaAB <- aperm(thetaAB, perm=c(1,3,2));
+rm(thetaA, thetaB, dim, dimnames);
 
-# Keep non-missing values
-idxs <- which(is.finite(thetaAB[,"A"]) & is.finite(thetaAB[,"B"]));
-res <- CalMaTeWeighted(thetaAB[idxs,"A"], thetaAB[idxs,"B"]);
-res <- lapply(res, FUN=function(x) {
-  x <- t(x);
-  colnames(x) <- c("A", "B");
-  x;
-});
-naValue <- as.double(NA);
-thetaABC <- matrix(naValue, nrow=nrow(thetaAB), ncol=2);
-colnames(thetaABC) <- c("A", "B");
-thetaABC[idxs,] <- res[[1]];
-thetaC <- thetaABC[,"A"] + thetaABC[,"B"];
-betaC <- thetaABC[,"B"] / thetaC;
+res <- weightedCalMaTeByASCN(thetaAB, verbose=-8);
+
+  
+CC <- data;
+
+thetaC <- CC[,"A",] + CC[,"B",];
+betaC <- CC[,"B",] / thetaC;
 
 
 # Plot
 ylim <- c(-0.2, 1.2);
 subplots(2, ncol=1);
 
-fracB <- RawAlleleBFractions(beta, x=pos);
+# Array #1
+ii <- 1;
+name <- colnames(beta)[ii];
+
+fracB <- RawAlleleBFractions(beta[,ii], x=pos);
 plot(fracB, pch=".", ylim=ylim);
-stext(side=3, pos=0, getName(dfT));
+stext(side=3, pos=0, name);
 stext(side=3, pos=1, chrTag);
 
-fracBC <- RawAlleleBFractions(betaC, x=pos);
+fracBC <- RawAlleleBFractions(betaC[,ii], x=pos);
 plot(fracBC, pch=".", ylim=ylim);
-stext(side=3, pos=0, getName(dfT));
+stext(side=3, pos=0, name);
 stext(side=3, pos=1, chrTag);
 
 
