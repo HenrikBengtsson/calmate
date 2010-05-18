@@ -14,7 +14,7 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
   #there are not given references
   if(is.null(dim(Refs)) && length(Refs)==1) 
   {
-    Refs <- rep(TRUE, nSamples)
+    Refs <- rep(TRUE, times=nSamples)
     createdRefs <- TRUE;    
   }
   #in the case it is only one SNP
@@ -23,7 +23,7 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
       createdRefs <- TRUE;
     }
     if(!is.logical(Refs)){
-      aux <- rep(FALSE, nSamples);
+      aux <- rep(FALSE, times=nSamples);
       aux[Refs] <- TRUE;
       Refs <- aux;
       createdRefs <- TRUE;
@@ -53,18 +53,18 @@ CalMaTeWeighted <- function (DataA, DataB, Refs = 0)
         stop("Wrong reference information")
       }else{
         #generate the reference matrix
-        pr <- rep(Refs, nrow(DataA));
+        pr <- rep(Refs, times=nrow(DataA));
         dim(pr) <- c(length(Refs), nrow(DataA));
         Refs <- t(pr);
       }  
     }
   }
 
-  inputData <- apply(cbind(DataA,DataB),1,list)
-  inputRefs <- apply(Refs,1,list)
+  inputData <- apply(cbind(DataA,DataB), MARGIN=1, FUN=list)
+  inputRefs <- apply(Refs, MARGIN=1, FUN=list)
   input <- cbind(inputData, inputRefs);   
-  input <- apply(input,1,list)
-  refineData <- lapply(X=input, FUN = refineCN_rlmWeighted);
+  input <- apply(input, MARGIN=1, FUN=list)
+  refineData <- lapply(X=input, FUN=refineCN_rlmWeighted);
 #  refineData <- lapplyInChunks(c(1:nSNPs), function(rr) {
 #  refineCN_rlmWeighted(input[rr]);}, chunkSize=500e3)
 

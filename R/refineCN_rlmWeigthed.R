@@ -56,7 +56,7 @@ refineCN_rlmWeighted <- function (input, fB1=0.33,fB2=0.66)
   #  [1  1] [   ] = [MatSum[1]   MatSum[2]] (We have already applied it) MatSum is 1,1
   #  [1 -1] [ P ]   [MatDiff[1] MatDiff[2]]
   # solve(matrix(c(1,1,1,-1),2,2)) gives matrix(c(.5, .5, .5, -.5),2,2)
-  P <- matrix(c(.5, .5, .5, -.5),2,2) %*% matrix(c(c(1,1), matDiff),2,2,byrow=TRUE)
+  P <- matrix(c(.5, .5, .5, -.5), nrow=2, ncol=2) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE)
   Salida <- P%*%Tinput;
 
   # Setting Tinput as it was
