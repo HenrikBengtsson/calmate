@@ -14,7 +14,7 @@ source("refineCN_rlmWeighted.R")
 
 log <- Arguments$getVerbose(-10, timestamp=TRUE);
 projectName <- "projectName"
-chipType <- "Mapping250K_Nsp" #for example
+chipType <- "chipType"
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 # define CDF file
@@ -66,7 +66,7 @@ dataB <- dataCRMA[,1,]*(dataCRMA[,1,])
 
 #it returns a list where the elements of the list are the SNPs and their allele
 #specific copy number values.
-dataCalMaTe <- CalMaTeWeighted(DataA, DataB);
+dataCalMaTe <- CalMaTeWeighted(dataA, dataB);
 
 #compare freqB results before and after CalMaTe calibration
 pos <- getPositions(gi, units = units);
