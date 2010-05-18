@@ -11,7 +11,7 @@ refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
   DataB <- inputData[(nSamples+1):(2*nSamples)];
   
   if (length(DataA) != length(DataB) || length(Refs) != length(DataB)) {
-    stop("Wrong input to refineCN function")
+    stop("Wrong input to refineCN function");
   }
 
   #Axis change
@@ -54,7 +54,7 @@ refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
   #  [1  1] [   ] = [MatSum[1]   MatSum[2]] (We have already applied it) MatSum is 1,1
   #  [1 -1] [ P ]   [MatDiff[1] MatDiff[2]]
   # solve(matrix(c(1,1,1,-1),2,2)) gives matrix(c(.5, .5, .5, -.5),2,2)
-  P <- matrix(c(.5, .5, .5, -.5), nrow=2, ncol=2) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE)
+  P <- matrix(c(.5, .5, .5, -.5), nrow=2, ncol=2) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE);
   Salida <- P %*% Tinput;
 
   # Setting Tinput as it was
@@ -62,5 +62,5 @@ refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
     Salida[c(2,1),1:n] <- Salida[,1:n];
   }
 
-  return(Salida);
+  Salida;
 } # refineCN_rlmWeighted()

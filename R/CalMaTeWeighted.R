@@ -12,8 +12,8 @@ CalMaTeWeighted <- function(DataA, DataB, Refs=0) {
 
   #there are not given references
   if (is.null(dim(Refs)) && length(Refs) == 1) {
-    Refs <- rep(TRUE, times=nSamples)
-    createdRefs <- TRUE;    
+    Refs <- rep(TRUE, times=nSamples);
+    createdRefs <- TRUE;
   }
 
   #in the case it is only one SNP
@@ -35,25 +35,25 @@ CalMaTeWeighted <- function(DataA, DataB, Refs=0) {
       Refs <- t(as.matrix(Refs));
       DataA <- t(as.matrix(DataA));
       DataB <- t(as.matrix(DataB));
-    }    
+    }
   } else {
     #it is not a matrix as the one that contains the data
     if (is.null(dim(Refs)) || dim(Refs) != dim(DataA) || !is.logical(Refs)) { 
       #it is an index vector
       if (length(Refs) != nSamples && !is.logical(Refs)) {
-        aux <- matrix(data=FALSE, ncol=ncol(DataB), nrow=nrow(DataA))
+        aux <- matrix(data=FALSE, ncol=ncol(DataB), nrow=nrow(DataA));
         aux[,Refs] <- TRUE;
         Refs <- aux;
       }
 
       #it is a logical reference vector with more than one sample as reference
       if (is.logical(Refs) && length(Refs) == ncol(DataA) && sum(Refs) > 1) {
-        createdRefs <- TRUE;            
+        createdRefs <- TRUE;
       }
 
       #non of these cases
       if (!createdRefs) {
-        stop("Wrong reference information")
+        stop("Wrong reference information");
       } else {
         #generate the reference matrix
         pr <- rep(Refs, times=nrow(DataA));
@@ -63,13 +63,14 @@ CalMaTeWeighted <- function(DataA, DataB, Refs=0) {
     }
   }
 
-  inputData <- apply(cbind(DataA,DataB), MARGIN=1, FUN=list)
-  inputRefs <- apply(Refs, MARGIN=1, FUN=list)
-  input <- cbind(inputData, inputRefs);   
-  input <- apply(input, MARGIN=1, FUN=list)
+  inputData <- apply(cbind(DataA,DataB), MARGIN=1, FUN=list);
+  inputRefs <- apply(Refs, MARGIN=1, FUN=list);
+  input <- cbind(inputData, inputRefs);
+  input <- apply(input, MARGIN=1, FUN=list);
   refineData <- lapply(X=input, FUN=refineCN_rlmWeighted);
-#  refineData <- lapplyInChunks(c(1:nSNPs), function(rr) {
-#  refineCN_rlmWeighted(input[rr]);}, chunkSize=500e3)
+# refineData <- lapplyInChunks(c(1:nSNPs), function(rr) {
+#   refineCN_rlmWeighted(input[rr]);
+# }, chunkSize=500e3);
 
-  return(refineData)
+  refineData;
 } # CalMaTeWeighted()
