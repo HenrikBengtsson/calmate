@@ -65,7 +65,11 @@ dataB <- dataCRMA[,1,]*(dataCRMA[,1,])
 
 #it returns a list where the elements of the list are the SNPs and their allele
 #specific copy number values.
-dataCalMaTe <- calMaTeWeighted(dataA, dataB);
+dataAB <- dataCRMA;
+dataAB[,1,] <- dataA;
+dataAB[,2,] <- dataB;
+
+dataCalMaTe <- weightedCalMaTebyASCN(dataAB);
 
 #compare freqB results before and after CalMaTe calibration
 pos <- getPositions(gi, units = units);
