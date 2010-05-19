@@ -12,6 +12,8 @@ source("weightedCalMaTeByASCN.R")
 # load the test data
 #  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
 #          2 is the number of alleles, and I is the number of samples.}
+#
+# In this case, the variable data has the J=100 SNPs in the I=40 samples used in the manuscript
 # - - - - - - - - - - - - - - - - - - - - - - -
 
 path <- system.file("exData/", package="calmate"); 
