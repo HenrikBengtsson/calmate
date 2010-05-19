@@ -5,14 +5,13 @@ setwd(workingDir)
 
 library(aroma.affymetrix)
 library(MASS)
-source("CalMaTeWeighted.R")
+source("calMaTeWeighted.R")
 source("refineCN_rlmWeighted.R")
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 # setup dataset and chip names
 # - - - - - - - - - - - - - - - - - - - - - - -
 
-log <- Arguments$getVerbose(-10, timestamp=TRUE);
 projectName <- "projectName"
 chipType <- "chipType"
 
