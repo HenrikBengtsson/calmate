@@ -1,28 +1,23 @@
-###########################################################################/**
-# @set "class=array"
-# @RdocMethod weightedCalMaTeByASCN
-# @alias weightedCalMaTeByASCN
-# 
 # @title "Internal CalMaTe fit function"
 #
 # \description{
 #  @get "title".
 # }
 #
-# @synopsis
+# @usage
 #
 # \arguments{
 #  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
 #          2 is the number of alleles, and I is the number of samples.}
 #  \item{...}{Additional arguments passed to internal 
-#             \code{calMaTeWeighted().}}
+#          \code{CalMaTeWeighted().}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
 #
 # \value{
 #   Returns an Jx2xI @numeric array.
 # }
-#*/###########################################################################
+#
 setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE) {
   # Argument 'data':
   if (!is.array(data)) {
@@ -73,7 +68,7 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
   dim(dataA) <- dim[-2];
   dim(dataB) <- dim[-2];
   rm(dataS);
-  dataT <- calMaTeWeighted(dataA, dataB, ...);
+  dataT <- weightedCalMaTe(dataA, dataB, ...);
   verbose && str(verbose, head(dataT));
   rm(dataA, dataB);
   verbose && exit(verbose);
@@ -112,8 +107,6 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
 
 ###########################################################################
 # HISTORY:
-# 2010-05-19
-# o Internal CalMaTeWeighted() was renamed to calMaTeWeighted().
 # 2010-05-18
 # o Created.
 ###########################################################################

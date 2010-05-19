@@ -1,4 +1,4 @@
-calMaTeWeighted <- function (DataA, DataB, Refs = 0)
+weightedCalMaTe <- function (DataA, DataB, Refs = 0)
 {
 
   #Checking the reference information
