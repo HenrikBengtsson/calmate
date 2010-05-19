@@ -32,10 +32,8 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
     throw("Argument 'data' is not a Jx2xI-dimensional array: ", 
                                                 paste(dim, collapse="x"));
   }
-
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
-
 
   verbose && enter(verbose, "weightedCalMaTeByASCN()");
   verbose && cat(verbose, "ASCN signals:");
@@ -44,10 +42,9 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
   dim <- dim(data);
   dimnames <- dimnames(data);
 
-
   verbose && enter(verbose, "Identifying non-finite data points");
   # Keep finite values
-  ok <- (is.finite(data[,"A",]) & is.finite(data[,"B",]));
+  ok <- (is.finite(data[,1,]) & is.finite(data[,2,]));
   ok <- rowAlls(ok);
   verbose && summary(verbose, ok);
   hasNonFinite <- any(!ok);
@@ -61,7 +58,6 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
     dataS <- data;
   }
   verbose && exit(verbose);
-
   verbose && enter(verbose, "Fitting CalMaTe");
   dataA <- dataS[,1,,drop=FALSE];
   dataB <- dataS[,2,,drop=FALSE];
