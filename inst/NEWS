@@ -1,6 +1,11 @@
 Package: calmate
 ================
 
+Version: 0.2.1 [2010-05-19]
+o Decreased the package dependencies.  Now aroma.core is
+  only suggested, but not required.
+
+
 Version: 0.2.0 [2010-05-18]
 o Added weightedCalMaTeByASCN() which takes an Jx2xI array
   of allele-specific signals, where J is the number of SNPs,

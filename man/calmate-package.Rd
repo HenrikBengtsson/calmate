@@ -22,7 +22,7 @@
  }
 
  \section{Requirements}{
-   This package requires the \pkg{aroma.affymetrix} package.
+   This package requires...
  }
 
  \section{Installation and updates}{
