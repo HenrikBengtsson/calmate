@@ -2,7 +2,7 @@
 # @RdocPackage calmate
 #
 # \description{
-#   @eval "getDescription(calmate)" 
+#   @eval "packageDescription('calmate')$Description" 
 #
 #   This package should be considered to be in an alpha phase.
 #   You should expect the API to be changing over time.

@@ -12,12 +12,8 @@
 
 
 % Other missing docs
-\alias{CalMaTe}
-\alias{CalMaTeInChunks}
-\alias{calMaTeWeighted}
-\alias{indexGiro}
-\alias{refineCN}
 \alias{refineCN_rlmWeighted}
+\alias{weightedCalMaTe}
 
 \description{
   This page contains aliases for all "non-documented" objects that

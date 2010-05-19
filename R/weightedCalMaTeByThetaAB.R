@@ -1,16 +1,21 @@
+###########################################################################/**
+# @set "class=array"
+# @RdocMethod weightedCalMaTeByThetaAB
+# @alias weightedCalMaTeByThetaAB
+# 
 # @title "Internal CalMaTe fit function"
 #
 # \description{
 #  @get "title".
 # }
 #
-# @usage
+# @synopsis
 #
 # \arguments{
 #  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
 #          2 is the number of alleles, and I is the number of samples.}
 #  \item{...}{Additional arguments passed to internal 
-#          \code{CalMaTeWeighted().}
+#             \code{calMaTeWeighted().}}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
 #
@@ -18,12 +23,20 @@
 #   Returns an Jx2xI @numeric array.
 # }
 #
-setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE) {
+# @examples "../incl/weightedCalMaTeByThetaAB.Rex"
+#
+# \seealso{
+#  To calibrate (total,fracB) data, 
+#  see @seemethod "weightedCalMaTeByTotalAndFracB".
+# }
+#*/###########################################################################
+setMethodS3("weightedCalMaTeByThetaAB", "array", function(data, ..., verbose=FALSE) {
   # Argument 'data':
   if (!is.array(data)) {
     throw("Argument 'data' is not an array: ", class(data)[1]);
   }
   dim <- dim(data);
+  dimnames <- dimnames(data);
   if (length(dim) != 3) {
     throw("Argument 'data' is not a 3-dimensional array: ", 
                                                 paste(dim, collapse="x"));
@@ -32,19 +45,24 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
     throw("Argument 'data' is not a Jx2xI-dimensional array: ", 
                                                 paste(dim, collapse="x"));
   }
+  if (!is.null(dimnames[[2]])) {
+    if (!identical(dimnames[[2]], c("A", "B"))) {
+      throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'A' & 'B': ", paste(dimnames[[2]], collapse=", "));
+    }
+  }
+
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
 
-  verbose && enter(verbose, "weightedCalMaTeByASCN()");
+
+  verbose && enter(verbose, "weightedCalMaTeByThetaAB()");
   verbose && cat(verbose, "ASCN signals:");
   verbose && str(verbose, data);
 
-  dim <- dim(data);
-  dimnames <- dimnames(data);
 
   verbose && enter(verbose, "Identifying non-finite data points");
   # Keep finite values
-  ok <- (is.finite(data[,1,]) & is.finite(data[,2,]));
+  ok <- (is.finite(data[,"A",]) & is.finite(data[,"B",]));
   ok <- rowAlls(ok);
   verbose && summary(verbose, ok);
   hasNonFinite <- any(!ok);
@@ -58,9 +76,10 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
     dataS <- data;
   }
   verbose && exit(verbose);
+
   verbose && enter(verbose, "Fitting CalMaTe");
-  dataA <- dataS[,1,,drop=FALSE];
-  dataB <- dataS[,2,,drop=FALSE];
+  dataA <- dataS[,"A",,drop=FALSE];
+  dataB <- dataS[,"B",,drop=FALSE];
   dim(dataA) <- dim[-2];
   dim(dataB) <- dim[-2];
   rm(dataS);
@@ -75,6 +94,7 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
   dataT <- unlist(dataT, use.names=FALSE);
   dim(dataT) <- dimT;
   dataT <- aperm(dataT, perm=c(3,1,2));
+  dimnames(dataT) <- dimnames;
   verbose && str(verbose, dataT);
   verbose && exit(verbose);
 
@@ -98,11 +118,13 @@ setMethodS3("weightedCalMaTeByASCN", "array", function(data, ..., verbose=FALSE)
   verbose && exit(verbose);
 
   dataC;
-}) # weightedCalMaTeByASCN()
+}) # weightedCalMaTeByThetaAB()
 
 
 ###########################################################################
 # HISTORY:
+# 2010-05-19
+# o Added more validation of argument 'data'.
 # 2010-05-18
 # o Created.
 ###########################################################################

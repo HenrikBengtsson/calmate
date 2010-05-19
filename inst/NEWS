@@ -2,6 +2,9 @@ Package: calmate
 ================
 
 Version: 0.2.1 [2010-05-19]
+o Added weightedCalMaTeByThetaAB() and weightedCalMaTeByTotalAndFracB().
+  The former replaces weightedCalMaTeByASCN().
+o Added internal thetaAB2TotalAndFracB() and totalAndFracB2ThetaAB().
 o Decreased the package dependencies.  Now aroma.core is
   only suggested, but not required.
 
