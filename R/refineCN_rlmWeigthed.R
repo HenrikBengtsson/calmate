@@ -46,7 +46,7 @@ refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
 # matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff,weights = coeffs[1:(length(coeffs)-1)]);
-#  matDiff <- rlm(rbind(t(Tinput[,refs]),c(Weight,Weight)), c(naiveGenoDiff,0), weights=coeffs);
+# matDiff <- rlm(rbind(t(Tinput[,refs]),c(Weight,Weight)), c(naiveGenoDiff,0), weights=coeffs);
   matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff);
 
   matDiff <- matDiff$coefficients;
@@ -58,9 +58,18 @@ refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
   P <- matrix(c(0.5, 0.5, 0.5, -0.5), nrow=2, ncol=2) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE);
   Salida <- P %*% Tinput;
   
-  # Truncate the values to 0.
-  ind <- Salida < 0;
-  Salida[ind] <- 0;
+  # Truncate freqB values to 0 and 1.
+  freqB <-  Salida[2,]/colSums(Salida);
+  ind <- freqB<0;
+  freqB[ind] <- 0;
+  ind <- freqB>1;
+  freqB[ind] <- 1;
+  
+  SalidaAux <- Salida;
+  SalidaAux[1,] <- colSums(Salida)*(1-freqB);
+  SalidaAux[2,] <- colSums(Salida)*(freqB);
+  Salida <- SalidaAux;
+    
   # Setting Tinput as it was
   if (allHomo) {
     Salida[c(2,1),1:n] <- Salida[,1:n];
