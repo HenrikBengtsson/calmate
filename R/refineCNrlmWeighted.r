@@ -1,34 +1,35 @@
 ###########################################################################/**
 # @set "class=array"
-# @RdocMethod refineCN_rlmWeighted
-# @alias thetaAB2TotalAndFracB
-# @alias totalAndFracB2ThetaAB
-# @alias totalAndFracB2ThetaAB.array
+# @RdocMethod refineCN_rlmWeighted 
+# @alias refineCN_rlmWeighted
 # 
-# @title "Converts an Jx2xI array between (thetaA,thetaB) and (total,fracB) formats"
+# @title "CalMaTe calibration function"
 #
 # \description{
-#  @get "title".
+#  @get "title"
 # }
 #
 # @synopsis
 #
 # \arguments{
-#  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
-#          2 is the number of alleles, and I is the number of samples.}
-#  \item{...}{Not used.}
-#  \item{verbose}{See @see "R.utils::Verbose".}
+#  \item{input}{An 2xI @numeric array, where 2 is the number of alleles, 
+#               and I is the number of samples.}
+#  \item{fB1}{Lower heterozygous threshold. Initially set to .33.}
+#  \item{fB2}{Higher heterozygous threshold. Initially set to .66.}
 # }
-#
-# @examples "../incl/thetaAB2TotalAndFracB.Rex"
 #
 # \value{
-#   Returns an Jx2xI @numeric array.
+#   Returns an 2xI @numeric array.
 # }
 #
-# @keyword internal
+# @examples "../incl/refineCN_rlmWeighted.Rex"
+#
+# \seealso{
+#  To calibrate (total,fracB) data, 
+#  see @seemethod "weightedCalMaTeByTotalAndFracB".
+# }
 #*/###########################################################################
-refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
+setMethodS3("refineCNrlmWeighted", "array", function(input, fB1=0.33, fB2=0.66,..., verbose=FALSE) {
   require("MASS") || stop("Package not loaded: MASS");
 
   input <- input[[1]];
@@ -105,7 +106,7 @@ refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
   }
 
   Salida;
-} # refineCN_rlmWeighted()
+}) # refineCN_rlmWeighted()
 
 ###########################################################################
 # HISTORY:

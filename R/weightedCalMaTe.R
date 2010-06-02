@@ -67,7 +67,7 @@ weightedCalMaTe <- function (DataA, DataB, Refs = 0)
   inputRefs <- apply(Refs,1,list)
   input <- cbind(inputData, inputRefs);   
   input <- apply(input,1,list)
-  refineData <- lapply(X=input, FUN = refineCN_rlmWeighted);
+  refineData <- lapply(X=input, FUN = refineCNrlmWeighted);
 #  refineData <- lapplyInChunks(c(1:nSNPs), function(rr) {
 #  refineCN_rlmWeighted(input[rr]);}, chunkSize=500e3)
 

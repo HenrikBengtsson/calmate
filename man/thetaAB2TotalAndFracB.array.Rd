@@ -3,7 +3,7 @@
 % 
 %  thetaAB2TotalAndFracB.R
 % 
-% on Wed Jun 02 17:35:50 2010.
+% on Wed Jun 02 17:56:00 2010.
 % 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
