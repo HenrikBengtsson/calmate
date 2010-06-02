@@ -3,7 +3,7 @@
 % 
 %  weightedCalMaTeByThetaAB.R
 % 
-% on Wed Jun 02 17:35:50 2010.
+% on Wed Jun 02 18:12:37 2010.
 % 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

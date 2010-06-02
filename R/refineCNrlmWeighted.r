@@ -1,7 +1,6 @@
 ###########################################################################/**
 # @set "class=array"
 # @RdocMethod refineCNrlmWeighted 
-# @alias refineCNrlmWeighted
 # 
 # @title "CalMaTe calibration function"
 #
