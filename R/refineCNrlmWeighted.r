@@ -1,7 +1,7 @@
 ###########################################################################/**
 # @set "class=array"
-# @RdocMethod refineCN_rlmWeighted 
-# @alias refineCN_rlmWeighted
+# @RdocMethod refineCNrlmWeighted 
+# @alias refineCNrlmWeighted
 # 
 # @title "CalMaTe calibration function"
 #
@@ -22,7 +22,7 @@
 #   Returns an 2xI @numeric array.
 # }
 #
-# @examples "../incl/refineCN_rlmWeighted.Rex"
+# @examples "../incl/refineCNrlmWeighted.Rex"
 #
 # \seealso{
 #  To calibrate (total,fracB) data, 
