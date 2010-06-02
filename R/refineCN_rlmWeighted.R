@@ -1,9 +1,38 @@
+###########################################################################/**
+# @RdocMethod refineCN_rlmWeighted 
+# @alias refineCN_rlmWeighted
+# 
+# @title "CalMaTe calibration function"
+#
+# \description{
+#  @get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+#  \item{input}{An 2xI @numeric array, where 2 is the number of alleles, 
+#               and I is the number of samples.}
+#  \item{fB1}{Lower heterozygous threshold. Initially set to .33.}
+#  \item{fB2}{Higher heterozygous threshold. Initially set to .66.}
+# }
+#
+# \value{
+#   Returns an 2xI @numeric array.
+# }
+#
+# @examples "../incl/weightedCalMaTeByThetaAB.Rex"
+#
+# \seealso{
+#  To calibrate (total,fracB) data, 
+#  see @seemethod "weightedCalMaTeByTotalAndFracB".
+# }
+#*/###########################################################################
 refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
   require("MASS") || stop("Package not loaded: MASS");
 
-#  save(input, file="input.Rdata")
   input <- input[[1]];
-  inputData <- input$inputData[[1]];
+  inputData <- input$inputData[[1]];           
   refs <- input$inputRefs[[1]];  
   
   nSamples <- length(inputData)/2;
@@ -77,3 +106,9 @@ refineCN_rlmWeighted <- function(input, fB1=0.33, fB2=0.66) {
 
   Salida;
 } # refineCN_rlmWeighted()
+
+###########################################################################
+# HISTORY:
+# 2010-06-2 [MO]
+# o Comments added.
+###########################################################################
