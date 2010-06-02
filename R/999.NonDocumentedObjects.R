@@ -16,8 +16,6 @@
 #   The rest are deprecated methods.
 # }
 #
-# @author
-#
 # @keyword internal
 #*/###########################################################################
 
