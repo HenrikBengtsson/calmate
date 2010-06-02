@@ -3,6 +3,8 @@
 % 
 %  weightedCalMaTeByThetaAB.R
 % 
+% on Wed Jun 02 17:35:50 2010.
+% 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -59,6 +61,6 @@ for (ii in c(1,5)) {
 
  \seealso{
   To calibrate (total,fracB) data,
-  see \code{\link[calmate:weightedCalMaTeByTotalAndFracB.array]{*weightedCalMaTeByTotalAndFracB}()}.
+  see \code{\link[CalMaTe2:weightedCalMaTeByTotalAndFracB.array]{*weightedCalMaTeByTotalAndFracB}()}.
  }
 \keyword{methods}

@@ -3,6 +3,8 @@
 % 
 %  weightedCalMaTeByTotalAndFracB.R
 % 
+% on Wed Jun 02 17:35:50 2010.
+% 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -25,7 +27,7 @@
   \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,
                       2 is total and fracB, and I is the number of samples.}
   \item{...}{Additional arguments passed to
-         \code{\link[calmate:weightedCalMaTeByThetaAB.array]{*weightedCalMaTeByThetaAB}()}.}
+         \code{\link[CalMaTe2:weightedCalMaTeByThetaAB.array]{*weightedCalMaTeByThetaAB}()}.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
  }
 
@@ -63,6 +65,6 @@ for (ii in c(1,5)) {
 
  \seealso{
   To calibrate (thetaA,thetaB) data,
-  see \code{\link[calmate:weightedCalMaTeByThetaAB.array]{*weightedCalMaTeByThetaAB}()}.
+  see \code{\link[CalMaTe2:weightedCalMaTeByThetaAB.array]{*weightedCalMaTeByThetaAB}()}.
  }
 \keyword{methods}

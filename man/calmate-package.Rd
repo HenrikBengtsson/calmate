@@ -6,7 +6,7 @@
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{calmate-package}
+\name{calmate-package}
 \alias{calmate-package}
 \alias{calmate}
 \docType{package}
