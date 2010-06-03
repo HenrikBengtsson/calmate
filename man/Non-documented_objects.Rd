@@ -3,6 +3,8 @@
 % 
 %  999.NonDocumentedObjects.R
 % 
+% on Thu Jun 03 11:18:02 2010.
+% 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -26,8 +28,6 @@
   in reality.
   The rest are deprecated methods.
 }
-
-\author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
 
 
 \keyword{documentation}

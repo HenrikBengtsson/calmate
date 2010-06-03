@@ -3,10 +3,12 @@
 % 
 %  999.package.R
 % 
+% on Thu Jun 03 11:18:02 2010.
+% 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\name{calmate-package}
+ \name{calmate-package}
 \alias{calmate-package}
 \alias{calmate}
 \docType{package}

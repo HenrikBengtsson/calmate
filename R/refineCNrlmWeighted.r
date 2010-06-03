@@ -1,7 +1,7 @@
 ###########################################################################/**
-# @set "class=array"
-# @RdocMethod refineCNrlmWeighted 
-# 
+# @set "class=list"
+# @RdocMethod refineCNrlmWeighted
+#
 # @title "CalMaTe calibration function"
 #
 # \description{
@@ -11,8 +11,8 @@
 # @synopsis
 #
 # \arguments{
-#  \item{input}{An 2xI @numeric array, where 2 is the number of alleles, 
-#               and I is the number of samples.}
+#  \item{input}{A list with two elements. First a 2xI @numeric array, where 2 is the number of alleles,
+#               and I is the number of samples. Second an array pointed out the reference samples.}
 #  \item{fB1}{Lower heterozygous threshold. Initially set to .33.}
 #  \item{fB2}{Higher heterozygous threshold. Initially set to .66.}
 # }
@@ -24,13 +24,18 @@
 # @examples "../incl/refineCNrlmWeighted.Rex"
 #
 # \seealso{
-#  To calibrate (total,fracB) data, 
+#  To calibrate (total,fracB) data,
 #  see @seemethod "weightedCalMaTeByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("refineCNrlmWeighted", "array", function(input, fB1=0.33, fB2=0.66,..., verbose=FALSE) {
+setMethodS3("refineCNrlmWeighted", "list", function(input, fB1=0.33, fB2=0.66,..., verbose=FALSE) {
   require("MASS") || stop("Package not loaded: MASS");
 
+  if (!is.list(input)) {
+    throw("Argument 'data' is not a list: ", class(input)[1]);
+  }
+
+  # Organizing the arguments  
   input <- input[[1]];
   inputData <- input$inputData[[1]];           
   refs <- input$inputRefs[[1]];  
@@ -43,7 +48,7 @@ setMethodS3("refineCNrlmWeighted", "array", function(input, fB1=0.33, fB2=0.66,.
     stop("Wrong input to refineCN function");
   }
 
-  #Axis change
+  # Axis change
   Tinput <- matrix(data=0, nrow=2, ncol=nSamples);
   Tinput[1,] <- dataA;
   Tinput[2,] <- dataB;  
@@ -53,25 +58,25 @@ setMethodS3("refineCNrlmWeighted", "array", function(input, fB1=0.33, fB2=0.66,.
   Giro <- solve(Giro);
   Tinput <- Giro %*% Tinput;
 
-  #Check if all the samples are homozygous
+  # Checking if all the samples are homozygous
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
   allHomo <- sum(abs(naiveGenoDiff))/2 == length(naiveGenoDiff);
 
-  #Twist Tinput in case only one allele appears
+  # Twist Tinput in case only one allele appears
   if (allHomo) {
     n <- round(ncol(Tinput)/2);
     Tinput[c(2,1),1:n] <- Tinput[,1:n];
   }
 
-  #Total copy numbers must be close to 2 for the reference samples or (if there are not control samples) for most of the samples
+  # Total copy numbers must be close to 2 for the reference samples or (if there are not control samples) for most of the samples
   Weight <- mean(Tinput) * dim(Tinput)[2];
   outputRlm <- rlm(rbind(t(Tinput[,refs]),c(Weight,-Weight)), rbind(matrix(data=2, nrow=ncol(Tinput[,refs]), ncol=1),0));
   matSum <- outputRlm$coefficients;
   coeffs <- outputRlm$w;
   Tinput <- diag(matSum) %*% Tinput;
 
-  #The difference of the copy numbers must be 2, 0 or -2 depending genotyping
+  # The difference of the copy numbers must be 2, 0 or -2 depending genotyping
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
 # matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff,weights = coeffs[1:(length(coeffs)-1)]);
@@ -109,6 +114,8 @@ setMethodS3("refineCNrlmWeighted", "array", function(input, fB1=0.33, fB2=0.66,.
 
 ###########################################################################
 # HISTORY:
+# 2010-06-3 [MO]
+# o Test to check "input" is a list added.
 # 2010-06-2 [MO]
 # o Comments added.
 ###########################################################################
