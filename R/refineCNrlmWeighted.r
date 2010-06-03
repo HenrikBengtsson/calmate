@@ -110,7 +110,7 @@ setMethodS3("refineCNrlmWeighted", "list", function(input, fB1=0.33, fB2=0.66,..
   }
 
   Salida;
-}) # refineCN_rlmWeighted()
+}) # refineCNrlmWeighted()
 
 ###########################################################################
 # HISTORY:
