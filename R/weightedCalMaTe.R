@@ -20,6 +20,7 @@
 #   Returns a list with J elements (number of SNPs) an each containing a 2xI @numeric array.
 # }
 #
+# @examples "../incl/weightedCalMaTe.Rex"
 #
 # \seealso{
 #  To calibrate (total,fracB) data,
