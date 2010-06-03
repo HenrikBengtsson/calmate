@@ -5,7 +5,7 @@ path <- system.file("exData", package="calmate");
 oneSNPdata <- loadObject("oneSNPdata,2x40.Rbin", path=path);
 
 # Calibrating the initial data with our method 
-calibratedData <- refineCN_rlmWeighted(oneSNPdata);
+calibratedData <- refineCNrlmWeighted(oneSNPdata);
 
 # Normalizing the initial data to compare it to our method
 inputData <- oneSNPdata[[1]]$inputData[[1]];           
