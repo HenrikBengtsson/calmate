@@ -3,7 +3,7 @@
 % 
 %  refineCNrlmWeighted.R
 % 
-% on Thu Jun 03 13:27:28 2010.
+% on Thu Jun 03 16:07:14 2010.
 % 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,7 +41,7 @@ path <- system.file("exData", package="calmate");
 oneSNPdata <- loadObject("oneSNPdata,2x40.Rbin", path=path);
 
 # Calibrating the initial data with our method
-calibratedData <- refineCN_rlmWeighted(oneSNPdata);
+calibratedData <- refineCNrlmWeighted(oneSNPdata);
 
 # Normalizing the initial data to compare it to our method
 inputData <- oneSNPdata[[1]]$inputData[[1]];          

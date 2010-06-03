@@ -1,12 +1,14 @@
-#CalMaTe's script
+#CalMaTe's Test Script
+# - - - - - - - - - - - - - - - - - - - - - - -
+# In this case the SNPs from chromosome 22 are calibrated by CalMaTe
+# - - - - - - - - - - - - - - - - - - - - - - -
 
 workingDir <- "directory"
 setwd(workingDir)
 
 library(aroma.affymetrix)
 library(MASS)
-source("calMaTeWeighted.R")
-source("refineCN_rlmWeighted.R")
+library(calmate)
 
 # - - - - - - - - - - - - - - - - - - - - - - -
 # setup dataset and chip names
