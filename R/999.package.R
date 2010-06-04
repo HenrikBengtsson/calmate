@@ -22,7 +22,7 @@
 # 
 # \author{
 #   Angel Rubio <arubio@ceit.es>,
-#   Maria Ortiz <mortiz@ceit.es>, 
+#   Maria Ortiz-Estevez <mortiz@ceit.es>, 
 #   Henrik Bengtsson <henrikb@braju.com>
 # }
 #

@@ -1,8 +1,8 @@
 ###########################################################################/**
 # @set "class=matrix"
-# @RdocMethod weightedCalMaTe
+# @RdocMethod calmate
 #
-# @title "Internal CalMaTe function"
+# @title "Internal Calmate function"
 #
 # \description{
 #  @get "title"
@@ -14,6 +14,7 @@
 #  \item{dataA}{Matrix with the number of copies of A allele of J SNPs in the I samples.}
 #  \item{dataB}{Matrix with the number of copies of B allele of J SNPs in the I samples.}
 #  \item{refs}{Vector indicating the reference samples.}
+#  \item{maxIter}{Maximum number of iterations for "rlm" function in refineCN. Initially set to 50.}
 #  \item{...}{Additional arguments passed to 
 #         @seemethod "refineCN".}
 #  \item{verbose}{See @see "R.utils::Verbose".}
@@ -23,15 +24,15 @@
 #   Returns a list with J elements (number of SNPs) an each containing a 2xI @numeric array.
 # }
 #
-# @examples "../incl/weightedCalMaTe.Rex"
+# @examples "../incl/calmate.Rex"
 #
 # \seealso{
 #  To calibrate (total,fracB) data,
-#  see @seemethod "weightedCalMaTeByTotalAndFracB".
-#  see @seemethod "refineCNrlmWeighted".
+#  see @seemethod "calmateByTotalAndFracB".
+#  see @seemethod "refineCN".
 # }
 #*/###########################################################################
-setMethodS3("weightedCalMaTe", "matrix", function(dataA, dataB, refs=0,..., verbose=FALSE) {
+setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., verbose=FALSE) {
 
  if (!is.matrix(dataA)) {
     throw("Argument 'data' is not a matrix: ", class(dataA)[1]);
@@ -102,15 +103,15 @@ setMethodS3("weightedCalMaTe", "matrix", function(dataA, dataB, refs=0,..., verb
   inputRefs <- apply(refs,1,list)
   input <- cbind(inputData, inputRefs);   
   input <- apply(input,1,list)
-  refineData <- lapply(X=input, FUN = refineCNrlmWeighted);
+  refineData <- lapply(X=input, FUN = refineCN);
 #  refineData <- lapplyInChunks(c(1:nSNPs), function(rr) {
 #  refineCN_rlmWeighted(input[rr]);}, chunkSize=500e3)
 
   return(refineData)
-}) # weightedCalMaTe() 
+}) # calmate() 
 
 ###########################################################################
 # HISTORY:
-# 2010-06-3 [MO]
-# o Comments added.
+# 2010-06-4 [MO]
+# o Created.
 ###########################################################################
