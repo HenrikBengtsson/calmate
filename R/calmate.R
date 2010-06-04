@@ -90,24 +90,20 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
         stop("Wrong reference information")
       }else{
         #generate the reference matrix
-        pr <- rep(refs, nrow(dataA));
-        dim(pr) <- c(length(refs), nrow(dataA));
-        refs <- t(pr);
+        aux <- rep(refs, nrow(dataA));
+        dim(aux) <- c(length(refs), nrow(dataA));
+        refs <- t(aux);
       }  
     }
   }
 
-#  inputData <- cbind(dataA, dataB)
-  
-  inputData <- apply(cbind(dataA,dataB),1,list)
-  inputRefs <- apply(refs,1,list)
+  inputData <- apply(cbind(dataA,dataB),1,list);
+  inputRefs <- apply(refs,1,list);
   input <- cbind(inputData, inputRefs);   
-  input <- apply(input,1,list)
+  input <- apply(input,1,list);
   refineData <- lapply(X=input, FUN = refineCN);
-#  refineData <- lapplyInChunks(c(1:nSNPs), function(rr) {
-#  refineCN_rlmWeighted(input[rr]);}, chunkSize=500e3)
 
-  return(refineData)
+  return(refineData);
 }) # calmate() 
 
 ###########################################################################
