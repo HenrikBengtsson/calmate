@@ -66,7 +66,7 @@ dataAB[,2,] <- dataCRMA[,1,]*(dataCRMA[,2,]);
 # an index vector (see CalMaTe code for more information on this option)
 # It returns a 3 dimensional matrix (Jx2xI) of allele specific copy numbers, 
 # where J is the number of SNPs and the I the number of samples
-dataCalMaTe <- weightedCalMaTeByThetaAB(dataAB);
+dataCalMaTe <- calmateByThetaAB(dataAB);
 
 # Comparing allele specific copy number results before and after CalMaTe calibration
 # Scaling the initial data to Copy Number values

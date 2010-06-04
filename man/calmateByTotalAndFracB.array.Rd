@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Do not modify this file since it was automatically generated from:
 % 
-%  weightedCalMaTeByThetaAB.R
+%  calmateByTotalAndFracB.R
 % 
 % on Fri Jun 04 17:27:21 2010.
 % 
@@ -9,11 +9,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
- \name{weightedCalMaTeByThetaAB.array}
-\alias{weightedCalMaTeByThetaAB.array}
-\alias{weightedCalMaTeByThetaAB.array}
+ \name{calmateByTotalAndFracB.array}
+\alias{calmateByTotalAndFracB.array}
+\alias{calmateByTotalAndFracB.array}
 
- \alias{weightedCalMaTeByThetaAB}
+ \alias{calmateByTotalAndFracB}
 
  \title{Internal CalMaTe fit function}
 
@@ -21,13 +21,13 @@
   Internal CalMaTe fit function.
  }
 
- \usage{\method{weightedCalMaTeByThetaAB}{array}(data, ..., verbose=FALSE)}
+ \usage{\method{calmateByTotalAndFracB}{array}(data, ..., verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,
-          2 is the number of alleles, and I is the number of samples.}
-  \item{...}{Additional arguments passed to internal
-             \code{calMaTeWeighted().}}
+                      2 is total and fracB, and I is the number of samples.}
+  \item{...}{Additional arguments passed to
+         \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
  }
 
@@ -36,33 +36,35 @@
  }
 
  \examples{
-library(calmate);
-library("R.utils");
-
 # Load example (thetaA,thetaB) signals
+library("R.utils");
 path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
 
-# Calculate (CA,CB)
-thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
-C <- 2*theta/thetaR;
+# Transform to (total,fracB) signals
+data <- thetaAB2TotalAndFracB(theta);
 
-# Calibrate (CA,CB)
-CC <- weightedCalMaTeByThetaAB(theta);
+# CalMaTe calibration
+dataC <- calmateByTotalAndFracB(data);
+
+theta <- data[,"total",];
+thetaR <- rowMedians(theta, na.rm=TRUE);
+data[,"total",] <- 2*theta/thetaR;
 
 # Plot to "random" arrays
 Clim <- c(0,4);
+Blim <- c(0,1);
 subplots(4, ncol=2, byrow=TRUE);
 for (ii in c(1,5)) {
-  plot(C[,,ii], xlim=Clim, ylim=Clim);
+  plot(data[,,ii], xlim=Clim, ylim=Blim);
   title(main=dimnames(C)[[3]][ii]);
-  plot(CC[,,ii], xlim=Clim, ylim=Clim);
+  plot(dataC[,,ii], xlim=Clim, ylim=Blim);
   title(main=sprintf("\%s\ncalibrated", dimnames(C)[[3]][ii]));
 }
 }
 
  \seealso{
-  To calibrate (total,fracB) data,
-  see \code{\link[calmate:weightedCalMaTeByTotalAndFracB.array]{*weightedCalMaTeByTotalAndFracB}()}.
+  To calibrate (thetaA,thetaB) data,
+  see \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.
  }
 \keyword{methods}

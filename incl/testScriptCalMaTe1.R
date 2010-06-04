@@ -23,7 +23,7 @@ data <- thetaAB2TotalAndFracB(theta);
 
 # It returns a list where the elements of the list are the SNPs and their total
 # copy number and fracB      
-dataC <- weightedCalMaTeByTotalAndFracB(data);
+dataC <- calmateByTotalAndFracB(data);
 
 # Allele specific copy numbers
 dataAC <- dataC[,1,]*(1-dataC[,2,]);

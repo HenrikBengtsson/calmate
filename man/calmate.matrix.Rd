@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Do not modify this file since it was automatically generated from:
 % 
-%  weightedCalMaTe.R
+%  calmate.R
 % 
 % on Fri Jun 04 17:27:21 2010.
 % 
@@ -9,23 +9,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\name{weightedCalMaTe.matrix}
-\alias{weightedCalMaTe.matrix}
-\alias{weightedCalMaTe.matrix}
+\name{calmate.matrix}
+\alias{calmate.matrix}
+\alias{calmate.matrix}
 
 
-\title{Internal CalMaTe function}
+\title{Internal Calmate function}
 
 \description{
- Internal CalMaTe function
+ Internal Calmate function
 }
 
-\usage{\method{weightedCalMaTe}{matrix}(dataA, dataB, refs=0, ..., verbose=FALSE)}
+\usage{\method{calmate}{matrix}(dataA, dataB, refs=0, maxIter=50, ..., verbose=FALSE)}
 
 \arguments{
  \item{dataA}{Matrix with the number of copies of A allele of J SNPs in the I samples.}
  \item{dataB}{Matrix with the number of copies of B allele of J SNPs in the I samples.}
  \item{refs}{Vector indicating the reference samples.}
+ \item{maxIter}{Maximum number of iterations for "rlm" function in refineCN. Initially set to 50.}
  \item{...}{Additional arguments passed to
         \code{\link[calmate:refineCN.matrix]{*refineCN}()}.}
  \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
@@ -47,7 +48,7 @@ thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
 C <- 2*theta/thetaR;
 
 # Calibrate (CA,CB)
-CC <- weightedCalMaTe(theta[,"A",],theta[,"B",]);
+CC <- calmate(theta[,"A",],theta[,"B",]);
 matAB <- matrix( unlist(CC), nrow=(2*length(CC)),ncol=ncol(CC[[1]]))
 
 # Plot to "random" arrays
@@ -61,11 +62,12 @@ for (ii in c(1,5)) {
 }
 
 
+
 }
 
 \seealso{
  To calibrate (total,fracB) data,
- see \code{\link[calmate:weightedCalMaTeByTotalAndFracB.matrix]{*weightedCalMaTeByTotalAndFracB}()}.
- see \code{\link[calmate:refineCNrlmWeighted.matrix]{*refineCNrlmWeighted}()}.
+ see \code{\link[calmate:calmateByTotalAndFracB.matrix]{*calmateByTotalAndFracB}()}.
+ see \code{\link[calmate:refineCN.matrix]{*refineCN}()}.
 }
 \keyword{methods}

@@ -10,7 +10,7 @@ thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
 C <- 2*theta/thetaR;
 
 # Calibrate (CA,CB)
-CC <- weightedCalMaTeByThetaAB(theta);
+CC <- calmateByThetaAB(theta);
 
 # Plot to "random" arrays
 Clim <- c(0,4);

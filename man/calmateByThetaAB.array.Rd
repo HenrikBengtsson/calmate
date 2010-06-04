@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Do not modify this file since it was automatically generated from:
 % 
-%  weightedCalMaTeByThetaAB.R
+%  calmateByThetaAB.R
 % 
 % on Fri Jun 04 17:27:21 2010.
 % 
@@ -9,11 +9,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
- \name{weightedCalMaTeByThetaAB.array}
-\alias{weightedCalMaTeByThetaAB.array}
-\alias{weightedCalMaTeByThetaAB.array}
+ \name{calmateByThetaAB.array}
+\alias{calmateByThetaAB.array}
+\alias{calmateByThetaAB.array}
 
- \alias{weightedCalMaTeByThetaAB}
+ \alias{calmateByThetaAB}
 
  \title{Internal CalMaTe fit function}
 
@@ -21,13 +21,13 @@
   Internal CalMaTe fit function.
  }
 
- \usage{\method{weightedCalMaTeByThetaAB}{array}(data, ..., verbose=FALSE)}
+ \usage{\method{calmateByThetaAB}{array}(data, ..., verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,
           2 is the number of alleles, and I is the number of samples.}
   \item{...}{Additional arguments passed to internal
-             \code{calMaTeWeighted().}}
+             \code{calmate().}}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
  }
 
@@ -48,7 +48,7 @@ thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
 C <- 2*theta/thetaR;
 
 # Calibrate (CA,CB)
-CC <- weightedCalMaTeByThetaAB(theta);
+CC <- calmateByThetaAB(theta);
 
 # Plot to "random" arrays
 Clim <- c(0,4);
@@ -63,6 +63,6 @@ for (ii in c(1,5)) {
 
  \seealso{
   To calibrate (total,fracB) data,
-  see \code{\link[calmate:weightedCalMaTeByTotalAndFracB.array]{*weightedCalMaTeByTotalAndFracB}()}.
+  see \code{\link[calmate:calmateByTotalAndFracB.array]{*calmateByTotalAndFracB}()}.
  }
 \keyword{methods}

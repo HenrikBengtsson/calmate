@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Do not modify this file since it was automatically generated from:
 % 
-%  refineCNrlmWeighted.R
+%  refineCN.R
 % 
 % on Fri Jun 04 17:27:21 2010.
 % 
@@ -9,9 +9,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\name{refineCNrlmWeighted.list}
-\alias{refineCNrlmWeighted.list}
-\alias{refineCNrlmWeighted.list}
+\name{refineCN.list}
+\alias{refineCN.list}
+\alias{refineCN.list}
 
 
 \title{CalMaTe calibration function}
@@ -20,13 +20,14 @@
  CalMaTe calibration function
 }
 
-\usage{\method{refineCNrlmWeighted}{list}(input, fB1=0.33, fB2=0.66, ..., verbose=FALSE)}
+\usage{\method{refineCN}{list}(input, fB1=0.33, fB2=0.66, maxIter=50, ..., verbose=FALSE)}
 
 \arguments{
  \item{input}{A list with two elements. First a 2xI \code{\link[base]{numeric}} array, where 2 is the number of alleles,
               and I is the number of samples. Second an array pointed out the reference samples.}
  \item{fB1}{Lower heterozygous threshold. Initially set to .33.}
  \item{fB2}{Higher heterozygous threshold. Initially set to .66.}
+ \item{maxIter}{Maximum number of iterations for "rlm" function. Initially set to 50.}
  \item{...}{Not used.}
  \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
 }
@@ -43,7 +44,7 @@ path <- system.file("exData", package="calmate");
 oneSNPdata <- loadObject("oneSNPdata,2x40.Rbin", path=path);
 
 # Calibrating the initial data with our method
-calibratedData <- refineCNrlmWeighted(oneSNPdata);
+calibratedData <- refineCN(oneSNPdata);
 
 # Normalizing the initial data to compare it to our method
 inputData <- oneSNPdata[[1]]$inputData[[1]];          
@@ -64,6 +65,6 @@ points(calibratedData[1,], calibratedData[2,],col="red")
 
 \seealso{
  To calibrate (total,fracB) data,
- see \code{\link[calmate:weightedCalMaTeByTotalAndFracB.list]{*weightedCalMaTeByTotalAndFracB}()}.
+ see \code{\link[calmate:calmateByTotalAndFracB.list]{*calmateByTotalAndFracB}()}.
 }
 \keyword{methods}
