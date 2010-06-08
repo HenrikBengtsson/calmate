@@ -34,10 +34,12 @@
 #*/###########################################################################
 setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., verbose=FALSE) {
 
+ require("MASS") || stop("Package not loaded: MASS");
  if (!is.matrix(dataA)) {
     throw("Argument 'data' is not a matrix: ", class(dataA)[1]);
   }
 
+  save(dataA, dataB, file="dataAB.Rdata")
   #Checking the reference information
   createdrefs <- FALSE;
   nSamples <- 0;

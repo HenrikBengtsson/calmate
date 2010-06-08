@@ -34,13 +34,18 @@
 setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,..., verbose=FALSE) {
   require("MASS") || stop("Package not loaded: MASS");
 
+  save(input, file="input.Rdata");
   if (!is.list(input)) {
     throw("Argument 'data' is not a list: ", class(input)[1]);
   }
 
   # Organizing the arguments  
   input <- input[[1]];
-  inputData <- input$inputData[[1]];           
+  inputData <- input$inputData[[1]];    
+  # Adding a small value so there are "non" 0 values
+  ind <- inputData==0;
+  inputData[ind] = 1e-6;
+         
   refs <- input$inputRefs[[1]];  
   
   nSamples <- length(inputData)/2;
@@ -65,9 +70,6 @@ setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,.
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);         
   oneAllele <- abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff);
-  if(sum(abs(naiveGenoDiff))==0){
-    print("allHete");
-  }
 
   # Twist half of the samples in case there is only one allele
   if(oneAllele){

@@ -21,7 +21,7 @@
 #
 # \value{
 #   Returns an Jx2xI @numeric array.
-# }
+# }                                   
 #
 # @examples "../incl/calmateByThetaAB.Rex"
 #
@@ -68,9 +68,11 @@ setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
   hasNonFinite <- any(!ok);
   if (hasNonFinite) {
     verbose && enter(verbose, "Excluding non-finite data points");
-    dataS <- dataS[ok,,,drop=FALSE];
+    dataS <- data[ok,,,drop=FALSE];
     verbose && str(verbose, data);
     verbose && exit(verbose);
+    dim <- dim(dataS);
+    dimnames <- dimnames(dataS);    
   } else {
     verbose && cat(verbose, "All data points are finite.");
     dataS <- data;
@@ -84,6 +86,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
   dim(dataB) <- dim[-2];
   rm(dataS);
   dataT <- calmate(dataA, dataB, ...);
+  save(dataT, file="dataT.Rdata");
   verbose && str(verbose, head(dataT));
   rm(dataA, dataB);
   verbose && exit(verbose);

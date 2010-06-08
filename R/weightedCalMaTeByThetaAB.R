@@ -68,9 +68,10 @@ setMethodS3("weightedCalMaTeByThetaAB", "array", function(data, ..., verbose=FAL
   hasNonFinite <- any(!ok);
   if (hasNonFinite) {
     verbose && enter(verbose, "Excluding non-finite data points");
-    dataS <- dataS[ok,,,drop=FALSE];
+    dataS <- data[ok,,,drop=FALSE];
     verbose && str(verbose, data);
     verbose && exit(verbose);
+    dim <- dim(dataS);
   } else {
     verbose && cat(verbose, "All data points are finite.");
     dataS <- data;
