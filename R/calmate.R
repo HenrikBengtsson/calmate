@@ -39,7 +39,7 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
     throw("Argument 'data' is not a matrix: ", class(dataA)[1]);
   }
 
-  save(dataA, dataB, file="dataAB.Rdata")
+  #save(dataA, dataB, file="dataAB.Rdata")
   #Checking the reference information
   createdrefs <- FALSE;
   nSamples <- 0;
@@ -51,21 +51,21 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
     nSNPs <- nrow(dataA);
   }
   #there are not given references
-  if(is.null(dim(refs)) && length(refs)==1) 
+  if(is.null(dim(refs)) && is.integer(refs) && refs==0) 
   {
     refs <- rep(TRUE, nSamples)
-    createdrefs <- TRUE;    
+    createdRefs <- TRUE;    
   }
   #in the case it is only one SNP
   if(is.null(dim(dataA)) && is.null(dim(refs))){
     if(is.logical(refs) && length(refs) == nSamples){
-      createdrefs <- TRUE;
+      createdRefs <- TRUE;
     }
     if(!is.logical(refs)){
       aux <- rep(FALSE, nSamples);
       aux[refs] <- TRUE;
       refs <- aux;
-      createdrefs <- TRUE;
+      createdRefs <- TRUE;
     }
     if(createdrefs == FALSE){
       stop("Wrong reference information")
@@ -79,16 +79,19 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
     if(is.null(dim(refs)) || dim(refs)!=dim(dataA) || !is.logical(refs)){ 
       #it is an index vector
       if(length(refs) != nSamples && !is.logical(refs)){
-        aux <- matrix(data=FALSE, ncol=ncol(dataB), nrow=nrow(dataA))
-        aux[,refs] <- TRUE;
+        if(max(refs) > ncol(dataB)){
+          stop("Wrong reference information");  
+        }
+        aux <- matrix(data=FALSE, ncol=ncol(dataB), nrow=1)
+        aux[1,refs] <- TRUE;
         refs <- aux;
       }
       #it is a logical reference vector with more than one sample as reference
-      if(is.logical(refs) && length(refs) == ncol(dataA) && sum(refs) > 1){
-        createdrefs <- TRUE;            
+      if(is.logical(refs) && length(refs) == ncol(dataA) && sum(refs) >= 1){
+        createdRefs <- TRUE;            
       }
       #non of these cases
-      if(!createdrefs){
+      if(!createdRefs){
         stop("Wrong reference information")
       }else{
         #generate the reference matrix

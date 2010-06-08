@@ -34,7 +34,7 @@
 setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,..., verbose=FALSE) {
   require("MASS") || stop("Package not loaded: MASS");
 
-  save(input, file="input.Rdata");
+  #save(input, file="input.Rdata");
   if (!is.list(input)) {
     throw("Argument 'data' is not a list: ", class(input)[1]);
   }

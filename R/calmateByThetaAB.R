@@ -52,9 +52,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
   }
 
   # Argument 'verbose':
-  verbose <- Arguments$getVerbose(verbose);
-
-
+  verbose <- Arguments$getVerbose(verbose);    
+  
   verbose && enter(verbose, "calmateByThetaAB()");
   verbose && cat(verbose, "ASCN signals:");
   verbose && str(verbose, data);
