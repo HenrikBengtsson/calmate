@@ -50,8 +50,9 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
     nSamples <- ncol(dataA);
     nSNPs <- nrow(dataA);
   }
-  #there are not given references
-  if(is.null(dim(refs)) && is.integer(refs) && refs==0) 
+  #there are not given references     
+  
+  if(is.null(dim(refs)) && is.numeric(refs) && length(refs)==1 && refs==0) 
   {
     refs <- rep(TRUE, nSamples)
     createdRefs <- TRUE;    
@@ -85,6 +86,7 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
         aux <- matrix(data=FALSE, ncol=ncol(dataB), nrow=1)
         aux[1,refs] <- TRUE;
         refs <- aux;
+        createdRefs <- TRUE;
       }
       #it is a logical reference vector with more than one sample as reference
       if(is.logical(refs) && length(refs) == ncol(dataA) && sum(refs) >= 1){

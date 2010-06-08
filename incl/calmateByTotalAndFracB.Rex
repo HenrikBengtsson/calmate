@@ -12,6 +12,7 @@ dataC <- calmateByTotalAndFracB(data);
 theta <- data[,"total",];
 thetaR <- rowMedians(theta, na.rm=TRUE);
 data[,"total",] <- 2*theta/thetaR;
+dimnames(data)[[2]][2] <- "fracB";
 
 # Plot to "random" arrays
 Clim <- c(0,4);

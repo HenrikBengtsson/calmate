@@ -20,6 +20,7 @@ C <- 2*theta/thetaR;
 
 # Transform to (total,fracB) signals
 data <- thetaAB2TotalAndFracB(theta);
+dimnames(data)[[2]][2] <- "fracB";
 
 # It returns a list where the elements of the list are the SNPs and their total
 # copy number and fracB      

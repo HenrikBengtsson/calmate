@@ -46,7 +46,7 @@ setMethodS3("weightedCalMaTeByTotalAndFracB", "array", function(data, ..., verbo
                                                 paste(dim, collapse="x"));
   }
   if (!is.null(dimnames[[2]])) {
-    if (!identical(dimnames[[2]], c("total", "fracB"))) {
+    if (!identical(dimnames[[2]], c("total", "freqB"))) {
       throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames[[2]], collapse=", "));
     }
   }
