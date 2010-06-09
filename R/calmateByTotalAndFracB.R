@@ -46,7 +46,12 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
                                                 paste(dim, collapse="x"));
   }
   if (!is.null(dimnames[[2]])) {
-    if (!identical(dimnames[[2]], c("total", "fracB")) || !identical(dimnames[[2]], c("total", "freqB"))) {
+    if (dimnames[[2]][2]=="freqB"){
+      dimnames(data)[[2]][2] = "fracB";  
+      dimnames[[2]][2]="fracB";
+    }    
+    print(dimnames(data)[[2]])
+    if (!identical(dimnames[[2]], c("total", "fracB"))) {
       throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames[[2]], collapse=", "));
     }
   }

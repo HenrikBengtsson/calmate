@@ -86,7 +86,7 @@ setMethodS3("totalAndFracB2ThetaAB", "array", function(data, ..., verbose=FALSE)
                                                 paste(dim, collapse="x"));
   }
   if (!is.null(dimnames[[2]])) {
-    if (!identical(dimnames[[2]], c("total", "fracB")) || !identical(dimnames[[2]], c("total", "freqB"))) {
+    if (!identical(dimnames[[2]], c("total", "fracB"))) {
       throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames[[2]], collapse=", "));
     }
   }
