@@ -85,7 +85,7 @@ setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,.
   # The difference of the copy numbers must be 2, 0 or -2 depending genotyping
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
-  matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff, maxit=50,weights=coeffs);
+  matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff, maxit=maxIter,weights=coeffs);
 
   matDiff <- matDiff$coefficients;
 

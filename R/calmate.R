@@ -39,7 +39,6 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
     throw("Argument 'data' is not a matrix: ", class(dataA)[1]);
   }
 
-  #save(dataA, dataB, file="dataAB.Rdata")
   #Checking the reference information
   createdrefs <- FALSE;
   nSamples <- 0;
@@ -50,8 +49,8 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, maxIter=50,..., 
     nSamples <- ncol(dataA);
     nSNPs <- nrow(dataA);
   }
-  #there are not given references     
   
+  #if there are not given references     
   if(is.null(dim(refs)) && is.numeric(refs) && length(refs)==1 && refs==0) 
   {
     refs <- rep(TRUE, nSamples)
