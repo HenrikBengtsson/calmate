@@ -19,11 +19,14 @@
   Internal CalMaTe fit function.
  }
 
- \usage{\method{calmateByThetaAB}{array}(data, ..., verbose=FALSE)}
+ \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,
           2 is the number of alleles, and I is the number of samples.}
+  \item{references}{A \code{\link[base]{logical}} \code{\link[base]{vector}} of length I, or an index \code{\link[base]{vector}}
+          with values in [0,I]. If \code{\link[base]{NULL}}, all samples are considered to
+          be reference samples (==1:I).}
   \item{...}{Additional arguments passed to internal
              \code{calmate().}}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
@@ -48,11 +51,11 @@ C <- 2*theta/thetaR;
 # Calibrate (CA,CB) by CalMaTe
 CC <- calmateByThetaAB(theta);
 
-# Plot to "random" arrays
+# Plot two "random" arrays
 Clim <- c(0,4);
 subplots(4, ncol=2, byrow=FALSE);
 for (ii in c(1,5)) {
-  sampleName <- dimnames(data)[[3]][ii];
+  sampleName <- dimnames(C)[[3]][ii];
   sampleLabel <- sprintf("Sample #\%d ('\%s')", ii, sampleName);
   plot(C[,,ii], xlim=Clim, ylim=Clim);
   title(main=sampleLabel);

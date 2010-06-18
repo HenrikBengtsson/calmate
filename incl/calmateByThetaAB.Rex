@@ -12,11 +12,11 @@ C <- 2*theta/thetaR;
 # Calibrate (CA,CB) by CalMaTe
 CC <- calmateByThetaAB(theta);
 
-# Plot to "random" arrays
+# Plot two "random" arrays
 Clim <- c(0,4);
 subplots(4, ncol=2, byrow=FALSE);
 for (ii in c(1,5)) {
-  sampleName <- dimnames(data)[[3]][ii];
+  sampleName <- dimnames(C)[[3]][ii];
   sampleLabel <- sprintf("Sample #%d ('%s')", ii, sampleName);
   plot(C[,,ii], xlim=Clim, ylim=Clim);
   title(main=sampleLabel);

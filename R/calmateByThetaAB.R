@@ -14,6 +14,9 @@
 # \arguments{
 #  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
 #          2 is the number of alleles, and I is the number of samples.}
+#  \item{references}{A @logical @vector of length I, or an index @vector 
+#          with values in [0,I]. If @NULL, all samples are considered to
+#          be reference samples (==1:I).}
 #  \item{...}{Additional arguments passed to internal 
 #             \code{calmate().}}
 #  \item{verbose}{See @see "R.utils::Verbose".}
@@ -30,7 +33,7 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -54,6 +57,26 @@ setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
     }
   }
 
+  # Argument 'references':
+  if (is.null(references)) {
+    # The default is that all samples are used to calculate the reference.
+    references <- rep(TRUE, times=dim[3]);
+  } else if (is.logical(references)) {
+    if (length(references) != dim[3]) {
+      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", dim[3]);
+    }
+  } else if (is.numeric(references)) {
+    references <- as.integer(references);
+    if (any(references < 1 | references > dim[3])) {
+      throw(sprintf("Argument 'references' is out of range [1,%d]", dim[3]));
+    }
+    idxs <- references;
+    references <- rep(FALSE, times=dim[3]);
+    references[idxs] <- TRUE;
+  }
+
+
+
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);    
   
@@ -74,7 +97,6 @@ setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
     verbose && str(verbose, data);
     verbose && exit(verbose);
     dim <- dim(dataS);
-    dimnames <- dimnames(dataS);    
   } else {
     verbose && cat(verbose, "All data points are finite.");
     dataS <- data;
@@ -82,37 +104,34 @@ setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
   verbose && exit(verbose);
 
   verbose && enter(verbose, "Fitting CalMaTe");
-  dataA <- dataS[,"A",,drop=FALSE];
-  dataB <- dataS[,"B",,drop=FALSE];
-  dim(dataA) <- dim[-2];
-  dim(dataB) <- dim[-2];
-  rm(dataS);
-  dataT <- calmate(dataA, dataB, ...);
-  save(dataT, file="dataT.Rdata");
-  verbose && str(verbose, head(dataT));
-  rm(dataA, dataB);
-  verbose && exit(verbose);
-
-  verbose && enter(verbose, "Restructuring into an array");
-  # There is one element per SNP
-  dimT <- c(dim(dataT[[1]]), length(dataT));
-  dataT <- unlist(dataT, use.names=FALSE);
-  dim(dataT) <- dimT;
-  dataT <- aperm(dataT, perm=c(3,1,2));
-  dimnames(dataT) <- dimnames;
-  verbose && str(verbose, dataT);
+  nbrOfSNPs <- dim(dataS)[1];
+  verbose && cat(verbose, "Number of SNPs: ", nbrOfSNPs);
+  verbose && printf(verbose, "Number of SNPs left:");
+  # Drop dimnames for faster processing
+  dimnames(dataS) <- NULL;
+  for (jj in seq(length=nbrOfSNPs)) {
+    if (verbose && (jj %% 100 == 1)) printf(verbose, "%d,", nbrOfSNPs-jj+1);
+    Cjj <- dataS[jj,,,drop=TRUE];  # An 2xI matrix
+    CCjj <- fitCalMaTe(Cjj, refs=references, ...);
+    # Sanity check
+    stopifnot(identical(dim(CCjj), dim(Cjj)));
+    dataS[jj,,] <- CCjj;
+  } # for (jj ...)
+  if (verbose) cat(verbose, "done.");
+#  verbose && str(verbose, dataS);
   verbose && exit(verbose);
 
   if (hasNonFinite) {
     verbose && enter(verbose, "Expanding to array with non-finite");
     dataC <- data;
-    dataC[ok,,] <- dataT;
+    dataC[ok,,] <- dataS;
     verbose && str(verbose, dataC);
     verbose && exit(verbose);
   } else {
-    dataC <- dataT;
+    dataC <- dataS;
+    dimnames(dataC) <- dimnames(data);
   }
-  rm(dataT);
+  rm(dataS);
 
   # Sanity check
   stopifnot(identical(dim(dataC), dim(data)));
@@ -128,6 +147,9 @@ setMethodS3("calmateByThetaAB", "array", function(data, ..., verbose=FALSE) {
 
 ###########################################################################
 # HISTORY:
+# 2010-06-18 [HB]
+# o Now calmateByThetaAB() calls internal refineCN2().
+# o Added argument 'references' to calmateByThetaAB().
 # 2010-06-04 [MO]
 # o Created.
 ###########################################################################

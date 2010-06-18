@@ -52,7 +52,7 @@ theta <- data[,"total",];
 thetaR <- rowMedians(theta, na.rm=TRUE);
 data[,"total",] <- 2*theta/thetaR;
 
-# Plot to "random" arrays
+# Plot two "random" arrays
 Clim <- c(0,4);
 Blim <- c(0,1);
 subplots(4, ncol=2, byrow=FALSE);
