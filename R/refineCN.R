@@ -70,9 +70,8 @@ setMethodS3("refineCN", "list", function(input, fB1=1/3, fB2=2/3, maxIter=50, ..
   input <- input[[1]];
   inputData <- input$inputData[[1]];    
   # Adding a small value so there are "non" 0 values
-  ind <- (inputData == 0);
   eps <- 1e-6;
-  inputData[ind] = eps;
+  inputData[inputData < eps] = eps;
          
   refs <- input$inputRefs[[1]];  
   
@@ -126,10 +125,9 @@ setMethodS3("refineCN", "list", function(input, fB1=1/3, fB2=2/3, maxIter=50, ..
 
   # Truncate freqB values to 0 and 1.
   freqB <-  Salida[2,] / colSums(Salida);
-  ind <- (freqB < 0);
-  freqB[ind] <- 1e-5;
-  ind <- (freqB > 1);
-  freqB[ind] <- 1;
+  eps <- 1e-5;
+  freqB[(freqB < eps)] <- eps;
+  freqB[(freqB > 1)] <- 1;
 
   SalidaAux <- Salida;
   SalidaAux[1,] <- colSums(Salida)*(1-freqB);
@@ -146,6 +144,8 @@ setMethodS3("refineCN", "list", function(input, fB1=1/3, fB2=2/3, maxIter=50, ..
 
 ###########################################################################
 # HISTORY:
-# 2010-06-4 [MO]
+# 2010-06-18 [HB]
+# o BUG FIX: Now "truncating" by x[x < eps] <- eps (was x[x == 0] <- eps).
+# 2010-06-04 [MO]
 # o Created.
 ###########################################################################

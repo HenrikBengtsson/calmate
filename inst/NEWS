@@ -2,6 +2,7 @@ Package: calmate
 ================
 
 Version: 0.2.2 [2010-06-18]
+o BUG FIX: Now "truncating" by x[x < eps] <- eps (was x[x == 0] <- eps).
 o BUG FIX: A few potential bugs where removed.
 o CLEAN UP: Tidied up the code.
 o CLEAN UP: Removed obsolete files.

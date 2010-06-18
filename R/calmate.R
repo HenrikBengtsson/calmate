@@ -123,7 +123,9 @@ setMethodS3("calmate", "matrix", function(dataA, dataB, refs=0, ..., verbose=FAL
     }
   }
 
-  inputData <- apply(cbind(dataA,dataB), MARGIN=1, FUN=list);
+  # Merge C=(CA,CB)
+  data <- cbind(dataA, dataB);
+  inputData <- apply(data, MARGIN=1, FUN=list);
   inputRefs <- apply(refs, MARGIN=1, FUN=list);
   input <- cbind(inputData, inputRefs);   
   input <- apply(input, MARGIN=1, FUN=list);
