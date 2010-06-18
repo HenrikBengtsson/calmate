@@ -18,14 +18,16 @@
  CalMaTe calibration function
 }
 
-\usage{\method{refineCN}{list}(input, fB1=0.33, fB2=0.66, maxIter=50, ..., verbose=FALSE)}
+\usage{\method{refineCN}{list}(input, fB1=1/3, fB2=2/3, maxIter=50, ..., verbose=FALSE)}
 
 \arguments{
- \item{input}{A list with two elements. First a 2xI \code{\link[base]{numeric}} array, where 2 is the number of alleles,
-              and I is the number of samples. Second an array pointed out the reference samples.}
- \item{fB1}{Lower heterozygous threshold. Initially set to .33.}
- \item{fB2}{Higher heterozygous threshold. Initially set to .66.}
- \item{maxIter}{Maximum number of iterations for "rlm" function. Initially set to 50.}
+ \item{input}{A \code{\link[base]{list}} with two elements.
+     The first element is a 2xI \code{\link[base]{numeric}} array, where 2 is the number
+     of alleles, and I is the number of samples.
+     The second element is an array pointed out the reference samples.}
+ \item{fB1}{Lower heterozygous threshold in [0,1]. Initially set to 1/3.}
+ \item{fB2}{Higher heterozygous threshold in [0,1]. Initially set to 2/3.}
+ \item{maxIter}{Maximum number of iterations for \code{\link[MASS]{rlm}} function.}
  \item{...}{Not used.}
  \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
 }
@@ -49,14 +51,14 @@ inputData <- oneSNPdata[[1]]$inputData[[1]];
 nSamples <- length(inputData)/2;
 dataA <- inputData[1:nSamples];
 dataB <- inputData[(nSamples+1):(2*nSamples)];
-fracB <- (dataB)/(dataA+dataB)
+fracB <- dataB / (dataA+dataB);
 dataNorm <- 2*(dataA+dataB)/median(dataA+dataB);
-dataA <- dataNorm*(1-fracB)
-dataB <- dataNorm*fracB
+dataA <- dataNorm * (1-fracB);
+dataB <- dataNorm * fracB;
 
 # Plot both results to see the difference
-plot(dataA, dataB, xlim = c(0,3),ylim =c(0,3))
-points(calibratedData[1,], calibratedData[2,],col="red")
+plot(dataA, dataB, xlim=c(0,3), ylim=c(0,3));
+points(calibratedData[1,], calibratedData[2,], col="red");
 
 
 }

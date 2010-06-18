@@ -14,6 +14,7 @@
 % Other missing docs
 \alias{refineCN_rlmWeighted}
 \alias{weightedCalMaTe}
+\alias{refineCN}
 
 \description{
   This page contains aliases for all "non-documented" objects that

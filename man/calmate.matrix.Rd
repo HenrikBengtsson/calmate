@@ -18,26 +18,28 @@
  Internal Calmate function
 }
 
-\usage{\method{calmate}{matrix}(dataA, dataB, refs=0, maxIter=50, ..., verbose=FALSE)}
+\usage{\method{calmate}{matrix}(dataA, dataB, refs=0, ..., verbose=FALSE)}
 
 \arguments{
- \item{dataA}{Matrix with the number of copies of A allele of J SNPs in the I samples.}
- \item{dataB}{Matrix with the number of copies of B allele of J SNPs in the I samples.}
- \item{refs}{Vector indicating the reference samples.}
- \item{maxIter}{Maximum number of iterations for "rlm" function in refineCN. Initially set to 50.}
+ \item{dataA}{A \code{\link[base]{numeric}} JxI copy-number \code{\link[base]{matrix}},
+       where J is the number of SNPs and I is the number samples.}
+ \item{dataB}{A \code{\link[base]{numeric}} JxI copy-number \code{\link[base]{matrix}}.}
+ \item{refs}{A \code{\link[base]{logical}} \code{\link[base]{vector}} indicating the reference samples.}
  \item{...}{Additional arguments passed to
-        \code{\link[calmate:refineCN.matrix]{*refineCN}()}.}
+       \code{\link[calmate:refineCN.matrix]{*refineCN}()}.}
  \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
 }
 
 \value{
-  Returns a list with J elements (number of SNPs) an each containing a 2xI \code{\link[base]{numeric}} array.
+  Returns a \code{\link[base]{list}} with J elements (SNPs) each containing
+  a 2xI \code{\link[base]{numeric}} \code{\link[base]{matrix}}.
 }
 
 \examples{
 # Load example (thetaA,thetaB) signals
 library("R.utils");
 library("aroma.affymetrix");
+
 path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
 
@@ -47,7 +49,7 @@ C <- 2*theta/thetaR;
 
 # Calibrate (CA,CB)
 CC <- calmate(theta[,"A",],theta[,"B",]);
-matAB <- matrix( unlist(CC), nrow=(2*length(CC)),ncol=ncol(CC[[1]]))
+matAB <- matrix(unlist(CC), nrow=(2*length(CC)), ncol=ncol(CC[[1]]));
 
 # Plot to "random" arrays
 Clim <- c(0,4);
@@ -55,12 +57,10 @@ subplots(4, ncol=2, byrow=TRUE);
 for (ii in c(1,5)) {
   plot(C[,,ii], xlim=Clim, ylim=Clim);
   title(main=dimnames(C)[[3]][ii]);
-  plot(matAB[seq(1,nrow(matAB),2),ii], matAB[seq(2,nrow(matAB),2),ii], xlim=Clim, ylim=Clim);
+  plot(matAB[seq(1,nrow(matAB),2),ii], matAB[seq(2,nrow(matAB),2),ii],
+                                                 xlim=Clim, ylim=Clim);
   title(main=sprintf("\%s\ncalibrated", dimnames(C)[[3]][ii]));
 }
-
-
-
 }
 
 \seealso{
@@ -68,4 +68,7 @@ for (ii in c(1,5)) {
  see \code{\link[calmate:calmateByTotalAndFracB.matrix]{*calmateByTotalAndFracB}()}.
  see \code{\link[calmate:refineCN.matrix]{*refineCN}()}.
 }
+
+
 \keyword{methods}
+\keyword{internal}

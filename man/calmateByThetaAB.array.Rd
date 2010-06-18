@@ -34,7 +34,7 @@
  }                                 
 
  \examples{
-library(calmate);
+library("calmate");
 library("R.utils");
 
 # Load example (thetaA,thetaB) signals
@@ -45,17 +45,19 @@ theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
 thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
 C <- 2*theta/thetaR;
 
-# Calibrate (CA,CB)
+# Calibrate (CA,CB) by CalMaTe
 CC <- calmateByThetaAB(theta);
 
 # Plot to "random" arrays
 Clim <- c(0,4);
-subplots(4, ncol=2, byrow=TRUE);
+subplots(4, ncol=2, byrow=FALSE);
 for (ii in c(1,5)) {
+  sampleName <- dimnames(data)[[3]][ii];
+  sampleLabel <- sprintf("Sample #\%d ('\%s')", ii, sampleName);
   plot(C[,,ii], xlim=Clim, ylim=Clim);
-  title(main=dimnames(C)[[3]][ii]);
+  title(main=sampleLabel);
   plot(CC[,,ii], xlim=Clim, ylim=Clim);
-  title(main=sprintf("\%s\ncalibrated", dimnames(C)[[3]][ii]));
+  title(main=sprintf("\%s\ncalibrated", sampleLabel));
 }
 }
 

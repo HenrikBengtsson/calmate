@@ -29,6 +29,9 @@
 # @keyword internal
 #*/###########################################################################
 setMethodS3("thetaAB2TotalAndFracB", "array", function(data, ..., verbose=FALSE) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Argument 'data':
   if (!is.array(data)) {
     throw("Argument 'data' is not an array: ", class(data)[1]);

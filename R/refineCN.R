@@ -11,11 +11,13 @@
 # @synopsis
 #
 # \arguments{
-#  \item{input}{A list with two elements. First a 2xI @numeric array, where 2 is the number of alleles,
-#               and I is the number of samples. Second an array pointed out the reference samples.}
-#  \item{fB1}{Lower heterozygous threshold. Initially set to .33.}
-#  \item{fB2}{Higher heterozygous threshold. Initially set to .66.}
-#  \item{maxIter}{Maximum number of iterations for "rlm" function. Initially set to 50.}
+#  \item{input}{A @list with two elements. 
+#      The first element is a 2xI @numeric array, where 2 is the number 
+#      of alleles, and I is the number of samples. 
+#      The second element is an array pointed out the reference samples.}
+#  \item{fB1}{Lower heterozygous threshold in [0,1]. Initially set to 1/3.}
+#  \item{fB2}{Higher heterozygous threshold in [0,1]. Initially set to 2/3.}
+#  \item{maxIter}{Maximum number of iterations for @see "MASS::rlm" function.}
 #  \item{...}{Not used.}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
@@ -31,24 +33,50 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,..., verbose=FALSE) {
-  require("MASS") || stop("Package not loaded: MASS");
-
-  #save(input, file="input.Rdata");
+setMethodS3("refineCN", "list", function(input, fB1=1/3, fB2=2/3, maxIter=50, ..., verbose=FALSE) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # Argument 'input':
   if (!is.list(input)) {
     throw("Argument 'data' is not a list: ", class(input)[1]);
   }
+
+  # Argument 'fB1' & 'fB2':
+  fB1 <- as.double(fB1);
+  if (fB1 < 0 || fB1 > 1) {
+    throw("Argument 'fB1' is out of range [0,1]: ", fB1);
+  }
+
+  fB2 <- as.double(fB2);
+  if (fB2 < 0 || fB2 > 1) {
+    throw("Argument 'fB2' is out of range [0,1]: ", fB2);
+  }
+
+  # Argument 'maxIter':
+  maxIter <- as.integer(maxIter);
+  if (length(maxIter) != 1) {
+    throw("Argument 'maxIter' has to be a single value: ", length(maxIter));
+  }
+  if (!is.finite(maxIter)) {
+    throw("Argument 'maxIter' is non-finite: ", maxIter);
+  }
+  if (maxIter <= 0) {
+    throw("Argument 'maxIter' is non-positive: ", maxIter);
+  }
+
 
   # Organizing the arguments  
   input <- input[[1]];
   inputData <- input$inputData[[1]];    
   # Adding a small value so there are "non" 0 values
-  ind <- inputData==0;
-  inputData[ind] = 1e-6;
+  ind <- (inputData == 0);
+  eps <- 1e-6;
+  inputData[ind] = eps;
          
   refs <- input$inputRefs[[1]];  
   
-  nSamples <- length(inputData)/2;
+  nSamples <- length(inputData) / 2;
   dataA <- inputData[1:nSamples];
   dataB <- inputData[(nSamples+1):(2*nSamples)];
   
@@ -57,27 +85,27 @@ setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,.
   }
 
   # Axis change
-  Tinput <- matrix(data=0, nrow=2, ncol=nSamples);
+  Tinput <- matrix(data=0, nrow=2, ncol=nSamples, byrow=FALSE);
   Tinput[1,] <- dataA;
   Tinput[2,] <- dataB;  
   
   a <- max(max(Tinput[2,] / (pmax(Tinput[1,],0) + 1e-4)), max(Tinput[1,] / (pmax(Tinput[2,],0) + 1e-4)));
-  Giro <- matrix(c(1, 1/a, 1/a, 1), nrow=2, ncol=2);
+  Giro <- matrix(c(1, 1/a, 1/a, 1), nrow=2, ncol=2, byrow=FALSE);
   Giro <- solve(Giro);
   Tinput <- Giro %*% Tinput;
 
   # Checking if all the samples are homozygous
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);         
-  oneAllele <- abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff);
+  oneAllele <- (abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff));
 
   # Twist half of the samples in case there is only one allele
-  if(oneAllele){
-    Tinput[1:2,1:(ncol(Tinput)/2)] <- Tinput[2:1,1:(ncol(Tinput)/2)]
+  if (oneAllele) {
+    Tinput[1:2,1:(ncol(Tinput)/2)] <- Tinput[2:1,1:(ncol(Tinput)/2)];
   }
 
   # Total copy numbers must be close to 2 for the reference samples or (if there are not control samples) for most of the samples
-  outputRlm <- rlm(t(Tinput[,refs]), matrix(data=2, nrow=ncol(Tinput[,refs]), ncol=1),maxit=maxIter);
+  outputRlm <- rlm(t(Tinput[,refs]), matrix(data=2, nrow=ncol(Tinput[,refs]), ncol=1, byrow=FALSE), maxit=maxIter);
   matSum <- outputRlm$coefficients;
   coeffs <- outputRlm$w;
   Tinput <- diag(matSum) %*% Tinput;
@@ -85,22 +113,22 @@ setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,.
   # The difference of the copy numbers must be 2, 0 or -2 depending genotyping
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
-  matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff, maxit=maxIter,weights=coeffs);
+  matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff, maxit=maxIter, weights=coeffs);
 
   matDiff <- matDiff$coefficients;
 
   # P matrix is:
   #  [1  1] [   ] = [MatSum[1]   MatSum[2]] (We have already applied it) MatSum is 1,1
   #  [1 -1] [ P ]   [MatDiff[1] MatDiff[2]]
-  P <- matrix(c(0.5, 0.5, 0.5, -0.5), nrow=2, ncol=2) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE);
+  P <- matrix(c(0.5, 0.5, 0.5, -0.5), nrow=2, ncol=2, byrow=FALSE) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE);
   
   Salida <- P %*% Tinput;
 
   # Truncate freqB values to 0 and 1.
-  freqB <-  Salida[2,]/colSums(Salida);
-  ind <- freqB<0;
+  freqB <-  Salida[2,] / colSums(Salida);
+  ind <- (freqB < 0);
   freqB[ind] <- 1e-5;
-  ind <- freqB>1;
+  ind <- (freqB > 1);
   freqB[ind] <- 1;
 
   SalidaAux <- Salida;
@@ -109,9 +137,10 @@ setMethodS3("refineCN", "list", function(input, fB1=0.33, fB2=0.66, maxIter=50,.
   Salida <- SalidaAux;
 
   # Correct the previous change applied to the data in case there is only one allele    
-  if(oneAllele){
+  if (oneAllele) {
     Salida[1:2,1:(ncol(Salida)/2)] <- Salida[2:1,1:(ncol(Salida)/2)];
   }
+
   Salida;
 }) # refineCN()
 

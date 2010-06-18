@@ -1,6 +1,12 @@
 Package: calmate
 ================
 
+Version: 0.2.2 [2010-06-18]
+o BUG FIX: A few potential bugs where removed.
+o CLEAN UP: Tidied up the code.
+o CLEAN UP: Removed obsolete files.
+
+
 Version: 0.2.1 [2010-05-19]
 o Added weightedCalMaTeByThetaAB() and weightedCalMaTeByTotalAndFracB().
   The former replaces weightedCalMaTeByASCN().

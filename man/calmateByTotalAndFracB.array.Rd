@@ -34,31 +34,35 @@
  }
 
  \examples{
-# Load example (thetaA,thetaB) signals
+library("calmate");
 library("R.utils");
+
+# Load example (thetaA,thetaB) signals
 path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
 
 # Transform to (total,fracB) signals
 data <- thetaAB2TotalAndFracB(theta);
 
-# CalMaTe calibration
+# Calibrate (total,fracB) by CalMaTe
 dataC <- calmateByTotalAndFracB(data);
 
+# Calculate copy-number ratios
 theta <- data[,"total",];
 thetaR <- rowMedians(theta, na.rm=TRUE);
 data[,"total",] <- 2*theta/thetaR;
-dimnames(data)[[2]][2] <- "fracB";
 
 # Plot to "random" arrays
 Clim <- c(0,4);
 Blim <- c(0,1);
-subplots(4, ncol=2, byrow=TRUE);
+subplots(4, ncol=2, byrow=FALSE);
 for (ii in c(1,5)) {
+  sampleName <- dimnames(data)[[3]][ii];
+  sampleLabel <- sprintf("Sample #\%d ('\%s')", ii, sampleName);
   plot(data[,,ii], xlim=Clim, ylim=Blim);
-  title(main=dimnames(C)[[3]][ii]);
+  title(main=sampleLabel);
   plot(dataC[,,ii], xlim=Clim, ylim=Blim);
-  title(main=sprintf("\%s\ncalibrated", dimnames(C)[[3]][ii]));
+  title(main=sprintf("\%s\ncalibrated", sampleLabel));
 }
 }
 
