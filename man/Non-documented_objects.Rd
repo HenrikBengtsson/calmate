@@ -12,8 +12,7 @@
 
 
 % Other missing docs
-\alias{refineCN_rlmWeighted}
-\alias{weightedCalMaTe}
+\alias{fitCalMaTe}
 \alias{refineCN}
 
 \description{

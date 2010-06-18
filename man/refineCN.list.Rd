@@ -62,9 +62,4 @@ points(calibratedData[1,], calibratedData[2,], col="red");
 
 
 }
-
-\seealso{
- To calibrate (total,fracB) data,
- see \code{\link[calmate:calmateByTotalAndFracB.list]{*calmateByTotalAndFracB}()}.
-}
 \keyword{methods}

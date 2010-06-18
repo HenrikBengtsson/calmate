@@ -27,11 +27,6 @@
 # }
 #
 # @examples "../incl/refineCN.Rex"
-#
-# \seealso{
-#  To calibrate (total,fracB) data,
-#  see @seemethod "calmateByTotalAndFracB".
-# }
 #*/###########################################################################
 setMethodS3("refineCN", "list", function(input, fB1=1/3, fB2=2/3, maxIter=50, ..., verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,13 +1,13 @@
 Package: calmate
 Version: 0.3.0
 Date: 2010-06-18
-Title: NNN
+Title: Post-normalization of allele-specific copy-number estimates (ASCNs)
 Author: Angel Rubio <arubio@ceit.es>, Maria Ortiz <mortiz@ceit.es>, Henrik Bengtsson <henrikb@braju.com>
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
 Depends: R (>= 2.10.0), R.methodsS3 (>= 1.2.0), MASS, matrixStats (>= 0.2.1)
 Suggests: R.utils (>= 1.4.0), aroma.core (>= 1.6.0)
-Description: NNN.
-License: Private for now
+Description: Post-normalization of allele-specific copy-number estimates (ASCNs) [UNDER HEAVY DEVELOPLMENT].
+License: LGPL (>= 2.1)
 URL: http://r-forge.r-project.org/projects/snpsprocessing/
 LazyLoad: TRUE
 biocViews: Infrastructure, Microarray, DNACopyNumber

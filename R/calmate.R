@@ -15,8 +15,7 @@
 #        where J is the number of SNPs and I is the number samples.}
 #  \item{dataB}{A @numeric JxI copy-number @matrix.}
 #  \item{refs}{A @logical @vector indicating the reference samples.}
-#  \item{...}{Additional arguments passed to 
-#        @seemethod "refineCN".}
+#  \item{...}{Additional arguments passed to @see "refineCN.list".}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
 #
@@ -28,9 +27,7 @@
 # @examples "../incl/calmate.Rex"
 #
 # \seealso{
-#  To calibrate (total,fracB) data,
-#  see @seemethod "calmateByTotalAndFracB".
-#  see @seemethod "refineCN".
+#  See @see "refineCN.list".
 # }
 #
 # @keyword internal

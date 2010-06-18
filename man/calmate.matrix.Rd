@@ -25,8 +25,7 @@
        where J is the number of SNPs and I is the number samples.}
  \item{dataB}{A \code{\link[base]{numeric}} JxI copy-number \code{\link[base]{matrix}}.}
  \item{refs}{A \code{\link[base]{logical}} \code{\link[base]{vector}} indicating the reference samples.}
- \item{...}{Additional arguments passed to
-       \code{\link[calmate:refineCN.matrix]{*refineCN}()}.}
+ \item{...}{Additional arguments passed to \code{\link{refineCN.list}}().}
  \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
 }
 
@@ -68,9 +67,7 @@ for (ii in c(1,5)) {
 }
 
 \seealso{
- To calibrate (total,fracB) data,
- see \code{\link[calmate:calmateByTotalAndFracB.matrix]{*calmateByTotalAndFracB}()}.
- see \code{\link[calmate:refineCN.matrix]{*refineCN}()}.
+ See \code{\link{refineCN.list}}().
 }
 
 
