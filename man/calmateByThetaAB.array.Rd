@@ -3,8 +3,6 @@
 % 
 %  calmateByThetaAB.R
 % 
-% on Fri Jun 04 17:27:21 2010.
-% 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,7 +31,7 @@
 
  \value{
    Returns an Jx2xI \code{\link[base]{numeric}} array.
- }
+ }                                 
 
  \examples{
 library(calmate);

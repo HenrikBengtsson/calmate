@@ -3,8 +3,6 @@
 % 
 %  calmate.R
 % 
-% on Fri Jun 04 17:27:21 2010.
-% 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

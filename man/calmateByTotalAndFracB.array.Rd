@@ -3,8 +3,6 @@
 % 
 %  calmateByTotalAndFracB.R
 % 
-% on Fri Jun 04 17:27:21 2010.
-% 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -50,6 +48,7 @@ dataC <- calmateByTotalAndFracB(data);
 theta <- data[,"total",];
 thetaR <- rowMedians(theta, na.rm=TRUE);
 data[,"total",] <- 2*theta/thetaR;
+dimnames(data)[[2]][2] <- "fracB";
 
 # Plot to "random" arrays
 Clim <- c(0,4);
