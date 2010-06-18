@@ -78,15 +78,15 @@ setMethodS3("refineCN", "list", function(input, fB1=1/3, fB2=2/3, maxIter=50, ..
   nSamples <- length(inputData) / 2;
   dataA <- inputData[1:nSamples];
   dataB <- inputData[(nSamples+1):(2*nSamples)];
-  
+
+  # Sanity check  
   if (length(dataA) != length(dataB) || length(refs) != length(dataB)) {
-    stop("Wrong input to refineCN function");
+    stop("Wrong input to refineCN() function");
   }
 
   # Axis change
-  Tinput <- matrix(data=0, nrow=2, ncol=nSamples, byrow=FALSE);
-  Tinput[1,] <- dataA;
-  Tinput[2,] <- dataB;  
+  data <- c(dataA, dataB);
+  Tinput <- matrix(data, nrow=2, ncol=nSamples, byrow=TRUE);
   
   a <- max(max(Tinput[2,] / (pmax(Tinput[1,],0) + 1e-4)), max(Tinput[1,] / (pmax(Tinput[2,],0) + 1e-4)));
   Giro <- matrix(c(1, 1/a, 1/a, 1), nrow=2, ncol=2, byrow=FALSE);
@@ -104,47 +104,49 @@ setMethodS3("refineCN", "list", function(input, fB1=1/3, fB2=2/3, maxIter=50, ..
   }
 
   # Total copy numbers must be close to 2 for the reference samples or (if there are not control samples) for most of the samples
-  outputRlm <- rlm(t(Tinput[,refs]), matrix(data=2, nrow=ncol(Tinput[,refs]), ncol=1, byrow=FALSE), maxit=maxIter);
-  matSum <- outputRlm$coefficients;
-  coeffs <- outputRlm$w;
+  fit <- rlm(t(Tinput[,refs]), matrix(data=2, nrow=ncol(Tinput[,refs]), ncol=1, byrow=FALSE), maxit=maxIter);
+  matSum <- fit$coefficients;
+  coeffs <- fit$w;
   Tinput <- diag(matSum) %*% Tinput;
 
   # The difference of the copy numbers must be 2, 0 or -2 depending genotyping
   fracB <- Tinput[2,refs] / (Tinput[1,refs] + Tinput[2,refs]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
-  matDiff <- rlm(t(Tinput[,refs]), naiveGenoDiff, maxit=maxIter, weights=coeffs);
-
-  matDiff <- matDiff$coefficients;
+  fit <- rlm(t(Tinput[,refs]), naiveGenoDiff, maxit=maxIter, weights=coeffs);
+  matDiff <- fit$coefficients;
 
   # P matrix is:
   #  [1  1] [   ] = [MatSum[1]   MatSum[2]] (We have already applied it) MatSum is 1,1
   #  [1 -1] [ P ]   [MatDiff[1] MatDiff[2]]
   P <- matrix(c(0.5, 0.5, 0.5, -0.5), nrow=2, ncol=2, byrow=FALSE) %*% matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE);
   
-  Salida <- P %*% Tinput;
+  res <- P %*% Tinput;
 
-  # Truncate freqB values to 0 and 1.
-  freqB <-  Salida[2,] / colSums(Salida);
+  # Calculate total CNs
+  C <- colSums(res);
+
+  # Truncate fracB values to 0 and 1.
+  fracB <-  res[2,] / C;
   eps <- 1e-5;
-  freqB[(freqB < eps)] <- eps;
-  freqB[(freqB > 1)] <- 1;
+  fracB[(fracB < eps)] <- eps;  # Why?!? /HB
+  fracB[(fracB > 1)] <- 1;      # Why not here?!? /HB
 
-  SalidaAux <- Salida;
-  SalidaAux[1,] <- colSums(Salida)*(1-freqB);
-  SalidaAux[2,] <- colSums(Salida)*(freqB);
-  Salida <- SalidaAux;
+  res[1,] <- C*(1-fracB);
+  res[2,] <- C*(fracB);
 
-  # Correct the previous change applied to the data in case there is only one allele    
+  # Correct the previous change applied to the data in case there is 
+  # only one allele    
   if (oneAllele) {
-    Salida[1:2,1:(ncol(Salida)/2)] <- Salida[2:1,1:(ncol(Salida)/2)];
+    res[1:2,1:(ncol(res)/2)] <- res[2:1,1:(ncol(res)/2)];
   }
 
-  Salida;
+  res;
 }) # refineCN()
 
 ###########################################################################
 # HISTORY:
 # 2010-06-18 [HB]
+# o CLEAN UP: Renamed variables to non-Spanish etc.
 # o BUG FIX: Now "truncating" by x[x < eps] <- eps (was x[x == 0] <- eps).
 # 2010-06-04 [MO]
 # o Created.

@@ -63,7 +63,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
 
 
   verbose && enter(verbose, "calmateByTotalAndFracB()");
-  verbose && cat(verbose, "(total,freqB) signals:");
+  verbose && cat(verbose, "(total,fracB) signals:");
   verbose && str(verbose, data);
 
   verbose && enter(verbose, "Transforming to (thetaA, thetaB)");
