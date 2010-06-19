@@ -13,10 +13,10 @@
 
  \alias{calmateByThetaAB}
 
- \title{Internal CalMaTe fit function}
+ \title{Normalize allele-specific copy numbers (CA,CB)}
 
  \description{
-  Internal CalMaTe fit function.
+  Normalize allele-specific copy numbers (CA,CB).
  }
 
  \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., verbose=FALSE)}

@@ -3,16 +3,20 @@
 # @RdocMethod calmateByTotalAndFracB
 # @alias calmateByTotalAndFracB
 # 
-# @title "Internal CalMaTe fit function"
+# @title "Normalize allele-specific copy numbers (total,fracB)"
 #
 # \description{
-#  @get "title".
+#  @get "title", where total is the total (non-polymorphic) signal and
+#  fracB is the allele B fraction.
+#  It is only loci with a non-missing (@NA) fracB value that are
+#  considered to be SNPs and normalized by CalMaTe.  The other loci
+#  are left untouched.
 # }
 #
 # @synopsis
 #
 # \arguments{
-#  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
+#  \item{data}{An Jx2xI @numeric array, where J is the number of loci,
 #                      2 is total and fracB, and I is the number of samples.}
 #  \item{...}{Additional arguments passed to 
 #         @seemethod "calmateByThetaAB".}
@@ -26,7 +30,7 @@
 # @examples "../incl/calmateByTotalAndFracB.Rex"
 #
 # \seealso{
-#  To calibrate (thetaA,thetaB) data, 
+#  To calibrate (thetaA,thetaB) or (CA,CB) signals, 
 #  see @seemethod "calmateByThetaAB".
 # }
 #*/###########################################################################
@@ -66,20 +70,29 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
   verbose && cat(verbose, "(total,fracB) signals:");
   verbose && str(verbose, data);
 
-  verbose && enter(verbose, "Transforming to (thetaA, thetaB)");
-  data <- totalAndFracB2ThetaAB(data, verbose=less(verbose, 5));
-  verbose && str(verbose, data);
+  verbose && enter(verbose, "Identifying SNPs (non-missing fracB)");
+  nok <- is.na(data[,"fracB",]);
+  nok <- rowAlls(nok);
+  snps <- which(!nok);
+  verbose && printf(verbose, "Number of SNPs: %d (%.2f%%)\n",
+                               length(snps), length(snps)/dim(data)[1]);
   verbose && exit(verbose);
 
-  dataC <- calmateByThetaAB(data, ..., verbose=verbose);  
+  verbose && enter(verbose, "Transforming SNPs to (thetaA, thetaB)");
+  theta <- data[snps,,,drop=FALSE];
+  theta <- totalAndFracB2ThetaAB(theta, verbose=less(verbose, 5));
+  verbose && str(verbose, theta);
+  verbose && exit(verbose);
 
-  verbose && enter(verbose, "Backtransforming to (total, fracB)");
-  dataC <- thetaAB2TotalAndFracB(dataC, verbose=less(verbose, 5));
+  thetaC <- calmateByThetaAB(theta, ..., verbose=verbose);  
+  rm(theta); # Not needed anymore
+
+  verbose && enter(verbose, "Backtransforming SNPs to (total, fracB)");
+  dataC <- data;
+  dataC[snps,,] <- thetaAB2TotalAndFracB(thetaC, verbose=less(verbose, 5));
   verbose && str(verbose, dataC);
+  rm(snps); # Not needed anymore
   verbose && exit(verbose);
-
-  # Sanity check
-  stopifnot(identical(dim(dataC), dim(data)));
 
   verbose && cat(verbose, "Calibrated (total,fracB) signals:");
   verbose && str(verbose, dataC);
@@ -92,6 +105,8 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
 
 ###########################################################################
 # HISTORY:
+# 2010-06-18 [HB]
+# o Now calmateByTotalAndFracB() handles also non-polymorphic loci.
 # 2010-06-04 [MO]
 # o Created.
 ###########################################################################

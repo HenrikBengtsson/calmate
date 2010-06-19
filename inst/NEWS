@@ -1,6 +1,12 @@
 Package: calmate
 ================
 
+Version: 0.3.1 [2010-06-19]
+o Added argument 'truncate=TRUE' to internal fitCalMaTe()
+  and rewrote the code to do the truncation in (CA,CB) space.
+  The truncation is done such that CA+CB is preserved.
+
+
 Version: 0.3.0 [2010-06-18]
 o CLEAN UP: Rewrote calmateByThetaAB() so it is no longer 
   old using calmate() but a new internal fitCalMaTe().

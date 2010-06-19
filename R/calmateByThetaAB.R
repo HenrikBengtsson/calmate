@@ -3,7 +3,7 @@
 # @RdocMethod calmateByThetaAB
 # @alias calmateByThetaAB
 # 
-# @title "Internal CalMaTe fit function"
+# @title "Normalize allele-specific copy numbers (CA,CB)"
 #
 # \description{
 #  @get "title".

@@ -13,10 +13,10 @@
 
  \alias{calmateByTotalAndFracB}
 
- \title{Internal CalMaTe fit function}
+ \title{Normalize allele-specific copy numbers (TCN,BAF)}
 
  \description{
-  Internal CalMaTe fit function.
+  Normalize allele-specific copy numbers (TCN,BAF).
  }
 
  \usage{\method{calmateByTotalAndFracB}{array}(data, ..., verbose=FALSE)}

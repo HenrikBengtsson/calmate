@@ -1,4 +1,4 @@
-fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
+fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, truncate=TRUE, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(T);
@@ -28,7 +28,7 @@ fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   onlyOneAllele <- (abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff));
   if (onlyOneAllele) {
-    idxs <- 1:(ncol(T)/2);
+    idxs <- seq(length=ncol(T)/2);
     T[1:2,idxs] <- T[2:1,idxs];
 
     # Update precalcalculated signals
@@ -64,22 +64,27 @@ fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Truncate fracB values to 0 and 1.
+  # Truncate ASCNs to avoid non-positives?
+  # Truncation is done such that TCN is preserved regardlessly.
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Calculate total CNs
-  C <- res[1,] + res[2,];
+  if (truncate) {
+    delta <- matrix(0, nrow=nrow(res), ncol=ncol(res));
 
-  # Calculate the allele B fractions
-  fracB <-  res[2,] / C;
+    # (CA*,CB*) = (CA,CB) + (-delta,+delta) for all SNPs where CA < 0.
+    idxs <- which(res[1,] < 0);
+    d <- res[1,idxs];
+    delta[1,idxs] <- -d;
+    delta[2,idxs] <- +d;
 
-  # Truncate
-  eps <- 1e-5;
-  fracB[(fracB < eps)] <- eps;  # Why?!? /HB
-  fracB[(fracB > 1)] <- 1;      # Why not here?!? /HB
+    # (CA*,CB*) = (CA,CB) + (+delta,-delta) for all SNPs where CB < 0.
+    idxs <- which(res[2,] < 0);
+    d <- res[2,idxs];
+    delta[1,idxs] <- +d;
+    delta[2,idxs] <- -d;
 
-  # Recalculate the (CA,CB) results
-  res[1,] <- C*(1-fracB);
-  res[2,] <- C*(fracB);
+    # Note, here all(colSums(delta) == 0) is TRUE.
+    res <- res + delta;
+  } # if (!allowNegative)
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -87,7 +92,7 @@ fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # only one allele    
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (onlyOneAllele) {
-    idxs <- 1:(ncol(res)/2);
+    idxs <- seq(length=ncol(res)/2);
     res[1:2,idxs] <- res[2:1,idxs];
   }
 
@@ -97,6 +102,8 @@ fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
 
 ###########################################################################
 # HISTORY:
+# 2010-06-19 [HB]
+# o Added argument 'truncate' for optional truncating of (CA,CB).
 # 2010-06-18 [HB]
 # o Created from refineCN.list().
 ###########################################################################
