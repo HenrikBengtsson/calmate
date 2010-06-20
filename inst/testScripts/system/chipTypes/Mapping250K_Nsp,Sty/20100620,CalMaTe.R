@@ -31,12 +31,30 @@ stopifnot(identical(getNames(dsT), getNames(dsB)));
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # CalMaTe
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-asn <- CalMaTeNormalization(list(total=dsT, fracB=dsB));
+dsList <- list(total=dsT, fracB=dsB);
+asn <- CalMaTeNormalization(dsList);
 print(asn);
 
+ugp <- getAromaUgpFile(dsT);
+chr <- 17;
+units <- getUnitsOnChromosome(ugp, chr);
 
-dsNList <- process(asn, verbose=verbose);
+dsNList <- process(asn, units=units, verbose=verbose);
 print(dsNList);
+
+ii <- 1;
+df <- getFile(dsList$fracB, ii);
+dfN <- getFile(dsNList$fracB, ii);
+
+beta <- extractRawAlleleBFractions(df, chromosome=chr);
+betaN <- extractRawAlleleBFractions(dfN, chromosome=chr);
+
+
+subplots(2, ncol=1);
+plot(beta);
+title(sprintf("%s", getName(beta)));
+plot(betaN);
+title(sprintf("%s (CalMaTe)", getName(betaN)));
 
 
 ###########################################################################

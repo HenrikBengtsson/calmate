@@ -22,6 +22,11 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
       throw("The number of samples in 'total' and 'fracB' differ: ", 
             nbrOfFiles(data$total), " != ", nbrOfFiles(data$fracB));
     }
+
+    # Assert that the data sets have the same samples
+    if (!identical(getNames(data$total), getNames(data$fracB))) {
+      throw("The samples in 'total' and 'fracB' have different names.");
+    }
   }
 
   # Arguments '...':
@@ -248,10 +253,24 @@ setMethodS3("allocateOutputDataSets", "CalMaTeNormalization", function(this, ...
 }, protected=TRUE)
 
 
-setMethodS3("process", "CalMaTeNormalization", function(this, ..., force=FALSE, ram=NULL, verbose=FALSE) {
+setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., force=FALSE, ram=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  dsList <- getDataSets(this);
+  dsTCN <- dsList$total;
+  dsBAF <- dsList$fracB;
+
+  # Argument 'units':
+  df <- getFile(dsTCN, 1);
+  nbrOfUnits <- nbrOfUnits(df);
+  if (is.null(units)) {
+    units <- seq(length=nbrOfUnits);
+  } else {
+    units <- Arguments$getIndices(units, max=nbrOfUnits);
+  }
+  nbrOfUnits <- length(units);
+
   # Argument 'ram':
   ram <- getRam(aromaSettings, ram);
 
@@ -260,16 +279,14 @@ setMethodS3("process", "CalMaTeNormalization", function(this, ..., force=FALSE, 
   if (verbose) {
     pushState(verbose);
     on.exit(popState(verbose));
-  } 
+  }
+
 
 
   verbose && enter(verbose, "CalMaTe normalization of ASCNs");
   nbrOfFiles <- nbrOfFiles(this);
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
 
-  dsList <- getDataSets(this);
-  dsTCN <- dsList$total;
-  dsBAF <- dsList$fracB;
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
   rm(dsList);
@@ -278,15 +295,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, ..., force=FALSE, 
   dimnames <- list(NULL, sampleNames, c("total", "fracB"));
 
   outPath <- getPath(this);
-
-
-  units <- NULL;
-  if (is.null(units)) {
-    df <- getFile(dsTCN, 1);
-    nbrOfUnits <- nbrOfUnits(df);
-    units <- seq(length=nbrOfUnits);
-  }
-  nbrOfUnits <- length(units);
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
