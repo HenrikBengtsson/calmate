@@ -19,6 +19,8 @@
 #          be reference samples (==1:I).}
 #  \item{...}{Additional arguments passed to internal 
 #             \code{calmate().}}
+#  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative,
+#     which preserving the total CNs.}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
 #
@@ -33,7 +35,7 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -85,6 +87,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., ve
   verbose && str(verbose, data);
 
 
+
   verbose && enter(verbose, "Identifying non-finite data points");
   # Keep finite values
   ok <- (is.finite(data[,"A",]) & is.finite(data[,"B",]));
@@ -102,6 +105,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., ve
     dataS <- data;
   }
   verbose && exit(verbose);
+
 
   verbose && enter(verbose, "Fitting CalMaTe");
   nbrOfSNPs <- dim(dataS)[1];
@@ -139,6 +143,12 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., ve
   verbose && cat(verbose, "Calibrated ASCN signals:");
   verbose && str(verbose, dataC);
 
+  if (truncate) {
+    dataC <- truncateThetaAB(dataC);
+    verbose && cat(verbose, "Truncated ASCN signals:");
+    verbose && str(verbose, dataC);
+  }
+
   verbose && exit(verbose);
 
   dataC;
@@ -147,8 +157,11 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., ve
 
 ###########################################################################
 # HISTORY:
+# 2010-06-19 [HB]
+# o Now calmateByThetaAB() uses internal truncateThetaAB() to truncate
+#   (CA,CB) values.  Since it operates on arrays, it is much faster.
 # 2010-06-18 [HB]
-# o Now calmateByThetaAB() calls internal refineCN2().
+# o Now calmateByThetaAB() calls internal fitCalMaTe().
 # o Added argument 'references' to calmateByThetaAB().
 # 2010-06-04 [MO]
 # o Created.

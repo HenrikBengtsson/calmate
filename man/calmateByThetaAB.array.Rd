@@ -19,7 +19,7 @@
   Normalize allele-specific copy numbers (CA,CB).
  }
 
- \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., verbose=FALSE)}
+ \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,
@@ -29,6 +29,8 @@
           be reference samples (==1:I).}
   \item{...}{Additional arguments passed to internal
              \code{calmate().}}
+  \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative,
+     which preserving the total CNs.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
  }
 

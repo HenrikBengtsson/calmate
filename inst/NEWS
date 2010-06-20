@@ -2,7 +2,9 @@ Package: calmate
 ================
 
 Version: 0.3.1 [2010-06-19]
-o Added argument 'truncate=TRUE' to internal fitCalMaTe()
+o Now the default CalMaTe method is no longer truncating
+  negative ASCN signals.
+o Added argument 'truncate=FALSE' to internal calmateByThetaAB()
   and rewrote the code to do the truncation in (CA,CB) space.
   The truncation is done such that CA+CB is preserved.
 

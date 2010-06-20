@@ -13,16 +13,20 @@
 
  \alias{calmateByTotalAndFracB}
 
- \title{Normalize allele-specific copy numbers (TCN,BAF)}
+ \title{Normalize allele-specific copy numbers (total,fracB)}
 
  \description{
-  Normalize allele-specific copy numbers (TCN,BAF).
+  Normalize allele-specific copy numbers (total,fracB), where total is the total (non-polymorphic) signal and
+  fracB is the allele B fraction.
+  It is only loci with a non-missing (\code{\link[base]{NA}}) fracB value that are
+  considered to be SNPs and normalized by CalMaTe.  The other loci
+  are left untouched.
  }
 
  \usage{\method{calmateByTotalAndFracB}{array}(data, ..., verbose=FALSE)}
 
  \arguments{
-  \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,
+  \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of loci,
                       2 is total and fracB, and I is the number of samples.}
   \item{...}{Additional arguments passed to
          \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
@@ -67,7 +71,7 @@ for (ii in c(1,5)) {
 }
 
  \seealso{
-  To calibrate (thetaA,thetaB) data,
+  To calibrate (thetaA,thetaB) or (CA,CB) signals,
   see \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.
  }
 \keyword{methods}

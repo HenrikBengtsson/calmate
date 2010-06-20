@@ -14,6 +14,8 @@
 % Other missing docs
 \alias{fitCalMaTe}
 \alias{refineCN}
+\alias{truncateThetaAB}
+\alias{truncateThetaAB.array}
 
 \description{
   This page contains aliases for all "non-documented" objects that
