@@ -29,56 +29,18 @@ stopifnot(identical(getNames(dsT), getNames(dsB)));
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Study array #1 and chromosome 22
+# CalMaTe
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-array <- 1;
-chr <- 17;
+asn <- CalMaTeNormalization(list(total=dsT, fracB=dsB));
+print(asn);
 
-chrTag <- sprintf("Chr%02d", chr);
 
-# Extract the array
-dfT <- getFile(dsT, array);
-dfB <- getFile(dsB, array);
-stopifnot(identical(getName(dfT), getName(dfB)));
-
-# Extract the chromosome
-ugp <- getAromaUgpFile(dsT);
-units <- getUnitsOnChromosome(ugp, chr);
-pos <- getPositions(ugp, units=units);
-
-# Extract (total, fracB) signals
-total <- extractMatrix(dsT, units=units);
-fracB <- extractMatrix(dsB, units=units);
-dim <- c(nrow(total), 2, ncol(total));
-dimnames <- list(rownames(total), c("total", "fracB"), colnames(total));
-naValue <- as.double(NA);
-data <- array(naValue, dim=dim, dimnames=dimnames);
-data[,"total",] <- total;
-data[,"fracB",] <- fracB;
-
-dataC <- calmateByTotalAndFracB(data, verbose=-8);
-
-# Plot
-ylim <- c(-0.2, 1.2);
-subplots(2, ncol=1);
-
-# Array #1
-ii <- 1;
-name <- dimnames(dataC)[[3]][ii];
-
-fracB <- RawAlleleBFractions(data[,"fracB",ii], x=pos);
-plot(fracB, pch=".", ylim=ylim);
-stext(side=3, pos=0, name);
-stext(side=3, pos=1, chrTag);
-
-fracBC <- RawAlleleBFractions(dataC[,"fracB",ii], x=pos);
-plot(fracBC, pch=".", ylim=ylim);
-stext(side=3, pos=0, name);
-stext(side=3, pos=1, chrTag);
+dsNList <- process(asn, verbose=verbose);
+print(dsNList);
 
 
 ###########################################################################
 # HISTORY:
-# 2010-05-18
+# 2010-06-20
 # o Created.
 ###########################################################################

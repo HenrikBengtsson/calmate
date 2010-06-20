@@ -1,9 +1,8 @@
-fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
+fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(T);
-  nSamples <- ncol(T);
-  nbrOfRefs <- length(refs);
+  nbrOfReferences <- length(references);
 
   # Adding a small value so there are "non" 0 values
   eps <- 1e-6;
@@ -15,7 +14,7 @@ fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   T <- Giro %*% T;
 
   # Extract the signals for the reference set
-  TR <- T[,refs];
+  TR <- T[,references];
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Checking if all the samples are homozygous
@@ -32,7 +31,7 @@ fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
     T[1:2,idxs] <- T[2:1,idxs];
 
     # Update precalcalculated signals
-    TR <- T[,refs];
+    TR <- T[,references];
   }
 
 
@@ -40,14 +39,14 @@ fitCalMaTe <- function(T, refs, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # Total copy numbers must be close to 2 for the reference samples or
   # (if there are not control samples) for most of the samples
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  H <- matrix(2, nrow=nbrOfRefs, ncol=1, byrow=FALSE);
+  H <- matrix(2, nrow=nbrOfReferences, ncol=1, byrow=FALSE);
   fit <- rlm(t(TR), H, maxit=maxIter);
   matSum <- fit$coefficients;
   coeffs <- fit$w;
   T <- diag(matSum) %*% T;
 
   # Reextract the signals for the reference set
-  TR <- T[,refs];
+  TR <- T[,references];
 
   # The difference of the copy numbers must be 2, 0 or -2 depending genotyping
   fracB <- TR[2,] / (TR[1,] + TR[2,]);

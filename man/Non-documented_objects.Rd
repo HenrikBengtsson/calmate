@@ -16,6 +16,32 @@
 \alias{refineCN}
 \alias{truncateThetaAB}
 \alias{truncateThetaAB.array}
+\alias{CalMaTeNormalization}
+\alias{allocateOutputDataSets}
+\alias{allocateOutputDataSets.CalMaTeNormalization}
+\alias{as.character.CalMaTeNormalization}
+\alias{getAsteriskTags}
+\alias{getAsteriskTags.CalMaTeNormalization}
+\alias{getDataSets}
+\alias{getDataSets.CalMaTeNormalization}
+\alias{getFullName}
+\alias{getFullName.CalMaTeNormalization}
+\alias{getInputDataSet}
+\alias{getInputDataSet.CalMaTeNormalization}
+\alias{getName.CalMaTeNormalization}
+\alias{getOutputDataSet}
+\alias{getOutputDataSet.CalMaTeNormalization}
+\alias{getPath.CalMaTeNormalization}
+\alias{getRootPath}
+\alias{getRootPath.CalMaTeNormalization}
+\alias{getTags}
+\alias{getTags.CalMaTeNormalization}
+\alias{nbrOfFiles}
+\alias{nbrOfFiles.CalMaTeNormalization}
+\alias{process}
+\alias{process.CalMaTeNormalization}
+\alias{setTags}
+\alias{setTags.CalMaTeNormalization}
 
 \description{
   This page contains aliases for all "non-documented" objects that

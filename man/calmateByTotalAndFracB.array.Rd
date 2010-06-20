@@ -26,7 +26,7 @@
  \usage{\method{calmateByTotalAndFracB}{array}(data, ..., verbose=FALSE)}
 
  \arguments{
-  \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of loci,
+  \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,
                       2 is total and fracB, and I is the number of samples.}
   \item{...}{Additional arguments passed to
          \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
@@ -34,7 +34,7 @@
  }
 
  \value{
-   Returns an Jx2xI \code{\link[base]{numeric}} array.
+   Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}.
  }
 
  \examples{

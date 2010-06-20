@@ -1,3 +1,16 @@
 fitCalMaTe
 refineCN
 truncateThetaAB truncateThetaAB.array
+
+CalMaTeNormalization
+allocateOutputDataSets allocateOutputDataSets.CalMaTeNormalization
+as.character.CalMaTeNormalization getAsteriskTags
+getAsteriskTags.CalMaTeNormalization getDataSets
+getDataSets.CalMaTeNormalization getFullName
+getFullName.CalMaTeNormalization getInputDataSet
+getInputDataSet.CalMaTeNormalization getName.CalMaTeNormalization
+getOutputDataSet getOutputDataSet.CalMaTeNormalization
+getPath.CalMaTeNormalization getRootPath
+getRootPath.CalMaTeNormalization getTags getTags.CalMaTeNormalization
+nbrOfFiles nbrOfFiles.CalMaTeNormalization process
+process.CalMaTeNormalization setTags setTags.CalMaTeNormalization

@@ -16,7 +16,7 @@
 # @synopsis
 #
 # \arguments{
-#  \item{data}{An Jx2xI @numeric array, where J is the number of loci,
+#  \item{data}{An Jx2xI @numeric @array, where J is the number of loci,
 #                      2 is total and fracB, and I is the number of samples.}
 #  \item{...}{Additional arguments passed to 
 #         @seemethod "calmateByThetaAB".}
@@ -24,7 +24,7 @@
 # }
 #
 # \value{
-#   Returns an Jx2xI @numeric array.
+#   Returns an Jx2xI @numeric @array.
 # }
 #
 # @examples "../incl/calmateByTotalAndFracB.Rex"
@@ -75,7 +75,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
   nok <- rowAlls(nok);
   snps <- which(!nok);
   verbose && printf(verbose, "Number of SNPs: %d (%.2f%%)\n",
-                               length(snps), length(snps)/dim(data)[1]);
+                            length(snps), 100*length(snps)/dim(data)[1]);
   verbose && exit(verbose);
 
   verbose && enter(verbose, "Transforming SNPs to (thetaA, thetaB)");

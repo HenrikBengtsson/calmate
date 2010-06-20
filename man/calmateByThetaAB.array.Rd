@@ -22,11 +22,11 @@
  \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, verbose=FALSE)}
 
  \arguments{
-  \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,
+  \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of SNPs,
           2 is the number of alleles, and I is the number of samples.}
-  \item{references}{A \code{\link[base]{logical}} \code{\link[base]{vector}} of length I, or an index \code{\link[base]{vector}}
-          with values in [0,I]. If \code{\link[base]{NULL}}, all samples are considered to
-          be reference samples (==1:I).}
+  \item{references}{An index \code{\link[base]{vector}} in [1,I] or a \code{\link[base]{logical}} \code{\link[base]{vector}}
+     of length I specifying which samples are used when calculating the
+     reference signals.  If \code{\link[base]{NULL}}, all samples are used.}
   \item{...}{Additional arguments passed to internal
              \code{calmate().}}
   \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative,
@@ -35,7 +35,7 @@
  }
 
  \value{
-   Returns an Jx2xI \code{\link[base]{numeric}} array.
+   Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}.
  }                                 
 
  \examples{

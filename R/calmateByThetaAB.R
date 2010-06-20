@@ -12,11 +12,11 @@
 # @synopsis
 #
 # \arguments{
-#  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
+#  \item{data}{An Jx2xI @numeric @array, where J is the number of SNPs,
 #          2 is the number of alleles, and I is the number of samples.}
-#  \item{references}{A @logical @vector of length I, or an index @vector 
-#          with values in [0,I]. If @NULL, all samples are considered to
-#          be reference samples (==1:I).}
+#  \item{references}{An index @vector in [1,I] or a @logical @vector 
+#     of length I specifying which samples are used when calculating the
+#     reference signals.  If @NULL, all samples are used.}
 #  \item{...}{Additional arguments passed to internal 
 #             \code{calmate().}}
 #  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative,
@@ -25,7 +25,7 @@
 # }
 #
 # \value{
-#   Returns an Jx2xI @numeric array.
+#   Returns an Jx2xI @numeric @array.
 # }                                   
 #
 # @examples "../incl/calmateByThetaAB.Rex"
@@ -62,19 +62,23 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   # Argument 'references':
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
-    references <- rep(TRUE, times=dim[3]);
+    references <- seq(length=dim[3]);
   } else if (is.logical(references)) {
     if (length(references) != dim[3]) {
       throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", dim[3]);
+    }
+    references <- which(references);
+    if (length(references) == 0) {
+      throw("No references samples.");
     }
   } else if (is.numeric(references)) {
     references <- as.integer(references);
     if (any(references < 1 | references > dim[3])) {
       throw(sprintf("Argument 'references' is out of range [1,%d]", dim[3]));
     }
-    idxs <- references;
-    references <- rep(FALSE, times=dim[3]);
-    references[idxs] <- TRUE;
+    if (length(references) == 0) {
+      throw("No references samples.");
+    }
   }
 
 
@@ -85,6 +89,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   verbose && enter(verbose, "calmateByThetaAB()");
   verbose && cat(verbose, "ASCN signals:");
   verbose && str(verbose, data);
+  verbose && cat(verbose, "Reference samples:");
+  verbose && str(verbose, references);
 
 
 
@@ -116,7 +122,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   for (jj in seq(length=nbrOfSNPs)) {
     if (verbose && (jj %% 100 == 1)) printf(verbose, "%d,", nbrOfSNPs-jj+1);
     Cjj <- dataS[jj,,,drop=TRUE];  # An 2xI matrix
-    CCjj <- fitCalMaTe(Cjj, refs=references, ...);
+    CCjj <- fitCalMaTe(Cjj, references=references, ...);
     # Sanity check
     stopifnot(identical(dim(CCjj), dim(Cjj)));
     dataS[jj,,] <- CCjj;
