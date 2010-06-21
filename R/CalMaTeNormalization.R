@@ -366,7 +366,7 @@ setMethodS3("findUnitsTodo", "CalMaTeNormalization", function(this, ..., verbose
   } 
 
 
-  verbose && enter(verbose, "Finiding units to do");
+  verbose && enter(verbose, "Finding units to do");
 
   dsList <- getOutputDataSets(this);
 
