@@ -187,10 +187,19 @@ setMethodS3("nbrOfFiles", "CalMaTeNormalization", function(this, ...) {
 })
 
 
-setMethodS3("getOutputDataSet", "CalMaTeNormalization", function(this, ...) {
-  ds <- getInputDataSet(this);
-  path <- getPath(this);
-  res <- byPath(ds, path=path, ...);
+setMethodS3("getOutputDataSets", "CalMaTeNormalization", function(this, ..., verbose=FALSE) {
+  # Argument 'verbose':
+  verbose <- Arguments$getVerbose(verbose);
+  if (verbose) {
+    pushState(verbose);
+    on.exit(popState(verbose));
+  } 
+
+  res <- this$.outputDataSets;
+  if (is.null(res)) {
+    res <- allocateOutputDataSets(this, ..., verbose=less(verbose, 10));
+    this$.outputDataSets <- res;
+  }
   res;
 }) 
 
@@ -203,6 +212,7 @@ setMethodS3("allocateOutputDataSets", "CalMaTeNormalization", function(this, ...
     on.exit(popState(verbose));
   } 
 
+  verbose && enter(verbose, "Retrieve/allocation output data sets");
 
   dsList <- getDataSets(this);
   path <- getPath(this);
@@ -228,8 +238,27 @@ setMethodS3("allocateOutputDataSets", "CalMaTeNormalization", function(this, ...
         next;
       }
 
+      # Create temporary file
+      pathnameT <- sprintf("%s.tmp", pathname);
+      pathnameT <- Arguments$getWritablePathname(pathnameT, mustNotExist=TRUE);
+
       # Copy source file
-      copyFile(getPathname(df), pathname);
+      copyFile(getPathname(df), pathnameT);
+
+      # Make it empty by filling it will missing values
+      # AD HOC: We should really allocate from scratch here. /HB 2010-06-21
+      dfT <- newInstance(df, pathnameT);
+      dfT[,1] <- NA;
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Renaming temporary file
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      verbose && enter(verbose, "Renaming temporary output file");
+      file.rename(pathnameT, pathname);
+      if (!isFile(pathname)) {
+        throw("Failed to rename temporary file ('", pathnameT, "') to final file ('", pathname, "')");
+      }
+      verbose && exit(verbose);
 
       verbose && cat(verbose, "Copied: ", pathname);
       verbose && exit(verbose);
@@ -249,11 +278,65 @@ setMethodS3("allocateOutputDataSets", "CalMaTeNormalization", function(this, ...
 
   names(res) <- names(dsList);
 
+  this$.outputDataSets <- res;
+
+  verbose && exit(verbose);
+
   res;
 }, protected=TRUE)
 
 
-setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., force=FALSE, ram=NULL, verbose=FALSE) {
+
+
+setMethodS3("findUnitsTodo", "CalMaTeNormalization", function(this, ..., verbose=FALSE) {
+  # Argument 'verbose':
+  verbose <- Arguments$getVerbose(verbose);
+  if (verbose) {
+    pushState(verbose);
+    on.exit(popState(verbose));
+  } 
+
+
+  verbose && enter(verbose, "Finiding units to do");
+
+  dsList <- getOutputDataSets(this);
+
+  # The last data set is always updated last
+  ds <- dsList[[length(dsList)]];
+  verbose && print(verbose, ds);
+
+  # The last file (in lexicographic ordering) is always updated last
+  fullnames <- getFullNames(ds);
+  verbose && str(verbose, fullnames);
+
+  o <- order(fullnames, decreasing=TRUE);
+  idx <- o[1];
+  df <- getFile(ds, idx);
+  verbose && print(verbose, df);
+
+  # Read all values
+  values <- df[,1,drop=TRUE];
+
+  verbose && cat(verbose, "Number of units: ", length(values));
+
+
+  # Identify all missing values
+  nok <- is.na(values);
+  units <- which(nok);
+
+  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
+                       length(units), 100*length(units)/length(values));
+
+  verbose && cat(verbose, "Units to do (with missing values):");
+  verbose && str(verbose, units);
+
+  verbose && exit(verbose);
+
+  units;
+})
+
+
+setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", ..., force=FALSE, ram=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -266,6 +349,8 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., f
   nbrOfUnits <- nbrOfUnits(df);
   if (is.null(units)) {
     units <- seq(length=nbrOfUnits);
+  } else if (identical(units, "remaining")) {
+    units <- findUnitsTodo(this, verbose=less(verbose, 25));
   } else {
     units <- Arguments$getIndices(units, max=nbrOfUnits);
   }
@@ -286,6 +371,10 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., f
   verbose && enter(verbose, "CalMaTe normalization of ASCNs");
   nbrOfFiles <- nbrOfFiles(this);
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
+  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
+                      length(units), 100*length(units)/nbrOfUnits(df));
+  verbose && cat(verbose, "Units:");
+  verbose && str(verbose, units);
 
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
@@ -300,7 +389,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., f
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Allocate output data sets
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  res <- allocateOutputDataSets(this, verbose=less(verbose, 1)); 
+  res <- getOutputDataSets(this, verbose=less(verbose, 5));
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -347,9 +436,9 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., f
     # Reading (total,fracB) data
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     verbose && enter(verbose, "Reading (total,fracB) data");
-    total <- extractMatrix(dsTCN, units=units[uu], verbose=less(verbose,5));
+    total <- extractMatrix(dsTCN, units=units[uu], verbose=less(verbose,25));
     verbose && str(verbose, total);
-    fracB <- extractMatrix(dsBAF, units=units[uu], verbose=less(verbose,5));
+    fracB <- extractMatrix(dsBAF, units=units[uu], verbose=less(verbose,25));
     verbose && str(verbose, fracB);
     verbose && exit(verbose);
 
@@ -392,7 +481,11 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., f
       verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d", 
                                            kk, getName(ds), length(res)));
 
-      for (ii in seq(ds)) {
+      # Store in lexicograph ordering
+      fullnames <- getFullNames(ds);
+      idxs <- order(fullnames, decreasing=FALSE);
+      
+      for (ii in idxs) {
         df <- getFile(ds, ii);
         verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d", 
                                         ii, getName(df), nbrOfFiles(ds)));
@@ -423,8 +516,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., f
     verbose && exit(verbose);
   } # while(length(idxs) > 0)
 
-#  res <- getOutputDataSet(this, verbose=less(verbose, 1)); 
-
   verbose && exit(verbose);
 
   invisible(res);
@@ -433,6 +524,13 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units=NULL, ..., f
 
 ############################################################################
 # HISTORY:
+# 2010-06-21
+# o ROBUSTNESS: Now process() stores results in lexicograph ordering to
+#   assure that the lexicographicly last file is updated last, which is 
+#   the file that findUnitsTodo() is querying.
+# o Added getOutputDataSets().
+# o Added findUnitsTodo().
+# o Now allocateOutputDataSets() "clears" the files.
 # 2010-06-20
 # o First test shows that it seems to work.
 # o Created.

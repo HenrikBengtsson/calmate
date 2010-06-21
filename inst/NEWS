@@ -1,8 +1,10 @@
 Package: calmate
 ================
 
-Version: 0.3.2 [2010-06-20]
+Version: 0.4.0 [2010-06-21]
 o Added an early version (really!) of CalMaTeNormalization.
+  It still does not store parameter estimates; only the
+  normalized signals.
 
 
 Version: 0.3.1 [2010-06-19]

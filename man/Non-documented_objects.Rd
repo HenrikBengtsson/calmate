@@ -42,6 +42,10 @@
 \alias{process.CalMaTeNormalization}
 \alias{setTags}
 \alias{setTags.CalMaTeNormalization}
+\alias{findUnitsTodo}
+\alias{findUnitsTodo.CalMaTeNormalization}
+\alias{getOutputDataSets}
+\alias{getOutputDataSets.CalMaTeNormalization}
 
 \description{
   This page contains aliases for all "non-documented" objects that
