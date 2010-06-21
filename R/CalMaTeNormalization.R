@@ -413,15 +413,22 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   dsTCN <- dsList$total;
   dsBAF <- dsList$fracB;
 
+  # Argument 'force':
+  force <- Arguments$getLogical(force);
+
   # Argument 'units':
   df <- getFile(dsTCN, 1);
   nbrOfUnits <- nbrOfUnits(df);
+  unitsRemaining <- findUnitsTodo(this, verbose=less(verbose, 25));
   if (is.null(units)) {
     units <- seq(length=nbrOfUnits);
   } else if (identical(units, "remaining")) {
-    units <- findUnitsTodo(this, verbose=less(verbose, 25));
+    units <- unitsRemaining;
   } else {
     units <- Arguments$getIndices(units, max=nbrOfUnits);
+  }
+  if (!force) {
+    units <- intersect(units, unitsRemaining);
   }
   nbrOfUnits <- length(units);
 
@@ -445,6 +452,18 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   verbose && cat(verbose, "Units:");
   verbose && str(verbose, units);
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Allocate/get output data sets
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  res <- getOutputDataSets(this, verbose=less(verbose, 5));
+
+  # Nothing to do?
+  if (nbrOfUnits == 0) {
+    verbose && cat(verbose, "No (more) units to process. Nothing to do.");
+    verbose && exit(verbose);
+    return(invisible(res));
+  }
+
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
   rm(dsList);
@@ -453,12 +472,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   dimnames <- list(NULL, sampleNames, c("total", "fracB"));
 
   outPath <- getPath(this);
-
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Allocate output data sets
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  res <- getOutputDataSets(this, verbose=less(verbose, 5));
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -479,14 +492,15 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   unitsPerChunk <- ram * bytesPerChunk / bytesPerUnit;
   unitsPerChunk <- as.integer(max(unitsPerChunk, 1));
   unitsPerChunk <- min(unitsPerChunk, nbrOfUnits);
+  unitsPerChunk <- max(unitsPerChunk, 1);
   verbose && cat(verbose, "Number of units per chunk: ", unitsPerChunk);
 
   nbrOfChunks <- ceiling(nbrOfUnits / unitsPerChunk);
   verbose && cat(verbose, "Number of chunks: ", nbrOfChunks);
   verbose && exit(verbose);
 
-  idxs <- 1:nbrOfUnits;
-  head <- 1:unitsPerChunk;
+  idxs <- seq(length=nbrOfUnits);
+  head <- seq(length=unitsPerChunk);
 
   count <- 1;
   while (length(idxs) > 0) {
@@ -594,6 +608,8 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 ############################################################################
 # HISTORY:
 # 2010-06-21
+# o BUG FIX: process(..., units=units, force=FALSE) would reprocess the
+#   specified units.
 # o Added minor Rdoc comments.
 # o ROBUSTNESS: Added more assertions to the CalMaTe constructor.
 # o ROBUSTNESS: Now process() stores results in lexicograph ordering to

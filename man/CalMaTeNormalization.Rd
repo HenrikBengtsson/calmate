@@ -78,7 +78,8 @@ asThis, $, $<-, [[, [[<-, as.character, attach, attachLocally, clearCache, clone
  }
 
  \examples{\dontrun{
-   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # CRMAv2 - Preprocess raw Affymetrix data
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 library("aroma.affymetrix");  # Needed for CRMAv2
