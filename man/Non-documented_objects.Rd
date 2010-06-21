@@ -16,7 +16,6 @@
 \alias{refineCN}
 \alias{truncateThetaAB}
 \alias{truncateThetaAB.array}
-\alias{CalMaTeNormalization}
 \alias{allocateOutputDataSets}
 \alias{allocateOutputDataSets.CalMaTeNormalization}
 \alias{as.character.CalMaTeNormalization}

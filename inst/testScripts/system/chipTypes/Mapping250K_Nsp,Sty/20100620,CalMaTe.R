@@ -13,7 +13,6 @@
 # CalMaTe
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 library("calmate");
-library("aroma.core");
 verbose <- Arguments$getVerbose(-10, timestamp=TRUE);
 
 dataSet <- "Affymetrix_2006-TumorNormal";

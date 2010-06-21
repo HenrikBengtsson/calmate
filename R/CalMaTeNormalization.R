@@ -1,4 +1,57 @@
-setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
+###########################################################################/**
+# @RdocClass CalMaTeNormalization
+#
+# @title "The CalMaTeNormalization class"
+#
+# \description{
+#  @classhierarchy
+#
+#  This class represents the CalMaTe normalization method [1], which 
+#  corrects for SNP effects in allele-specific copy-number estimates
+#  (ASCNs).
+# }
+# 
+# @synopsis 
+#
+# \arguments{
+#   \item{data}{A named @list with data set named \code{"total"} and
+#     \code{"fracB"} where the former should be of class
+#     @see "aroma.core::AromaUnitTotalCnBinarySet" and the latter of
+#     class @see "aroma.core::AromaUnitFracBCnBinarySet".  The
+#     two data sets must be for the same chip type, have the same
+#     number of samples and the same sample names.}
+#   \item{references}{A @vector specifying which samples should be used
+#     as the reference set.
+#     By default, all samples are considered.}
+#   \item{tags}{Tags added to the output data sets.}
+#   \item{...}{Not used.}
+# }
+#
+# \section{Fields and Methods}{
+#  @allmethods "public"  
+# }
+# 
+# \details{
+#   ...
+# }
+#
+# \examples{\dontrun{
+#   @include "../incl/CalMaTeNormalization.Rex"
+# }}
+#
+# \references{
+#   [1] ...
+# }
+#
+# \seealso{
+#   Low-level versions of the CalMaTe normalization method is available
+#   via the @see "calmateByThetaAB.array" and 
+#   @see "calmateByTotalAndFracB.array" methods.
+# }
+#
+# @author
+#*/###########################################################################
+setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, tags="*", ...) {
   # Validate arguments
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -40,6 +93,10 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
     if (!identical(getNames(data$total), getNames(data$fracB))) {
       throw("The samples in 'total' and 'fracB' have different names.");
     }
+
+    if (!is.null(references)) {
+      throw("Support for argument 'references' is not implemented.");
+    }
   }
 
   # Arguments '...':
@@ -50,7 +107,8 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
   }
 
   this <- extend(Object(...), "CalMaTeNormalization",
-    .data = data
+    .data = data,
+    .references = references
   );
 
   setTags(this, tags);
@@ -536,6 +594,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 ############################################################################
 # HISTORY:
 # 2010-06-21
+# o Added minor Rdoc comments.
 # o ROBUSTNESS: Added more assertions to the CalMaTe constructor.
 # o ROBUSTNESS: Now process() stores results in lexicograph ordering to
 #   assure that the lexicographicly last file is updated last, which is 

@@ -2,7 +2,6 @@ fitCalMaTe
 refineCN
 truncateThetaAB truncateThetaAB.array
 
-CalMaTeNormalization
 allocateOutputDataSets allocateOutputDataSets.CalMaTeNormalization
 as.character.CalMaTeNormalization getAsteriskTags
 getAsteriskTags.CalMaTeNormalization getDataSets
