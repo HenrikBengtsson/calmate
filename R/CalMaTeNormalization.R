@@ -11,6 +11,19 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
     }
     data <- data[reqNames];
 
+    # Assert correct classes
+    className <- "AromaUnitTotalCnBinarySet";
+    ds <- data$total;
+    if (!inherits(ds, className)) {
+      throw(sprintf("The 'total' data set is not of class %s: %s", className, class(ds)[1]));
+    }
+
+    className <- "AromaUnitFracBCnBinarySet";
+    ds <- data$fracB;
+    if (!inherits(ds, className)) {
+      throw(sprintf("The 'total' data set is not of class %s: %s", className, class(ds)[1]));
+    }
+
     # Assert that the chip types are compatile
     if (getChipType(data$total) != getChipType(data$fracB)) {
       throw("The 'total' and 'fracB' data sets have different chip types: ", 
@@ -78,7 +91,8 @@ setMethodS3("getAsteriskTags", "CalMaTeNormalization", function(this, collapse=N
 
 
 setMethodS3("getName", "CalMaTeNormalization", function(this, ...) {
-  ds <- getInputDataSet(this);
+  dsList <- getDataSets(this);
+  ds <- dsList$total;
   getName(ds);
 }) 
 
@@ -86,7 +100,8 @@ setMethodS3("getName", "CalMaTeNormalization", function(this, ...) {
 
 setMethodS3("getTags", "CalMaTeNormalization", function(this, collapse=NULL, ...) {
   # "Pass down" tags from input data set
-  ds <- getInputDataSet(this);
+  dsList <- getDataSets(this);
+  ds <- dsList$total;
   tags <- getTags(ds, collapse=collapse);
 
   # Get class-specific tags
@@ -135,12 +150,6 @@ setMethodS3("getDataSets", "CalMaTeNormalization", function(this, ...) {
 })
  
 
-setMethodS3("getInputDataSet", "CalMaTeNormalization", function(this, ...) {
-  data <- getDataSets(this, ...);
-  data$total;
-})
- 
-
 setMethodS3("getRootPath", "CalMaTeNormalization", function(this, ...) {
   "totalAndFracBData";
 })
@@ -156,14 +165,15 @@ setMethodS3("getPath", "CalMaTeNormalization", function(this, create=TRUE, ...) 
   fullname <- getFullName(this);
 
   # Chip type    
-  ds <- getInputDataSet(this);
+  dsList <- getDataSets(this);
+  ds <- dsList$total;
   chipType <- getChipType(ds, fullname=FALSE);
 
   # The full path
   path <- filePath(rootPath, fullname, chipType, expandLinks="any");
 
   # Verify that it is not the same as the input path
-  inPath <- getPath(getInputDataSet(this));
+  inPath <- getPath(ds);
   if (getAbsolutePath(path) == getAbsolutePath(inPath)) {
     throw("The generated output data path equals the input data path: ", path, " == ", inPath);
   }
@@ -182,7 +192,8 @@ setMethodS3("getPath", "CalMaTeNormalization", function(this, create=TRUE, ...) 
 
 
 setMethodS3("nbrOfFiles", "CalMaTeNormalization", function(this, ...) {
-  ds <- getInputDataSet(this);
+  dsList <- getDataSets(this);
+  ds <- dsList$total;
   nbrOfFiles(ds);
 })
 
@@ -525,6 +536,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 ############################################################################
 # HISTORY:
 # 2010-06-21
+# o ROBUSTNESS: Added more assertions to the CalMaTe constructor.
 # o ROBUSTNESS: Now process() stores results in lexicograph ordering to
 #   assure that the lexicographicly last file is updated last, which is 
 #   the file that findUnitsTodo() is querying.
