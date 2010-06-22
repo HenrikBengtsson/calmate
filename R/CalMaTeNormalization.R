@@ -53,7 +53,6 @@
 #   @see "calmateByTotalAndFracB.array" methods.
 # }
 #
-# @author
 #*/###########################################################################
 setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, TRUNCATE = FALSE, method="FracB", tags="*", ...) {
   # Validate arguments

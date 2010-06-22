@@ -23,7 +23,7 @@
   are left untouched.
  }
 
- \usage{\method{calmateByTotalAndFracB}{array}(data, ..., verbose=FALSE)}
+ \usage{\method{calmateByTotalAndFracB}{array}(data, references=NULL, ..., verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,

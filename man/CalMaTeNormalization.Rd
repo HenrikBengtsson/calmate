@@ -34,7 +34,7 @@ extends \link[R.oo]{Object}\cr
   (ASCNs).
  }
 
- \usage{CalMaTeNormalization(data=NULL, references=NULL, tags="*", ...)}
+ \usage{CalMaTeNormalization(data=NULL, references=NULL, TRUNCATE=FALSE, method="FracB", tags="*", ...)}
 
  \arguments{
    \item{data}{A named \code{\link[base]{list}} with data set named \code{"total"} and
@@ -46,6 +46,10 @@ extends \link[R.oo]{Object}\cr
    \item{references}{A \code{\link[base]{vector}} specifying which samples should be used
      as the reference set.
      By default, all samples are considered.}
+   \item{TRUNCATE}{Logical variable to indicate if a truncation is applied.
+     By default TRUNCATE=FALSE.}
+   \item{method}{Name of the truncation method to use.
+     By default method="FracB".}
    \item{tags}{Tags added to the output data sets.}
    \item{...}{Not used.}
  }
@@ -133,6 +137,4 @@ title(sprintf("\%s (CalMaTe)", getName(betaN)));
    via the \code{\link{calmateByThetaAB.array}}() and
    \code{\link{calmateByTotalAndFracB.array}}() methods.
  }
-
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
 \keyword{classes}
