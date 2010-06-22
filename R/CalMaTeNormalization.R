@@ -23,6 +23,10 @@
 #   \item{references}{A @vector specifying which samples should be used
 #     as the reference set.
 #     By default, all samples are considered.}
+#   \item{TRUNCATE}{Logical variable to indicate if a truncation is applied.
+#     By default TRUNCATE=FALSE.}
+#   \item{method}{Name of the truncation method to use.
+#     By default method="FracB".}
 #   \item{tags}{Tags added to the output data sets.}
 #   \item{...}{Not used.}
 # }
@@ -51,7 +55,7 @@
 #
 # @author
 #*/###########################################################################
-setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, tags="*", ...) {
+setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, TRUNCATE = FALSE, method="FracB", tags="*", ...) {
   # Validate arguments
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -94,8 +98,11 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, ta
       throw("The samples in 'total' and 'fracB' have different names.");
     }
 
-    if (!is.null(references)) {
-      throw("Support for argument 'references' is not implemented.");
+#    if (!is.null(references)) {
+#      throw("Support for argument 'references' is not implemented.");
+#    }
+    if (!is.null(references) && !is.logical(references) && length(references) == ncol(data)){
+      throw("Argument 'references' is not a logical array.");    
     }
   }
 
@@ -108,7 +115,9 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, ta
 
   this <- extend(Object(...), "CalMaTeNormalization",
     .data = data,
-    .references = references
+    .references = references,
+    .TRUNCATE = TRUNCATE,
+    .method = method
   );
 
   setTags(this, tags);
@@ -405,7 +414,7 @@ setMethodS3("findUnitsTodo", "CalMaTeNormalization", function(this, ..., verbose
 })
 
 
-setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", references = 0, ..., force=FALSE, ram=NULL, verbose=FALSE) {
+setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", references = NULL, TRUNCATE=FALSE, method="FracB",..., force=FALSE, ram=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -525,7 +534,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     verbose && exit(verbose);
 
     verbose && enter(verbose, "Normalizing");
-    dataN <- calmateByTotalAndFracB(data, references = references, verbose=less(verbose,5));
+    dataN <- calmateByTotalAndFracB(data, references = references, TRUNCATE = TRUNCATE, method=method, verbose=less(verbose,5));
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
     verbose && str(verbose, dataN);

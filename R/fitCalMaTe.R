@@ -1,4 +1,4 @@
-fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
+fitCalMaTe <- function(T, references, TRUNCATE, method, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(T);
@@ -63,7 +63,6 @@ fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   
   res <- P %*% T;
 
-
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Undo the previous change applied to the data in case there is 
   # only one allele    
@@ -73,6 +72,13 @@ fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
     res[1:2,idxs] <- res[2:1,idxs];
   }
 
+  if(TRUNCATE == TRUE){
+    if(method=="FracB"){
+      res <- truncateFracB(res);
+    }else{
+      res <- truncateThetaAB(res);
+    }
+  }
   res;
 } # fitCalMaTe()
 
