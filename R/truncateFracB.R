@@ -19,6 +19,27 @@ setMethodS3("truncateFracB", "matrix", function(data, ...) {
 }) # truncateFracB()
 
 
+# Truncate ASCNs to avoid non-positives.
+# Truncation is done such that TCN is preserved regardlessly.
+setMethodS3("truncateFracB", "array", function(data, ...) {
+  # This is an internal function. Because of this, we will assume that
+  # all arguments are valid and correct.  No validation will be done.
+
+  # Truncate fracB values to 0 and 1.
+  fracB <-  data[,2,];
+  eps <- 1e-5;
+  
+  fracB[(fracB < eps)] <- eps;
+  fracB[(fracB > 1)] <- 1;    
+
+  dataA <- data[,1,]*(1-fracB);
+  dataB <- data[,1,]*(fracB);
+  
+  data[,1,] <- dataA+dataB;
+  data[,2,] <- fracB;
+  
+  data;
+}) # truncateFracB()
 ###########################################################################
 # HISTORY:
 # 2010-06-22 [MO]

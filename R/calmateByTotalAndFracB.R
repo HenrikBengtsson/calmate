@@ -91,7 +91,17 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
   dataC <- data;
   dataC[snps,,] <- thetaAB2TotalAndFracB(thetaC, verbose=less(verbose, 5));
   verbose && str(verbose, dataC);
-  
+ 
+  # Truncation of the data
+  verbose && enter(verbose, "Truncation of the data.");
+  if(TRUNCATE == TRUE){
+    if(method=="FracB"){
+      dataC[snps,,] <- truncateFracB(dataC[snps,,]);
+    }else{
+      dataC[snps,,] <- truncateThetaAB(dataC[snps,,]);
+    }
+  }
+ 
   rm(snps); # Not needed anymore
   verbose && exit(verbose);
 
@@ -99,6 +109,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
   dataC[nok,"total",] <- fitCalMaTeCNprobes(data[nok,"total",], references=references);
   verbose && str(verbose, dataC);
   verbose && exit(verbose);
+  
   
   verbose && cat(verbose, "Calibrated (total,fracB) signals:");
   verbose && str(verbose, dataC);

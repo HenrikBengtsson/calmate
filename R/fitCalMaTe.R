@@ -72,13 +72,13 @@ fitCalMaTe <- function(T, references, TRUNCATE, method, fB1=1/3, fB2=2/3, maxIte
     res[1:2,idxs] <- res[2:1,idxs];
   }
 
-  if(TRUNCATE == TRUE){
-    if(method=="FracB"){
-      res <- truncateFracB(res);
-    }else{
-      res <- truncateThetaAB(res);
-    }
-  }
+#  if(TRUNCATE == TRUE){
+#    if(method=="FracB"){
+#      res <- truncateFracB(res);
+#    }else{
+#      res <- truncateThetaAB(res);
+#    }
+#  }
   res;
 } # fitCalMaTe()
 
