@@ -7,7 +7,7 @@ setMethodS3("truncateFracB", "matrix", function(data, ...) {
   # Truncate fracB values to 0 and 1.
   C <- colSums(data);
   fracB <-  data[2,] / C;
-  eps <- 1e-5;
+  eps <- 0;
   
   fracB[(fracB < eps)] <- eps;
   fracB[(fracB > 1)] <- 1;    
@@ -27,7 +27,7 @@ setMethodS3("truncateFracB", "array", function(data, ...) {
 
   # Truncate fracB values to 0 and 1.
   fracB <-  data[,2,];
-  eps <- 1e-5;
+  eps <- 0;
   
   fracB[(fracB < eps)] <- eps;
   fracB[(fracB > 1)] <- 1;    
