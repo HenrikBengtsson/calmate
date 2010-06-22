@@ -94,6 +94,11 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
   rm(snps); # Not needed anymore
   verbose && exit(verbose);
 
+  verbose && enter(verbose, "Calibrating non-polymorphic probes");
+  dataC[nok,"total",] <- fitCalMaTeCNProbes(data[nok,"total",], references=references);
+  verbose && str(verbose, dataC);
+  verbose && exit(verbose);
+  
   verbose && cat(verbose, "Calibrated (total,fracB) signals:");
   verbose && str(verbose, dataC);
 
@@ -105,6 +110,8 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
 
 ###########################################################################
 # HISTORY:
+# 2010-06-22 [MO]
+# o Now calmateByTotalAndFracB() calibrates also non-polymorphic loci.
 # 2010-06-18 [HB]
 # o Now calmateByTotalAndFracB() handles also non-polymorphic loci.
 # 2010-06-04 [MO]

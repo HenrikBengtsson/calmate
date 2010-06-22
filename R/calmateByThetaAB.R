@@ -81,8 +81,6 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     }
   }
 
-
-
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);    
   
