@@ -79,6 +79,9 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     if (length(references) == 0) {
       throw("No references samples.");
     }
+    if(truncate!="none" && truncate!="fracB" && truncate!="fracB"){
+      throw("Wrong truncation method.");
+    }
   }
 
   # Argument 'verbose':
