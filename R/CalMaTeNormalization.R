@@ -106,7 +106,7 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, TR
     if (is.numeric(references) && (max(references) > ncol(data) || min(references)<1)){
       throw("Numeric argument 'references' with incorrect values.");    
     }
-    if(method != "FracB" && method != "Total){
+    if(method != "FracB" && method != "Total"){
       throw("Wrong name of the truncation method.");    
     }
   }
