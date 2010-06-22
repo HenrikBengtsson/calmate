@@ -1,10 +1,9 @@
-fitCalMaTeCNprobes <- function(T, references, ...) {
+fitCalMaTeCNprobes <- function(T, references,...) {
 
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
   
-#  refCN <- rowMedians(T[,references]);
-  refCN <- rowMedians(T);
+  refCN <- rowMedians(T[,references]);
   dataCNC <- 2*T/refCN;
 
   res;

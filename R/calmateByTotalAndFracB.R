@@ -34,7 +34,7 @@
 #  see @seemethod "calmateByThetaAB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE) {
+setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,..., verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -84,7 +84,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, ..., verbose=FALSE
   verbose && str(verbose, theta);
   verbose && exit(verbose);
 
-  thetaC <- calmateByThetaAB(theta, ..., verbose=verbose);  
+  thetaC <- calmateByThetaAB(theta, references = references, ..., verbose=verbose);  
   rm(theta); # Not needed anymore
 
   verbose && enter(verbose, "Backtransforming SNPs to (total, fracB)");
