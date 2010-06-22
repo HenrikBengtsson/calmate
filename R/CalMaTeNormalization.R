@@ -23,10 +23,8 @@
 #   \item{references}{A @vector specifying which samples should be used
 #     as the reference set.
 #     By default, all samples are considered.}
-#   \item{TRUNCATE}{Logical variable to indicate if a truncation is applied.
-#     By default TRUNCATE=FALSE.}
-#   \item{method}{Name of the truncation method to use.
-#     By default method="FracB".}
+#   \item{truncate}{Argument indicating which method is used to truncate. truncate =c("none", "fracB", "thetaAB")
+#     By default truncate="none".}
 #   \item{tags}{Tags added to the output data sets.}
 #   \item{...}{Not used.}
 # }
@@ -54,7 +52,7 @@
 # }
 #
 #*/###########################################################################
-setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, TRUNCATE = FALSE, method="FracB", tags="*", ...) {
+setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, tags="*", ...) {
   # Validate arguments
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -120,9 +118,7 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, TR
 
   this <- extend(Object(...), "CalMaTeNormalization",
     .data = data,
-    .references = references,
-    .TRUNCATE = TRUNCATE,
-    .method = method
+    .references = references
   );
 
   setTags(this, tags);
@@ -419,7 +415,7 @@ setMethodS3("findUnitsTodo", "CalMaTeNormalization", function(this, ..., verbose
 })
 
 
-setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", references = NULL, TRUNCATE=FALSE, method="FracB",..., force=FALSE, ram=NULL, verbose=FALSE) {
+setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", references = NULL, ..., force=FALSE, ram=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -536,7 +532,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     verbose && exit(verbose);
 
     verbose && enter(verbose, "Normalizing");
-    dataN <- calmateByTotalAndFracB(data, references = references, TRUNCATE = TRUNCATE, method=method, verbose=less(verbose,5));
+    dataN <- calmateByTotalAndFracB(data, references = references, verbose=less(verbose,5),...);
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
     verbose && str(verbose, dataN);

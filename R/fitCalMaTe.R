@@ -1,4 +1,4 @@
-fitCalMaTe <- function(T, references, TRUNCATE, method, fB1=1/3, fB2=2/3, maxIter=50, ...) {
+fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(T);

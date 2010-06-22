@@ -35,7 +35,7 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, TRUNCATE = FALSE, method = "FracB", ..., truncate=FALSE, verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate="none", verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -147,11 +147,15 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, TRUNCAT
   verbose && cat(verbose, "Calibrated ASCN signals:");
   verbose && str(verbose, dataC);
 
-  if (truncate) {
+  if (truncate=="thetaAB") {
     dataC <- truncateThetaAB(dataC);
     verbose && cat(verbose, "Truncated ASCN signals:");
     verbose && str(verbose, dataC);
-  }
+  }else{if(truncate=="fracB") {
+    dataC <- truncatefracB(dataC);
+    verbose && cat(verbose, "Truncated fracB signals:");
+    verbose && str(verbose, dataC);
+  }  
 
   verbose && exit(verbose);
 
