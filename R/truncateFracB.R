@@ -1,6 +1,6 @@
 # Truncate Fracs to avoid negatives and over 1.
 # Truncation is done such that TCN is preserved regardlessly.
-setMethodS3("truncateFracB", "array", function(data, ...) {
+setMethodS3("truncateFracB", "matrix", function(data, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
 

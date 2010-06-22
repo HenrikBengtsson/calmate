@@ -34,7 +34,7 @@ extends \link[R.oo]{Object}\cr
   (ASCNs).
  }
 
- \usage{CalMaTeNormalization(data=NULL, references=NULL, TRUNCATE=FALSE, method="FracB", tags="*", ...)}
+ \usage{CalMaTeNormalization(data=NULL, references=NULL, tags="*", ...)}
 
  \arguments{
    \item{data}{A named \code{\link[base]{list}} with data set named \code{"total"} and

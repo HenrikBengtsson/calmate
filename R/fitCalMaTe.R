@@ -3,7 +3,7 @@ fitCalMaTe <- function(T, references, TRUNCATE, method, fB1=1/3, fB2=2/3, maxIte
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(T);
   nbrOfReferences <- length(references);
-
+  
   # Adding a small value so there are "non" 0 values
   eps <- 1e-6;
   T[T < eps] <- eps;

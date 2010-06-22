@@ -100,8 +100,14 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, TR
 #    if (!is.null(references)) {
 #      throw("Support for argument 'references' is not implemented.");
 #    }
-    if (!is.null(references) && !is.logical(references) && length(references) == ncol(data)){
-      throw("Argument 'references' is not a logical array.");    
+    if (is.logical(references) && length(references) != ncol(data)){
+      throw("Logical argument 'references' with incorrect size.");    
+    }
+    if (is.numeric(references) && (max(references) > ncol(data) || min(references)<1)){
+      throw("Numeric argument 'references' with incorrect values.");    
+    }
+    if(method != "FracB" && method != "Total){
+      throw("Wrong name of the truncation method.");    
     }
   }
 
@@ -420,7 +426,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   dsList <- getDataSets(this);
   dsTCN <- dsList$total;
   dsBAF <- dsList$fracB;
-
+  
   # Argument 'units':
   df <- getFile(dsTCN, 1);
   nbrOfUnits <- nbrOfUnits(df);
@@ -442,8 +448,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     pushState(verbose);
     on.exit(popState(verbose));
   }
-
-
 
   verbose && enter(verbose, "CalMaTe normalization of ASCNs");
   nbrOfFiles <- nbrOfFiles(this);
@@ -467,7 +471,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   # Allocate output data sets
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   res <- getOutputDataSets(this, verbose=less(verbose, 5));
-
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Process in chunks
@@ -579,7 +582,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
       verbose && exit(verbose);
     } # for (kk ...)
     verbose && exit(verbose);
-
 
     # Next chunk
     idxs <- idxs[-head];

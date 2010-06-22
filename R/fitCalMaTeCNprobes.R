@@ -4,7 +4,7 @@ fitCalMaTeCNprobes <- function(T, references,...) {
   # all arguments are valid and correct.  No validation will be done.
   
   refCN <- rowMedians(T[,references]);
-  dataCNC <- 2*T/refCN;
+  res <- 2*T/refCN;
 
   res;
 } # fitCalMaTeCNprobes()
