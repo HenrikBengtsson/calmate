@@ -35,7 +35,7 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate="none", verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -79,8 +79,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     if (length(references) == 0) {
       throw("No references samples.");
     }
-    if(truncate!="none" && truncate!="fracB" && truncate!="fracB"){
-      throw("Wrong truncation method.");
+    if(!is.logical(truncate)){
+      throw("Wrong truncation value.");
     }
   }
 
@@ -150,15 +150,11 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   verbose && cat(verbose, "Calibrated ASCN signals:");
   verbose && str(verbose, dataC);
 
-  if (truncate=="thetaAB") {
+  if (truncate){
     dataC <- truncateThetaAB(dataC);
     verbose && cat(verbose, "Truncated ASCN signals:");
     verbose && str(verbose, dataC);
-  }else{if(truncate=="fracB") {
-    dataC <- truncatefracB(dataC);
-    verbose && cat(verbose, "Truncated fracB signals:");
-    verbose && str(verbose, dataC);
-  }  
+  } 
 
   verbose && exit(verbose);
 

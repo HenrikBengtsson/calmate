@@ -23,8 +23,8 @@
 #   \item{references}{A @vector specifying which samples should be used
 #     as the reference set.
 #     By default, all samples are considered.}
-#   \item{truncate}{Argument indicating which method is used to truncate. truncate =c("none", "fracB", "thetaAB")
-#     By default truncate="none".}
+#   \item{truncate}{Argument indicating if the results are truncated.
+#     By default truncate=FALSE.}
 #   \item{tags}{Tags added to the output data sets.}
 #   \item{...}{Not used.}
 # }
@@ -95,17 +95,11 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, ta
       throw("The samples in 'total' and 'fracB' have different names.");
     }
 
-#    if (!is.null(references)) {
-#      throw("Support for argument 'references' is not implemented.");
-#    }
     if (is.logical(references) && length(references) != ncol(data)){
       throw("Logical argument 'references' with incorrect size.");    
     }
     if (is.numeric(references) && (max(references) > ncol(data) || min(references)<1)){
       throw("Numeric argument 'references' with incorrect values.");    
-    }
-    if(method != "FracB" && method != "Total"){
-      throw("Wrong name of the truncation method.");    
     }
   }
 
