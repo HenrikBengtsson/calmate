@@ -15,3 +15,6 @@ nbrOfFiles nbrOfFiles.CalMaTeNormalization process
 process.CalMaTeNormalization setTags setTags.CalMaTeNormalization
  findUnitsTodo findUnitsTodo.CalMaTeNormalization getOutputDataSets
  getOutputDataSets.CalMaTeNormalization
+
+ fitCalMaTeCNprobes truncateFracB truncateFracB.array
+ truncateFracB.matrix truncateThetaAB.matrix

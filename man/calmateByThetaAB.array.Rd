@@ -19,7 +19,7 @@
   Normalize allele-specific copy numbers (CA,CB).
  }
 
- \usage{\method{calmateByThetaAB}{array}(data, references=NULL, TRUNCATE=FALSE, method="FracB", ..., truncate=FALSE, verbose=FALSE)}
+ \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of SNPs,

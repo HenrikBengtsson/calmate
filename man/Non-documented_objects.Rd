@@ -45,6 +45,11 @@
 \alias{findUnitsTodo.CalMaTeNormalization}
 \alias{getOutputDataSets}
 \alias{getOutputDataSets.CalMaTeNormalization}
+\alias{fitCalMaTeCNprobes}
+\alias{truncateFracB}
+\alias{truncateFracB.array}
+\alias{truncateFracB.matrix}
+\alias{truncateThetaAB.matrix}
 
 \description{
   This page contains aliases for all "non-documented" objects that

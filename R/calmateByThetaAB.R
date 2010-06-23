@@ -123,7 +123,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   for (jj in seq(length=nbrOfSNPs)) {
     if (verbose && (jj %% 100 == 1)) printf(verbose, "%d,", nbrOfSNPs-jj+1);
     Cjj <- dataS[jj,,,drop=TRUE];  # An 2xI matrix
-    CCjj <- fitCalMaTe(Cjj, references=references, TRUNCATE=TRUNCATE, method="FracB", ...);
+    CCjj <- fitCalMaTe(Cjj, references=references, ...);
     # Sanity check
     stopifnot(identical(dim(CCjj), dim(Cjj)));
     dataS[jj,,] <- CCjj;

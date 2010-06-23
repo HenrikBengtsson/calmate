@@ -18,6 +18,9 @@
 # \arguments{
 #  \item{data}{An Jx2xI @numeric @array, where J is the number of loci,
 #                      2 is total and fracB, and I is the number of samples.}
+#  \item{references}{A @logical or @numeric @vector specifying which
+#     samples should be used as the reference set.  
+#     By default, all samples are considered.}
 #  \item{...}{Additional arguments passed to 
 #         @seemethod "calmateByThetaAB".}
 #  \item{verbose}{See @see "R.utils::Verbose".}

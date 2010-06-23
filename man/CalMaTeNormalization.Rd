@@ -34,7 +34,7 @@ extends \link[R.oo]{Object}\cr
   (ASCNs).
  }
 
- \usage{CalMaTeNormalization(data=NULL, references=NULL, tags="*", ...)}
+ \usage{CalMaTeNormalization(data=NULL, references=NULL, truncate=FALSE, tags="*", ...)}
 
  \arguments{
    \item{data}{A named \code{\link[base]{list}} with data set named \code{"total"} and
@@ -43,13 +43,11 @@ extends \link[R.oo]{Object}\cr
      class \code{\link[aroma.core]{AromaUnitFracBCnBinarySet}}.  The
      two data sets must be for the same chip type, have the same
      number of samples and the same sample names.}
-   \item{references}{A \code{\link[base]{vector}} specifying which samples should be used
-     as the reference set.
+   \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
+     samples should be used as the reference set.
      By default, all samples are considered.}
-   \item{TRUNCATE}{Logical variable to indicate if a truncation is applied.
-     By default TRUNCATE=FALSE.}
-   \item{method}{Name of the truncation method to use.
-     By default method="FracB".}
+   \item{truncate}{A \code{\link[base]{logical}} specifying whether the normalized ASCNs
+     should be truncated or not.}
    \item{tags}{Tags added to the output data sets.}
    \item{...}{Not used.}
  }

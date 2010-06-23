@@ -23,11 +23,14 @@
   are left untouched.
  }
 
- \usage{\method{calmateByTotalAndFracB}{array}(data, references=NULL, TRUNCATE=FALSE, method="FracB", ..., verbose=FALSE)}
+ \usage{\method{calmateByTotalAndFracB}{array}(data, references=NULL, ..., verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,
                       2 is total and fracB, and I is the number of samples.}
+  \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
+     samples should be used as the reference set.
+     By default, all samples are considered.}
   \item{...}{Additional arguments passed to
          \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}

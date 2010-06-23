@@ -20,11 +20,11 @@
 #     class @see "aroma.core::AromaUnitFracBCnBinarySet".  The
 #     two data sets must be for the same chip type, have the same
 #     number of samples and the same sample names.}
-#   \item{references}{A @vector specifying which samples should be used
-#     as the reference set.
+#   \item{references}{A @logical or @numeric @vector specifying which
+#     samples should be used as the reference set.  
 #     By default, all samples are considered.}
-#   \item{truncate}{Argument indicating if the results are truncated.
-#     By default truncate=FALSE.}
+#   \item{truncate}{A @logical specifying whether the normalized ASCNs
+#     should be truncated or not.}
 #   \item{tags}{Tags added to the output data sets.}
 #   \item{...}{Not used.}
 # }
@@ -52,7 +52,7 @@
 # }
 #
 #*/###########################################################################
-setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, tags="*", ...) {
+setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, truncate=FALSE, tags="*", ...) {
   # Validate arguments
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -85,9 +85,10 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, ta
     }
 
     # Assert that the data sets have the same number data files
-    if (nbrOfFiles(data$total) != nbrOfFiles(data$fracB)) {
+    nbrOfFiles <- nbrOfFiles(data$total)
+    if (nbrOfFiles != nbrOfFiles(data$fracB)) {
       throw("The number of samples in 'total' and 'fracB' differ: ", 
-            nbrOfFiles(data$total), " != ", nbrOfFiles(data$fracB));
+            nbrOfFiles, " != ", nbrOfFiles(data$fracB));
     }
 
     # Assert that the data sets have the same samples
@@ -95,13 +96,21 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, ta
       throw("The samples in 'total' and 'fracB' have different names.");
     }
 
-    if (is.logical(references) && length(references) != ncol(data)){
-      throw("Logical argument 'references' with incorrect size.");    
+    # Argument 'references':
+    if (is.null(references)) {
+      # Default is to use all arrays as a reference.
+    } else if (is.logical(references)) {
+      references <- Arguments$getLogicals(references, 
+                              length=rep(nbrOfFiles, times=2));
+      references <- which(references);
+    } else {
+      references <- Arguments$getIndices(references, max=nbrOfFiles);
     }
-    if (is.numeric(references) && (max(references) > ncol(data) || min(references)<1)){
-      throw("Numeric argument 'references' with incorrect values.");    
-    }
+
+    # Argument 'truncate':
+    truncate <- Arguments$getLogical(truncate);
   }
+
 
   # Arguments '...':
   args <- list(...);
@@ -112,7 +121,8 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, ta
 
   this <- extend(Object(...), "CalMaTeNormalization",
     .data = data,
-    .references = references
+    .references = references,
+    .truncate = truncate
   );
 
   setTags(this, tags);
@@ -409,7 +419,7 @@ setMethodS3("findUnitsTodo", "CalMaTeNormalization", function(this, ..., verbose
 })
 
 
-setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", references = NULL, ..., force=FALSE, ram=NULL, verbose=FALSE) {
+setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", ..., force=FALSE, ram=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -450,6 +460,14 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
   rm(dsList);
+
+  references <- this$.references;
+  verbose && cat(verbose, "References:");
+  verbose && str(verbose, references);
+
+  truncate <- this$.truncate;
+  verbose && cat(verbose, "Truncate: ", truncate);
+
 
   sampleNames <- getNames(dsTCN);
   dimnames <- list(NULL, sampleNames, c("total", "fracB"));
@@ -526,7 +544,8 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     verbose && exit(verbose);
 
     verbose && enter(verbose, "Normalizing");
-    dataN <- calmateByTotalAndFracB(data, references = references, verbose=less(verbose,5),...);
+    dataN <- calmateByTotalAndFracB(data, references=references, 
+                          truncate=truncate, ..., verbose=less(verbose,5));
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
     verbose && str(verbose, dataN);
@@ -593,6 +612,10 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
 ############################################################################
 # HISTORY:
+# 2010-06-23
+# o Added support for argument 'references' and 'truncate'.
+#   TODO: The asterisk tags should probably reflect these settings.
+# o Code cleanup.
 # 2010-06-21
 # o Added minor Rdoc comments.
 # o ROBUSTNESS: Added more assertions to the CalMaTe constructor.
