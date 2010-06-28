@@ -75,7 +75,7 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, tr
     className <- "AromaUnitFracBCnBinarySet";
     ds <- data$fracB;
     if (!inherits(ds, className)) {
-      throw(sprintf("The 'total' data set is not of class %s: %s", className, class(ds)[1]));
+      throw(sprintf("The 'fracB' data set is not of class %s: %s", className, class(ds)[1]));
     }
 
     # Assert that the chip types are compatile
