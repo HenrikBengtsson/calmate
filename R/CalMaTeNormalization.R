@@ -572,9 +572,9 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
       # Store in lexicograph ordering
       fullnames <- getFullNames(ds);
-      idxs <- order(fullnames, decreasing=FALSE);
+      idxss <- order(fullnames, decreasing=FALSE);
       
-      for (ii in idxs) {
+      for (ii in idxss) {
         df <- getFile(ds, ii);
         verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d", 
                                         ii, getName(df), nbrOfFiles(ds)));
