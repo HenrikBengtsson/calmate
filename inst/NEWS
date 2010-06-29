@@ -1,6 +1,10 @@
 Package: calmate
 ================
 
+Version: 0.4.1 [2010-06-29]
+o Added support for process(..., force=TRUE) in CalMaTeNormalization.
+
+
 Version: 0.4.0 [2010-06-21]
 o Added an early version (really!) of CalMaTeNormalization.
   It still does not store parameter estimates; only the

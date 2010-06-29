@@ -428,15 +428,20 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   dsBAF <- dsList$fracB;
   
   # Argument 'units':
+  if (is.null(units)) {
+    units <- "remaining";
+  }
   df <- getFile(dsTCN, 1);
   nbrOfUnits <- nbrOfUnits(df);
-  if (is.null(units)) {
+  if (identical(units, "remaining")) {
     units <- seq(length=nbrOfUnits);
-  } else if (identical(units, "remaining")) {
-    units <- findUnitsTodo(this, verbose=less(verbose, 25));
   } else {
     units <- Arguments$getIndices(units, max=nbrOfUnits);
   }
+
+  # Argument 'force':
+  force <- Arguments$getLogical(force);
+
   nbrOfUnits <- length(units);
 
   # Argument 'ram':
@@ -454,8 +459,24 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
   verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
                       length(units), 100*length(units)/nbrOfUnits(df));
+
   verbose && cat(verbose, "Units:");
   verbose && str(verbose, units);
+
+  # Skip already processed units or not?
+  if (!force) {
+    verbose && enter(verbose, "Skipping already processed units");
+    unitsTodo <- findUnitsTodo(this, verbose=less(verbose, 25));
+    verbose && cat(verbose, "Units remaining:");
+    verbose && str(verbose, unitsTodo);
+
+    units <- intersect(units, unitsTodo);
+    verbose && cat(verbose, "Units:");
+    verbose && str(verbose, units);
+
+    rm(unitsTodo);
+    verbose && exit(verbose);
+  }
 
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
@@ -572,9 +593,9 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
       # Store in lexicograph ordering
       fullnames <- getFullNames(ds);
-      idxss <- order(fullnames, decreasing=FALSE);
+      idxs <- order(fullnames, decreasing=FALSE);
       
-      for (ii in idxss) {
+      for (ii in idxs) {
         df <- getFile(ds, ii);
         verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d", 
                                         ii, getName(df), nbrOfFiles(ds)));
@@ -612,6 +633,8 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
 ############################################################################
 # HISTORY:
+# 2010-06-29
+# o Added support for process(..., force=TRUE) in CalMaTeNormalization.
 # 2010-06-23
 # o Added support for argument 'references' and 'truncate'.
 #   TODO: The asterisk tags should probably reflect these settings.
