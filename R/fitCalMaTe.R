@@ -78,8 +78,6 @@ fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
 
 ###########################################################################
 # HISTORY:
-# 2010-06-19 [HB]
-# o Added argument 'truncate' for optional truncating of (CA,CB).
 # 2010-06-18 [HB]
 # o Created from refineCN.list().
 ###########################################################################

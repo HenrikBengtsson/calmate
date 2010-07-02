@@ -442,8 +442,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   # Argument 'force':
   force <- Arguments$getLogical(force);
 
-  nbrOfUnits <- length(units);
-
   # Argument 'ram':
   ram <- getRam(aromaSettings, ram);
 
@@ -457,8 +455,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   verbose && enter(verbose, "CalMaTe normalization of ASCNs");
   nbrOfFiles <- nbrOfFiles(this);
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
-  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
-                      length(units), 100*length(units)/nbrOfUnits(df));
 
   verbose && cat(verbose, "Units:");
   verbose && str(verbose, units);
@@ -477,6 +473,11 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     rm(unitsTodo);
     verbose && exit(verbose);
   }
+
+  nbrOfUnits <- length(units);
+  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
+                      length(units), 100*length(units)/nbrOfUnits(df));
+
 
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
@@ -566,7 +567,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
     verbose && enter(verbose, "Normalizing");
     dataN <- calmateByTotalAndFracB(data, references=references, 
-                          truncate=truncate, ..., verbose=less(verbose,5));
+                          truncate=truncate, ..., verbose=verbose);
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
     verbose && str(verbose, dataN);

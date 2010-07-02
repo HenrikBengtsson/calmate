@@ -100,7 +100,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
 
   verbose && enter(verbose, "Calibrating non-polymorphic probes");
   dataC[nok,"total",] <- fitCalMaTeCNprobes(data[nok,"total",], references=references);
-  verbose && str(verbose, dataC);
+  verbose && str(verbose, dataC[nok,,]);
   verbose && exit(verbose);
   
   

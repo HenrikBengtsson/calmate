@@ -129,7 +129,6 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     dataS[jj,,] <- CCjj;
   } # for (jj ...)
   if (verbose) cat(verbose, "done.");
-#  verbose && str(verbose, dataS);
   verbose && exit(verbose);
 
   if (hasNonFinite) {
