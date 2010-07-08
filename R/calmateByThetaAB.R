@@ -59,31 +59,6 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     }
   }
 
-  # Argument 'references':
-  if (is.null(references)) {
-    # The default is that all samples are used to calculate the reference.
-    references <- seq(length=dim[3]);
-  } else if (is.logical(references)) {
-    if (length(references) != dim[3]) {
-      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", dim[3]);
-    }
-    references <- which(references);
-    if (length(references) == 0) {
-      throw("No references samples.");
-    }
-  } else if (is.numeric(references)) {
-    references <- as.integer(references);
-    if (any(references < 1 | references > dim[3])) {
-      throw(sprintf("Argument 'references' is out of range [1,%d]", dim[3]));
-    }
-    if (length(references) == 0) {
-      throw("No references samples.");
-    }
-    if(!is.logical(truncate)){
-      throw("Wrong truncation value.");
-    }
-  }
-
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);    
   

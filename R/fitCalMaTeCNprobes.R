@@ -5,7 +5,7 @@ fitCalMaTeCNprobes <- function(T, references,...) {
   
   refCN <- rowMedians(T[,references]);
   res <- 2*T/refCN;
-
+  
   res;
 } # fitCalMaTeCNprobes()
 

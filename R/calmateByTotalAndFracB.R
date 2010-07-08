@@ -64,7 +64,30 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
       throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames[[2]], collapse=", "));
     }
   }
-
+    # Argument 'references':
+  if (is.null(references)) {
+    # The default is that all samples are used to calculate the reference.
+    references <- seq(length=dim[3]);
+  } else if (is.logical(references)) {
+    if (length(references) != dim[3]) {
+      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", dim[3]);
+    }
+    references <- which(references);
+    if (length(references) == 0) {
+      throw("No references samples.");
+    }
+  } else if (is.numeric(references)) {
+    references <- as.integer(references);
+    if (any(references < 1 | references > dim[3])) {
+      throw(sprintf("Argument 'references' is out of range [1,%d]", dim[3]));
+    }
+    if (length(references) == 0) {
+      throw("No references samples.");
+    }
+    if(!is.logical(truncate)){
+      throw("Wrong truncation value.");
+    }
+  }
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
 
@@ -99,7 +122,10 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   verbose && exit(verbose);
 
   verbose && enter(verbose, "Calibrating non-polymorphic probes");
+  save(nok, file="nok.Rdata")
   dataC[nok,"total",] <- fitCalMaTeCNprobes(data[nok,"total",], references=references);
+  aux <- dataC[nok,,];
+  save(aux,file="dataC.Rdata")
   verbose && str(verbose, dataC[nok,,]);
   verbose && exit(verbose);
   
