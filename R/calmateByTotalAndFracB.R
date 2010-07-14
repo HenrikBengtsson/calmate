@@ -37,7 +37,7 @@
 #  see @seemethod "calmateByThetaAB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, ..., verbose=FALSE) {
+setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL, ..., verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -64,6 +64,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
       throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames[[2]], collapse=", "));
     }
   }
+  
     # Argument 'references':
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
@@ -83,9 +84,6 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
     }
     if (length(references) == 0) {
       throw("No references samples.");
-    }
-    if(!is.logical(truncate)){
-      throw("Wrong truncation value.");
     }
   }
   # Argument 'verbose':
@@ -110,7 +108,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   verbose && str(verbose, theta);
   verbose && exit(verbose);
 
-  thetaC <- calmateByThetaAB(theta, references=references, ..., verbose=verbose);  
+  thetaC <- calmateByThetaAB(theta, references, ..., verbose=verbose);  
   rm(theta); # Not needed anymore
 
   verbose && enter(verbose, "Backtransforming SNPs to (total, fracB)");

@@ -52,7 +52,7 @@
 # }
 #
 #*/###########################################################################
-setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, truncate=FALSE, tags="*", ...) {
+setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
   # Validate arguments
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -96,19 +96,6 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, tr
       throw("The samples in 'total' and 'fracB' have different names.");
     }
 
-    # Argument 'references':
-    if (is.null(references)) {
-      # Default is to use all arrays as a reference.
-    } else if (is.logical(references)) {
-      references <- Arguments$getLogicals(references, 
-                              length=rep(nbrOfFiles, times=2));
-      references <- which(references);
-    } else {
-      references <- Arguments$getIndices(references, max=nbrOfFiles);
-    }
-
-    # Argument 'truncate':
-    truncate <- Arguments$getLogical(truncate);
   }
 
 
@@ -120,9 +107,7 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, references=NULL, tr
   }
 
   this <- extend(Object(...), "CalMaTeNormalization",
-    .data = data,
-    .references = references,
-    .truncate = truncate
+    .data = data
   );
 
   setTags(this, tags);
@@ -483,13 +468,6 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   verbose && cat(verbose, "Chip type: ", chipType);
   rm(dsList);
 
-  references <- this$.references;
-  verbose && cat(verbose, "References:");
-  verbose && str(verbose, references);
-
-  truncate <- this$.truncate;
-  verbose && cat(verbose, "Truncate: ", truncate);
-
 
   sampleNames <- getNames(dsTCN);
   dimnames <- list(NULL, sampleNames, c("total", "fracB"));
@@ -566,8 +544,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     verbose && exit(verbose);
 
     verbose && enter(verbose, "Normalizing");
-    dataN <- calmateByTotalAndFracB(data, references=references, 
-                          truncate=truncate, ..., verbose=verbose);
+    dataN <- calmateByTotalAndFracB(data, ..., verbose=verbose);
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
     verbose && str(verbose, dataN);

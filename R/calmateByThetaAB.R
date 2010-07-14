@@ -35,7 +35,7 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references, ..., truncate=FALSE, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
