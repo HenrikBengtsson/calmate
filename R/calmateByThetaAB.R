@@ -35,7 +35,7 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, references, ..., truncate=FALSE, verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -56,6 +56,28 @@ setMethodS3("calmateByThetaAB", "array", function(data, references, ..., truncat
   if (!is.null(dimnames[[2]])) {
     if (!identical(dimnames[[2]], c("A", "B"))) {
       throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'A' & 'B': ", paste(dimnames[[2]], collapse=", "));
+    }
+  }
+
+  # Argument 'references':
+  if (is.null(references)) {
+    # The default is that all samples are used to calculate the reference.
+    references <- seq(length=dim[3]);
+  } else if (is.logical(references)) {
+    if (length(references) != dim[3]) {
+      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", dim[3]);
+    }
+    references <- which(references);
+    if (length(references) == 0) {
+      throw("No references samples.");
+    }
+  } else if (is.numeric(references)) {
+    references <- as.integer(references);
+    if (any(references < 1 | references > dim[3])) {
+      throw(sprintf("Argument 'references' is out of range [1,%d]", dim[3]));
+    }
+    if (length(references) == 0) {
+      throw("No references samples.");
     }
   }
 

@@ -17,7 +17,7 @@ fitCalMaTeCNprobes <- function(T, references,...) {
     fit[ii] <- rlm(T[ii,references], H, maxit=50);
   }
   
-  if(ind != 0)
+  if(length(ind)!=0 && ind != 0)
     matSum[ind] <- fit$coefficients;
   res <- matSum %*% T;
 

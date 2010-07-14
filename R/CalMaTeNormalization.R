@@ -20,13 +20,8 @@
 #     class @see "aroma.core::AromaUnitFracBCnBinarySet".  The
 #     two data sets must be for the same chip type, have the same
 #     number of samples and the same sample names.}
-#   \item{references}{A @logical or @numeric @vector specifying which
-#     samples should be used as the reference set.  
-#     By default, all samples are considered.}
-#   \item{truncate}{A @logical specifying whether the normalized ASCNs
-#     should be truncated or not.}
 #   \item{tags}{Tags added to the output data sets.}
-#   \item{...}{Not used.}
+#   \item{...}{Arguments passed to calmateByTotalAndFracB or calmateByThetaAB.}
 # }
 #
 # \section{Fields and Methods}{
