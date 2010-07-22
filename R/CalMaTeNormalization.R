@@ -474,6 +474,11 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   # Allocate output data sets
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   res <- getOutputDataSets(this, verbose=less(verbose, 5));
+  if (nbrOfUnits == 0) {
+    verbose && cat(verbose, "No more units to process. Skipping.");
+    verbose && exit(verbose);
+    return(res);
+  }
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Process in chunks
@@ -502,7 +507,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
   idxs <- 1:nbrOfUnits;
   head <- 1:unitsPerChunk;
 
-  count <- 1;
+  count <- 1L;
   while (length(idxs) > 0) {
     tTotal <- processTime();
 
@@ -606,6 +611,12 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
 ############################################################################
 # HISTORY:
+# 2010-07-22
+# o BUG FIX: Now process() for CalMaTeNormalization returns immediately 
+#   if there are no units left.
+# o BUG FIX: process(..., verbose=TRUE) would give "Error in sprintf("Chunk
+#   #%d of %d", count, nbrOfChunks) :  invalid format '%d'; use format %f, 
+#   %e, %g or %a for numeric objects".
 # 2010-06-29
 # o Added support for process(..., force=TRUE) in CalMaTeNormalization.
 # 2010-06-23

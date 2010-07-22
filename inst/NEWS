@@ -1,6 +1,11 @@
 Package: calmate
 ================
 
+Version: 0.4.2 [2010-07-22]
+o BUG FIX: Now process() for CalMaTeNormalization returns immediately 
+  if there are no units left.
+
+
 Version: 0.4.1 [2010-06-29]
 o Added support for process(..., force=TRUE) in CalMaTeNormalization.
 
