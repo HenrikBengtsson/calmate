@@ -1,12 +1,12 @@
 ###########################################################################/**
-# @RdocClass CalMaTeNormalization
+# @RdocClass CalMaTeCalibration
 #
-# @title "The CalMaTeNormalization class"
+# @title "The CalMaTeCalibration class"
 #
 # \description{
 #  @classhierarchy
 #
-#  This class represents the CalMaTe normalization method [1], which 
+#  This class represents the CalMaTe method [1], which 
 #  corrects for SNP effects in allele-specific copy-number estimates
 #  (ASCNs).
 # }
@@ -33,7 +33,7 @@
 # }
 #
 # \examples{\dontrun{
-#   @include "../incl/CalMaTeNormalization.Rex"
+#   @include "../incl/CalMaTeCalibration.Rex"
 # }}
 #
 # \references{
@@ -41,13 +41,13 @@
 # }
 #
 # \seealso{
-#   Low-level versions of the CalMaTe normalization method is available
+#   Low-level versions of the CalMaTe method is available
 #   via the @see "calmateByThetaAB.array" and 
 #   @see "calmateByTotalAndFracB.array" methods.
 # }
 #
 #*/###########################################################################
-setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
+setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", ...) {
   # Validate arguments
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -101,7 +101,7 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
     throw("Unknown arguments: ", argsStr);
   }
 
-  this <- extend(Object(...), "CalMaTeNormalization",
+  this <- extend(Object(...), "CalMaTeCalibration",
     .data = data
   );
 
@@ -111,7 +111,7 @@ setConstructorS3("CalMaTeNormalization", function(data=NULL, tags="*", ...) {
 })
 
 
-setMethodS3("as.character", "CalMaTeNormalization", function(x, ...) {
+setMethodS3("as.character", "CalMaTeCalibration", function(x, ...) {
   # To please R CMD check
   this <- x;
 
@@ -131,7 +131,7 @@ setMethodS3("as.character", "CalMaTeNormalization", function(x, ...) {
 
 
 
-setMethodS3("getAsteriskTags", "CalMaTeNormalization", function(this, collapse=NULL, ...) {
+setMethodS3("getAsteriskTags", "CalMaTeCalibration", function(this, collapse=NULL, ...) {
   tags <- "CMTN";
 
   if (!is.null(collapse)) {
@@ -142,7 +142,7 @@ setMethodS3("getAsteriskTags", "CalMaTeNormalization", function(this, collapse=N
 }, private=TRUE) 
 
 
-setMethodS3("getName", "CalMaTeNormalization", function(this, ...) {
+setMethodS3("getName", "CalMaTeCalibration", function(this, ...) {
   dsList <- getDataSets(this);
   ds <- dsList$total;
   getName(ds);
@@ -150,7 +150,7 @@ setMethodS3("getName", "CalMaTeNormalization", function(this, ...) {
 
 
 
-setMethodS3("getTags", "CalMaTeNormalization", function(this, collapse=NULL, ...) {
+setMethodS3("getTags", "CalMaTeCalibration", function(this, collapse=NULL, ...) {
   # "Pass down" tags from input data set
   dsList <- getDataSets(this);
   ds <- dsList$total;
@@ -176,7 +176,7 @@ setMethodS3("getTags", "CalMaTeNormalization", function(this, collapse=NULL, ...
 })
 
 
-setMethodS3("setTags", "CalMaTeNormalization", function(this, tags="*", ...) {
+setMethodS3("setTags", "CalMaTeCalibration", function(this, tags="*", ...) {
   # Argument 'tags':
   if (!is.null(tags)) {
     tags <- Arguments$getCharacters(tags);
@@ -188,7 +188,7 @@ setMethodS3("setTags", "CalMaTeNormalization", function(this, tags="*", ...) {
 })
 
 
-setMethodS3("getFullName", "CalMaTeNormalization", function(this, ...) {
+setMethodS3("getFullName", "CalMaTeCalibration", function(this, ...) {
   name <- getName(this);
   tags <- getTags(this);
   fullname <- paste(c(name, tags), collapse=",");
@@ -197,17 +197,17 @@ setMethodS3("getFullName", "CalMaTeNormalization", function(this, ...) {
 })
 
 
-setMethodS3("getDataSets", "CalMaTeNormalization", function(this, ...) {
+setMethodS3("getDataSets", "CalMaTeCalibration", function(this, ...) {
   this$.data;
 })
  
 
-setMethodS3("getRootPath", "CalMaTeNormalization", function(this, ...) {
+setMethodS3("getRootPath", "CalMaTeCalibration", function(this, ...) {
   "totalAndFracBData";
 })
 
 
-setMethodS3("getPath", "CalMaTeNormalization", function(this, create=TRUE, ...) {
+setMethodS3("getPath", "CalMaTeCalibration", function(this, create=TRUE, ...) {
   # Create the (sub-)directory tree for the data set
 
   # Root path
@@ -243,14 +243,14 @@ setMethodS3("getPath", "CalMaTeNormalization", function(this, create=TRUE, ...) 
 })
 
 
-setMethodS3("nbrOfFiles", "CalMaTeNormalization", function(this, ...) {
+setMethodS3("nbrOfFiles", "CalMaTeCalibration", function(this, ...) {
   dsList <- getDataSets(this);
   ds <- dsList$total;
   nbrOfFiles(ds);
 })
 
 
-setMethodS3("getOutputDataSets", "CalMaTeNormalization", function(this, ..., verbose=FALSE) {
+setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
   if (verbose) {
@@ -267,7 +267,7 @@ setMethodS3("getOutputDataSets", "CalMaTeNormalization", function(this, ..., ver
 }) 
 
 
-setMethodS3("allocateOutputDataSets", "CalMaTeNormalization", function(this, ..., verbose=FALSE) {
+setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
   if (verbose) {
@@ -351,7 +351,7 @@ setMethodS3("allocateOutputDataSets", "CalMaTeNormalization", function(this, ...
 
 
 
-setMethodS3("findUnitsTodo", "CalMaTeNormalization", function(this, ..., verbose=FALSE) {
+setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
   if (verbose) {
@@ -399,7 +399,7 @@ setMethodS3("findUnitsTodo", "CalMaTeNormalization", function(this, ..., verbose
 })
 
 
-setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining", ..., force=FALSE, ram=NULL, verbose=FALSE) {
+setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", ..., force=FALSE, ram=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -432,7 +432,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     on.exit(popState(verbose));
   }
 
-  verbose && enter(verbose, "CalMaTe normalization of ASCNs");
+  verbose && enter(verbose, "CalMaTe calibration of ASCNs");
   nbrOfFiles <- nbrOfFiles(this);
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
 
@@ -532,7 +532,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # Normalizing
+    # Calibration
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     verbose && enter(verbose, "Combining into an (total,fracB) array");
     dim <- c(nrow(total), ncol(total), 2);
@@ -543,7 +543,7 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     verbose && str(verbose, data);
     verbose && exit(verbose);
 
-    verbose && enter(verbose, "Normalizing");
+    verbose && enter(verbose, "Calibration");
     dataN <- calmateByTotalAndFracB(data, ..., verbose=verbose);
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
@@ -561,9 +561,9 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
     verbose && exit(verbose);
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # Storing normalized data
+    # Storing calibrated data
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    verbose && enter(verbose, "Storing normalized data");
+    verbose && enter(verbose, "Storing calibrated data");
     for (kk in seq(along=res)) {
       ds <- res[[kk]];
       verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d", 
@@ -611,8 +611,10 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 
 ############################################################################
 # HISTORY:
+# 2010-07-30
+# o Renamed CalMaTeNormalization to CalMaTeCalibration.
 # 2010-07-22
-# o BUG FIX: Now process() for CalMaTeNormalization returns immediately 
+# o BUG FIX: Now process() for CalMaTeCalibration returns immediately 
 #   if there are no units left.
 # o BUG FIX: process(..., verbose=TRUE) would give "Error in sprintf("Chunk
 #   #%d of %d", count, nbrOfChunks) :  invalid format '%d'; use format %f, 
@@ -635,4 +637,4 @@ setMethodS3("process", "CalMaTeNormalization", function(this, units="remaining",
 # 2010-06-20
 # o First test shows that it seems to work.
 # o Created.
-############################################################################
+############################################################################ 

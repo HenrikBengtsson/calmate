@@ -11,9 +11,9 @@ print(dsList);
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# CalMaTe - Post-normalization of ASCNs estimates
+# CalMaTe - Post-calibration of ASCNs estimates
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-asn <- CalMaTeNormalization(dsList);
+asn <- CalMaTeCalibration(dsList);
 print(asn);
 
 # For speed issues, we will here only process loci on Chromosome 17.

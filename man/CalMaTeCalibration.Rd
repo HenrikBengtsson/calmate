@@ -1,40 +1,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Do not modify this file since it was automatically generated from:
 % 
-%  CalMaTeNormalization.R
+%  CalMaTeCalibration.R
 % 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{CalMaTeNormalization}
+ \name{CalMaTeCalibration}
 \docType{class}
-\alias{CalMaTeNormalization}
+\alias{CalMaTeCalibration}
 
 
- \title{The CalMaTeNormalization class}
+ \title{The CalMaTeCalibration class}
 
  \description{
   Package:  calmate \cr
-\bold{Class CalMaTeNormalization}\cr
+\bold{Class CalMaTeCalibration}\cr
 
 \code{\link[R.oo]{Object}}\cr
 \code{~~|}\cr
-\code{~~+--}\code{CalMaTeNormalization}\cr
+\code{~~+--}\code{CalMaTeCalibration}\cr
 
 \bold{Directly known subclasses:}\cr
 \cr
 
-public static class \bold{CalMaTeNormalization}\cr
+public static class \bold{CalMaTeCalibration}\cr
 extends \link[R.oo]{Object}\cr
 
 
 
-  This class represents the CalMaTe normalization method [1], which
+  This class represents the CalMaTe method [1], which
   corrects for SNP effects in allele-specific copy-number estimates
   (ASCNs).
  }
 
- \usage{CalMaTeNormalization(data=NULL, tags="*", ...)}
+ \usage{CalMaTeCalibration(data=NULL, tags="*", ...)}
 
  \arguments{
    \item{data}{A named \code{\link[base]{list}} with data set named \code{"total"} and
@@ -88,9 +88,9 @@ print(dsList);
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# CalMaTe - Post-normalization of ASCNs estimates
+# CalMaTe - Post-calibration of ASCNs estimates
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-asn <- CalMaTeNormalization(dsList);
+asn <- CalMaTeCalibration(dsList);
 print(asn);
 
 # For speed issues, we will here only process loci on Chromosome 17.
@@ -126,7 +126,7 @@ title(sprintf("\%s (CalMaTe)", getName(betaN)));
  }
 
  \seealso{
-   Low-level versions of the CalMaTe normalization method is available
+   Low-level versions of the CalMaTe method is available
    via the \code{\link{calmateByThetaAB.array}}() and
    \code{\link{calmateByTotalAndFracB.array}}() methods.
  }
