@@ -123,7 +123,6 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
   save(nok, file="nok.Rdata")
   dataC[nok,"total",] <- fitCalMaTeCNprobes(data[nok,"total",], references=references);
   aux <- dataC[nok,,];
-  save(aux,file="dataC.Rdata")
   verbose && str(verbose, dataC[nok,,]);
   verbose && exit(verbose);
   
