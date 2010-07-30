@@ -1,6 +1,10 @@
 Package: calmate
 ================
 
+Version: 0.4.3 [2010-07-30]
+o Renamed CalMaTeNormalization to CalMaTeCalibration.
+
+
 Version: 0.4.2 [2010-07-22]
 o BUG FIX: Now process() for CalMaTeNormalization returns immediately 
   if there are no units left.
