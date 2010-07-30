@@ -1,7 +1,11 @@
 Package: calmate
 ================
 
-Version: 0.4.3 [2010-07-30]
+Version: 0.5.1 [2010-07-31]
+o BUG FIX: process() for CalMaTeCalibration would only run one chunk.
+
+
+Version: 0.5.0 [2010-07-30]
 o Renamed CalMaTeNormalization to CalMaTeCalibration.
 
 

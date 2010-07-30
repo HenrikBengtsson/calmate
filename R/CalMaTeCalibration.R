@@ -571,9 +571,9 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", .
 
       # Store in lexicograph ordering
       fullnames <- getFullNames(ds);
-      idxs <- order(fullnames, decreasing=FALSE);
+      idxsT <- order(fullnames, decreasing=FALSE);
       
-      for (ii in idxs) {
+      for (ii in idxsT) {
         df <- getFile(ds, ii);
         verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d", 
                                         ii, getName(df), nbrOfFiles(ds)));
@@ -611,6 +611,8 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", .
 
 ############################################################################
 # HISTORY:
+# 2010-07-31
+# o BUG FIX: process() for CalMaTeCalibration would only run one chunk.
 # 2010-07-30
 # o Renamed CalMaTeNormalization to CalMaTeCalibration.
 # 2010-07-22
