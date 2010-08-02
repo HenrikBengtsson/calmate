@@ -1,6 +1,13 @@
 Package: calmate
 ================
 
+Version: 0.5.3 [2010-08-02]
+o Added argument 'medianReference' to fitCalMaTe().  If TRUE, then
+  the total copy number of also the SNPs are standardized to the
+  median of the reference signals.  Both calmateByTotalAndFracB()
+  and calmateByThetaAB() also take this argument via '...'.
+
+
 Version: 0.5.2 [2010-08-02]
 o CLEANUP: Dropped obsolete internal calmate() and refineCN() functions.
 

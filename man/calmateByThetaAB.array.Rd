@@ -27,8 +27,7 @@
   \item{references}{An index \code{\link[base]{vector}} in [1,I] or a \code{\link[base]{logical}} \code{\link[base]{vector}}
      of length I specifying which samples are used when calculating the
      reference signals.  If \code{\link[base]{NULL}}, all samples are used.}
-  \item{...}{Additional arguments passed to internal
-             \code{fitCalMaTe().}}
+  \item{...}{Additional arguments passed to internal \code{fitCalMaTe().}}
   \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative,
      which preserving the total CNs.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}

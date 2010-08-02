@@ -17,8 +17,7 @@
 #  \item{references}{An index @vector in [1,I] or a @logical @vector 
 #     of length I specifying which samples are used when calculating the
 #     reference signals.  If @NULL, all samples are used.}
-#  \item{...}{Additional arguments passed to internal 
-#             \code{fitCalMaTe().}}
+#  \item{...}{Additional arguments passed to internal \code{fitCalMaTe().}}
 #  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative,
 #     which preserving the total CNs.}
 #  \item{verbose}{See @see "R.utils::Verbose".}

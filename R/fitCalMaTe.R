@@ -19,6 +19,8 @@
 #     allele B fractions.}
 #  \item{maxIter}{The maximum number of iterations without converging
 #     before the algorithm quits.}
+#  \item{medianReference}{If @TRUE, then calibrated total copy number are
+#     standardized toward the median of the reference samples.}
 #  \item{...}{Not used.}
 # }
 #
@@ -28,7 +30,7 @@
 #
 # @keyword internal
 #*/###########################################################################
-setMethodS3("fitCalMaTe", "matrix", function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
+setMethodS3("fitCalMaTe", "matrix", function(T, references, fB1=1/3, fB2=2/3, maxIter=50, medianReference=FALSE, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(T);
@@ -102,6 +104,16 @@ setMethodS3("fitCalMaTe", "matrix", function(T, references, fB1=1/3, fB2=2/3, ma
     res[1:2,idxs] <- res[2:1,idxs];
   }
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Standardize using the median signal of the references?
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (medianReference) {
+    yR <- res[,references,drop=FALSE];
+    yR <- yR[1,,drop=TRUE] + yR[2,,drop=TRUE];
+    yR <- median(yR, na.rm=TRUE);
+    res <- 2* res / yR;
+  }  
+
   # Return parameter estimates(?)
   ## attr(res, "modelFit") <- list(fit=fit);
 
@@ -112,6 +124,7 @@ setMethodS3("fitCalMaTe", "matrix", function(T, references, fB1=1/3, fB2=2/3, ma
 ###########################################################################
 # HISTORY:
 # 2010-08-02 [HB]
+# o Added argument 'medianReference' to fitCalMaTe().
 # o ROBUSTNESS: Now fitCalMaTe() also works (technically) when there is
 #   only one reference.
 # o Made into an S3 method for matrix:es.
