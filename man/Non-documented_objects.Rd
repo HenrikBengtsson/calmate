@@ -12,7 +12,6 @@
 
 
 % Other missing docs
-\alias{fitCalMaTe}
 \alias{truncateThetaAB}
 \alias{truncateThetaAB.array}
 \alias{allocateOutputDataSets}
@@ -44,11 +43,12 @@
 \alias{findUnitsTodo.CalMaTeCalibration}
 \alias{getOutputDataSets}
 \alias{getOutputDataSets.CalMaTeCalibration}
-\alias{fitCalMaTeCNprobes}
 \alias{truncateFracB}
 \alias{truncateFracB.array}
 \alias{truncateFracB.matrix}
 \alias{truncateThetaAB.matrix}
+\alias{fitCalMaTe}
+\alias{fitCalMaTeCNprobes}
 
 \description{
   This page contains aliases for all "non-documented" objects that

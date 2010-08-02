@@ -1,4 +1,3 @@
-fitCalMaTe
 truncateThetaAB truncateThetaAB.array
 
 allocateOutputDataSets allocateOutputDataSets.CalMaTeCalibration
@@ -14,5 +13,6 @@ nbrOfFiles nbrOfFiles.CalMaTeCalibration process
 process.CalMaTeCalibration setTags setTags.CalMaTeCalibration
  findUnitsTodo findUnitsTodo.CalMaTeCalibration getOutputDataSets
  getOutputDataSets.CalMaTeCalibration
- fitCalMaTeCNprobes truncateFracB truncateFracB.array
+ truncateFracB truncateFracB.array
  truncateFracB.matrix truncateThetaAB.matrix
+fitCalMaTe fitCalMaTeCNprobes

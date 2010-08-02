@@ -1,4 +1,34 @@
-fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
+###########################################################################/**
+# @set "class=matrix"
+# @RdocMethod fitCalMaTe
+# 
+# @title "Calibrates SNP loci according to the CalMaTe method"
+#
+# \description{
+#  @get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+#  \item{T}{A 2xI @numeric @matrix of allele specific copy numbers (ASCNs), 
+#     where 2 is the number alleles and I is the number of samples.}
+#  \item{references}{A @logical or @numeric @vector specifying which
+#     samples should be used as the reference set.}
+#  \item{fB1,fB2}{Thresholds for calling genotypes AA, AB, BB from the
+#     allele B fractions.}
+#  \item{maxIter}{The maximum number of iterations without converging
+#     before the algorithm quits.}
+#  \item{...}{Not used.}
+# }
+#
+# \value{
+#   Returns a 2xI @numeric @matrix of calibrated ASCNs.
+# }
+#
+# @keyword internal
+#*/###########################################################################
+setMethodS3("fitCalMaTe", "matrix", function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(T);
@@ -14,7 +44,7 @@ fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   T <- Giro %*% T;
 
   # Extract the signals for the reference set
-  TR <- T[,references];
+  TR <- T[,references, drop=FALSE];
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Checking if all the samples are homozygous
@@ -31,7 +61,7 @@ fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
     T[1:2,idxs] <- T[2:1,idxs];
 
     # Update precalcalculated signals
-    TR <- T[,references];
+    TR <- T[,references, drop=FALSE];
   }
 
 
@@ -46,7 +76,7 @@ fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   T <- diag(matSum) %*% T;
 
   # Reextract the signals for the reference set
-  TR <- T[,references];
+  TR <- T[,references, drop=FALSE];
 
   # The difference of the copy numbers must be 2, 0 or -2 depending genotyping
   fracB <- TR[2,] / (TR[1,] + TR[2,]);
@@ -72,12 +102,19 @@ fitCalMaTe <- function(T, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
     res[1:2,idxs] <- res[2:1,idxs];
   }
 
+  # Return parameter estimates(?)
+  ## attr(res, "modelFit") <- list(fit=fit);
+
   res;
-} # fitCalMaTe()
+}, protected=TRUE) # fitCalMaTe()
 
 
 ###########################################################################
 # HISTORY:
+# 2010-08-02 [HB]
+# o ROBUSTNESS: Now fitCalMaTe() also works (technically) when there is
+#   only one reference.
+# o Made into an S3 method for matrix:es.
 # 2010-06-18 [HB]
 # o Created from refineCN.list().
 ###########################################################################
