@@ -120,9 +120,10 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
   verbose && exit(verbose);
 
   verbose && enter(verbose, "Calibrating non-polymorphic probes");
-  save(nok, file="nok.Rdata")
+##   save(nok, file="nok.Rdata")
   dataC[nok,"total",] <- fitCalMaTeCNprobes(data[nok,"total",], references=references);
   aux <- dataC[nok,,];
+##  save(aux,file="dataC.Rdata")
   verbose && str(verbose, dataC[nok,,]);
   verbose && exit(verbose);
   
@@ -138,6 +139,8 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
 
 ###########################################################################
 # HISTORY:
+# 2010-08-02 [HB]
+# o CLEANUP: Removed save() calls used for debugging.
 # 2010-06-22 [MO]
 # o Now calmateByTotalAndFracB() calibrates also non-polymorphic loci.
 # 2010-06-18 [HB]
