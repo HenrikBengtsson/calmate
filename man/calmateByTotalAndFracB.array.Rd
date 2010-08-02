@@ -23,7 +23,7 @@
   are left untouched.
  }
 
- \usage{\method{calmateByTotalAndFracB}{array}(data, references=NULL, ..., verbose=FALSE)}
+ \usage{\method{calmateByTotalAndFracB}{array}(data, references=NULL, ..., refAvgFcn=NULL, verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,
@@ -33,6 +33,13 @@
      By default, all samples are considered.}
   \item{...}{Additional arguments passed to
          \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
+  \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
+     an argument \code{na.rm} and returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
+     It should calculate some type of average for each of the J rows, e.g.
+     \code{\link[matrixStats]{rowMedians}}.
+     If specified, then the total copy numbers of the calibrated ASCNs
+     are standardized toward (twice) the average of the total copy numbers
+     of the calibrated reference ASCNs.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
  }
 

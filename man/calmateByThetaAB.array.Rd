@@ -19,7 +19,7 @@
   Normalize allele-specific copy numbers (CA,CB).
  }
 
- \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, verbose=FALSE)}
+ \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of SNPs,
@@ -30,6 +30,13 @@
   \item{...}{Additional arguments passed to internal \code{fitCalMaTe().}}
   \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative,
      which preserving the total CNs.}
+  \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
+     an argument \code{na.rm} and returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
+     It should calculate some type of average for each of the J rows, e.g.
+     \code{\link[matrixStats]{rowMedians}}.
+     If specified, then the total copy numbers of the calibrated ASCNs
+     are standardized toward (twice) the average of the total copy numbers
+     of the calibrated reference ASCNs.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
  }
 

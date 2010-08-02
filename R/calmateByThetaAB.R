@@ -20,6 +20,13 @@
 #  \item{...}{Additional arguments passed to internal \code{fitCalMaTe().}}
 #  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative,
 #     which preserving the total CNs.}
+#  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
+#     an argument \code{na.rm} and returns a @numeric @vector of length J.
+#     It should calculate some type of average for each of the J rows, e.g.
+#     @see "matrixStats::rowMedians".  
+#     If specified, then the total copy numbers of the calibrated ASCNs
+#     are standardized toward (twice) the average of the total copy numbers
+#     of the calibrated reference ASCNs.}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
 #
@@ -34,7 +41,7 @@
 #  see @seemethod "calmateByTotalAndFracB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -151,6 +158,22 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     verbose && str(verbose, dataC);
   } 
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Standardize toward a custom average of the references?
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (!is.null(refAvgFcn)) {
+    verbose && enter(verbose, "Standardize total copy numbers toward the average reference signals");
+    # Extract reference signals
+    dataCR <- dataC[,,references,drop=FALSE];
+    # Calculate total copy number signals
+    yCR <- dataCR[,1,,drop=TRUE]+dataCR[,2,,drop=TRUE];
+    # Calculate the average
+    yCR <- refAvgFcn(yCR, na.rm=TRUE);
+    # Standardize ASCNs to this average
+    dataC <- 2 * dataC / yCR;
+    verbose && exit(verbose);
+  }
+
   verbose && exit(verbose);
 
   dataC;
@@ -159,6 +182,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
 ###########################################################################
 # HISTORY:
+# 2010-08-02 [HB]
+# o Added argument 'refAvgFcn' to calmateByThetaAB().
 # 2010-06-19 [HB]
 # o Now calmateByThetaAB() uses internal truncateThetaAB() to truncate
 #   (CA,CB) values.  Since it operates on arrays, it is much faster.

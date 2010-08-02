@@ -1,11 +1,11 @@
 Package: calmate
 ================
 
-Version: 0.5.3 [2010-08-02]
-o Added argument 'medianReference' to fitCalMaTe().  If TRUE, then
-  the total copy number of also the SNPs are standardized to the
-  median of the reference signals.  Both calmateByTotalAndFracB()
-  and calmateByThetaAB() also take this argument via '...'.
+Version: 0.6.0 [2010-08-02]
+o Added argument 'refAvgFcn' to calmateByTotalAndFracB() and
+  calmateByThetaAB().  It is used to standardize the total copy number
+  of both SNPs and non-polymorphic loci using the same estimator
+  for the average reference signal.
 
 
 Version: 0.5.2 [2010-08-02]

@@ -23,6 +23,13 @@
 #     By default, all samples are considered.}
 #  \item{...}{Additional arguments passed to 
 #         @seemethod "calmateByThetaAB".}
+#  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
+#     an argument \code{na.rm} and returns a @numeric @vector of length J.
+#     It should calculate some type of average for each of the J rows, e.g.
+#     @see "matrixStats::rowMedians".  
+#     If specified, then the total copy numbers of the calibrated ASCNs
+#     are standardized toward (twice) the average of the total copy numbers
+#     of the calibrated reference ASCNs.}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
 #
@@ -37,7 +44,7 @@
 #  see @seemethod "calmateByThetaAB".
 # }
 #*/###########################################################################
-setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL, ..., verbose=FALSE) {
+setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, ..., refAvgFcn=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -108,7 +115,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
   verbose && str(verbose, theta);
   verbose && exit(verbose);
 
-  thetaC <- calmateByThetaAB(theta, references, ..., verbose=verbose);  
+  thetaC <- calmateByThetaAB(theta, references=references, ..., verbose=verbose);  
   rm(theta); # Not needed anymore
 
   verbose && enter(verbose, "Backtransforming SNPs to (total, fracB)");
@@ -127,6 +134,21 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
   verbose && str(verbose, dataC[nok,,]);
   verbose && exit(verbose);
   
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Standardize toward a custom average of the references?
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (!is.null(refAvgFcn)) {
+    verbose && enter(verbose, "Standardize total copy numbers toward the average reference signals");
+    # Extract reference total copy number signals
+    yCR <- dataC[,1,references,drop=FALSE];
+    dim(yCR) <- dim(yCR)[-2];
+    # Calculate the average
+    yCR <- refAvgFcn(yCR, na.rm=TRUE);
+    # Standardize total copy numbers to this average
+    dataC[,1,] <- 2 * dataC[,1,] / yCR;
+    verbose && exit(verbose);
+  }
   
   verbose && cat(verbose, "Calibrated (total,fracB) signals:");
   verbose && str(verbose, dataC);
@@ -140,6 +162,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references = NULL,
 ###########################################################################
 # HISTORY:
 # 2010-08-02 [HB]
+# o Added argument 'refAvgFcn' to calmateByTotalAndFracB().
 # o CLEANUP: Removed save() calls used for debugging.
 # 2010-06-22 [MO]
 # o Now calmateByTotalAndFracB() calibrates also non-polymorphic loci.
