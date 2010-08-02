@@ -13,7 +13,6 @@
 
 % Other missing docs
 \alias{fitCalMaTe}
-\alias{refineCN}
 \alias{truncateThetaAB}
 \alias{truncateThetaAB.array}
 \alias{allocateOutputDataSets}

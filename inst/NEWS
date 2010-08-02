@@ -1,6 +1,10 @@
 Package: calmate
 ================
 
+Version: 0.5.2 [2010-08-02]
+o CLEANUP: Dropped obsolete internal calmate() and refineCN() functions.
+
+
 Version: 0.5.1 [2010-07-31]
 o BUG FIX: process() for CalMaTeCalibration would only run one chunk.
 

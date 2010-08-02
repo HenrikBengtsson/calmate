@@ -28,7 +28,7 @@
      of length I specifying which samples are used when calculating the
      reference signals.  If \code{\link[base]{NULL}}, all samples are used.}
   \item{...}{Additional arguments passed to internal
-             \code{calmate().}}
+             \code{fitCalMaTe().}}
   \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative,
      which preserving the total CNs.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
