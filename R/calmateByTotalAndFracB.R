@@ -17,7 +17,7 @@
 #
 # \arguments{
 #  \item{data}{An Jx2xI @numeric @array, where J is the number of loci,
-#                      2 is total and fracB, and I is the number of samples.}
+#              2 is total and fracB, and I is the number of samples.}
 #  \item{references}{A @logical or @numeric @vector specifying which
 #     samples should be used as the reference set.  
 #     By default, all samples are considered.}
@@ -71,14 +71,19 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
       throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames[[2]], collapse=", "));
     }
   }
-  
-    # Argument 'references':
+
+  nbrOfSamples <- dim[3];
+  if (nbrOfSamples <= 2) {
+    throw("Argument 'data' contains less than two samples: ", nbrOfSamples);
+  }
+
+  # Argument 'references':
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
-    references <- seq(length=dim[3]);
+    references <- seq(length=nbrOfSamples);
   } else if (is.logical(references)) {
-    if (length(references) != dim[3]) {
-      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", dim[3]);
+    if (length(references) != nbrOfSamples) {
+      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", nbrOfSamples);
     }
     references <- which(references);
     if (length(references) == 0) {
@@ -86,8 +91,8 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
     }
   } else if (is.numeric(references)) {
     references <- as.integer(references);
-    if (any(references < 1 | references > dim[3])) {
-      throw(sprintf("Argument 'references' is out of range [1,%d]", dim[3]));
+    if (any(references < 1 | references > nbrOfSamples)) {
+      throw(sprintf("Argument 'references' is out of range [1,%d]", nbrOfSamples));
     }
     if (length(references) == 0) {
       throw("No references samples.");
@@ -102,8 +107,10 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   verbose && str(verbose, data);
 
   verbose && enter(verbose, "Identifying SNPs (non-missing fracB)");
-  nok <- is.na(data[,"fracB",]);
+  nok <- is.na(data[,"fracB",,drop=FALSE]);
+  dim(nok) <- dim(nok)[-2]; # Drop the 2nd dimension
   nok <- rowAlls(nok);
+##   save(nok, file="nok.Rdata");
   snps <- which(!nok);
   verbose && printf(verbose, "Number of SNPs: %d (%.2f%%)\n",
                             length(snps), 100*length(snps)/dim(data)[1]);
@@ -123,15 +130,25 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   dataC[snps,,] <- thetaAB2TotalAndFracB(thetaC, verbose=less(verbose, 5));
   verbose && str(verbose, dataC);
  
-  rm(snps); # Not needed anymore
+  rm(snps, thetaC); # Not needed anymore
   verbose && exit(verbose);
 
   verbose && enter(verbose, "Calibrating non-polymorphic probes");
-##   save(nok, file="nok.Rdata")
-  dataC[nok,"total",] <- fitCalMaTeCNprobes(data[nok,"total",], references=references);
-  aux <- dataC[nok,,];
+  # Extract total CNs
+  units <- which(nok);
+  rm(nok);
+  theta <- data[units,"total",,drop=FALSE];
+  dim(theta) <- dim(theta)[-2]; # Drop the 2nd dimension
+  thetaC <- fitCalMaTeCNprobes(theta, references=references);
+  rm(theta); # Not needed anymore
+
+  dataC[units,"total",] <- thetaC;
+
+##  aux <- dataC[units,,,drop=FALSE];
 ##  save(aux,file="dataC.Rdata")
-  verbose && str(verbose, dataC[nok,,]);
+  verbose && str(verbose, dataC[units,,,drop=FALSE]);
+
+  rm(units, thetaC); # Not needed anymore
   verbose && exit(verbose);
   
 
@@ -141,12 +158,13 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   if (!is.null(refAvgFcn)) {
     verbose && enter(verbose, "Standardize total copy numbers toward the average reference signals");
     # Extract reference total copy number signals
-    yCR <- dataC[,1,references,drop=FALSE];
-    dim(yCR) <- dim(yCR)[-2];
+    yCR <- dataC[,"total",references,drop=FALSE];
+    dim(yCR) <- dim(yCR)[-2]; # Drop 2nd dimension
     # Calculate the average
     yCR <- refAvgFcn(yCR, na.rm=TRUE);
     # Standardize total copy numbers to this average
-    dataC[,1,] <- 2 * dataC[,1,] / yCR;
+    dataC[,"total",] <- (2/yCR) * dataC[,"total",,drop=FALSE];
+    rm(yCR);
     verbose && exit(verbose);
   }
   
@@ -161,6 +179,12 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
 
 ###########################################################################
 # HISTORY:
+# 2010-08-05 [HB]
+# o ROBUSTNESS: Now calmateByTotalAndFracB() asserts that there is at 
+#   least two samples.
+# o BUG FIX: calmateByTotalAndFracB() assumed that there where enough
+#   units and samples so that subsetting would not drop singleton 
+#   dimension.  Now we use drop=FALSE everywhere.
 # 2010-08-02 [HB]
 # o Added argument 'refAvgFcn' to calmateByTotalAndFracB().
 # o CLEANUP: Removed save() calls used for debugging.

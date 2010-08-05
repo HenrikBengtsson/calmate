@@ -65,13 +65,18 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     }
   }
 
+  nbrOfSamples <- dim[3];
+  if (nbrOfSamples <= 2) {
+    throw("Argument 'data' contains less than two samples: ", nbrOfSamples);
+  }
+
   # Argument 'references':
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
-    references <- seq(length=dim[3]);
+    references <- seq(length=nbrOfSamples);
   } else if (is.logical(references)) {
-    if (length(references) != dim[3]) {
-      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", dim[3]);
+    if (length(references) != nbrOfSamples) {
+      throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", nbrOfSamples);
     }
     references <- which(references);
     if (length(references) == 0) {
@@ -79,8 +84,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     }
   } else if (is.numeric(references)) {
     references <- as.integer(references);
-    if (any(references < 1 | references > dim[3])) {
-      throw(sprintf("Argument 'references' is out of range [1,%d]", dim[3]));
+    if (any(references < 1 | references > nbrOfSamples)) {
+      throw(sprintf("Argument 'references' is out of range [1,%d]", nbrOfSamples));
     }
     if (length(references) == 0) {
       throw("No references samples.");
@@ -100,7 +105,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
   verbose && enter(verbose, "Identifying non-finite data points");
   # Keep finite values
-  ok <- (is.finite(data[,"A",]) & is.finite(data[,"B",]));
+  ok <- (is.finite(data[,"A",,drop=FALSE]) & is.finite(data[,"B",,drop=FALSE]));
+  dim(ok) <- dim(ok)[-2]; # Drop 2nd dimension
   ok <- rowAlls(ok);
   verbose && summary(verbose, ok);
   hasNonFinite <- any(!ok);
@@ -125,7 +131,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   dimnames(dataS) <- NULL;
   for (jj in seq(length=nbrOfSNPs)) {
     if (verbose && (jj %% 100 == 1)) printf(verbose, "%d,", nbrOfSNPs-jj+1);
-    Cjj <- dataS[jj,,,drop=TRUE];  # An 2xI matrix
+    Cjj <- dataS[jj,,,drop=FALSE];  # An 1x2xI array
+    dim(Cjj) <- dim(Cjj)[-1]; # A 2xI matrix
     CCjj <- fitCalMaTe(Cjj, references=references, ...);
     # Sanity check
     stopifnot(identical(dim(CCjj), dim(Cjj)));
@@ -166,7 +173,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     # Extract reference signals
     dataCR <- dataC[,,references,drop=FALSE];
     # Calculate total copy number signals
-    yCR <- dataCR[,1,,drop=TRUE]+dataCR[,2,,drop=TRUE];
+    yCR <- dataCR[,1,,drop=FALSE]+dataCR[,2,,drop=FALSE];
+    dim(yCR) <- dim(yCR)[-2]; # Drop 2nd dimension
     # Calculate the average
     yCR <- refAvgFcn(yCR, na.rm=TRUE);
     # Standardize ASCNs to this average
@@ -182,6 +190,11 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
 ###########################################################################
 # HISTORY:
+# 2010-08-05 [HB]
+# o ROBUSTNESS: Now calmateByThetaAB() asserts that there is at least
+#   two samples.
+# o BUG FIX: calmateByThetaAB() would not work with only one unit or only
+#   one sample.
 # 2010-08-02 [HB]
 # o Added argument 'refAvgFcn' to calmateByThetaAB().
 # 2010-06-19 [HB]

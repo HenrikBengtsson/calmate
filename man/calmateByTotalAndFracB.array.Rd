@@ -27,7 +27,7 @@
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,
-                      2 is total and fracB, and I is the number of samples.}
+              2 is total and fracB, and I is the number of samples.}
   \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
      samples should be used as the reference set.
      By default, all samples are considered.}
@@ -78,6 +78,11 @@ for (ii in c(1,5)) {
   plot(dataC[,,ii], xlim=Clim, ylim=Blim);
   title(main=sprintf("\%s\ncalibrated", sampleLabel));
 }
+
+
+# Assert that it also works with a single unit
+dummy <- calmateByTotalAndFracB(data[1,,,drop=FALSE]);
+stopifnot(length(dim(dummy)) == 3);
 }
 
  \seealso{

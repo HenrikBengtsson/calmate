@@ -70,6 +70,11 @@ for (ii in c(1,5)) {
   plot(CC[,,ii], xlim=Clim, ylim=Clim);
   title(main=sprintf("\%s\ncalibrated", sampleLabel));
 }
+
+
+# Assert that it also works with a single unit
+dummy <- calmateByThetaAB(theta[1,,,drop=FALSE]);
+stopifnot(length(dim(dummy)) == 3);
 }
 
  \seealso{

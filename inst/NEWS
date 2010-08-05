@@ -1,6 +1,15 @@
 Package: calmate
 ================
 
+Version: 0.6.1 [2010-08-05]
+o ROBUSTNESS: Now calmateByThetaAB() and calmateByTotalAndFracB() 
+  asserts that there is at least two samples.
+o BUG FIX: calmateByTotalAndFracB() assumed that there where enough
+  units and samples so that subsetting would not drop singleton 
+  dimension.  Now we use drop=FALSE everywhere.
+o BUG FIX: calmateByThetaAB() would not work if there was only one unit.
+
+
 Version: 0.6.0 [2010-08-02]
 o Added argument 'refAvgFcn' to calmateByTotalAndFracB() and
   calmateByThetaAB().  It is used to standardize the total copy number

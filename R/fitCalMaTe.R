@@ -58,7 +58,7 @@ setMethodS3("fitCalMaTe", "matrix", function(T, references, fB1=1/3, fB2=2/3, ma
   onlyOneAllele <- (abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff));
   if (onlyOneAllele) {
     idxs <- seq(length=ncol(T)/2);
-    T[1:2,idxs] <- T[2:1,idxs];
+    T[1:2,idxs] <- T[2:1,idxs, drop=FALSE];
 
     # Update precalcalculated signals
     TR <- T[,references, drop=FALSE];
@@ -99,7 +99,7 @@ setMethodS3("fitCalMaTe", "matrix", function(T, references, fB1=1/3, fB2=2/3, ma
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (onlyOneAllele) {
     idxs <- seq(length=ncol(res)/2);
-    res[1:2,idxs] <- res[2:1,idxs];
+    res[1:2,idxs] <- res[2:1,idxs, drop=FALSE];
   }
 
   # Return parameter estimates(?)
