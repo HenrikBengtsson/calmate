@@ -1,7 +1,7 @@
 ###########################################################################
 # Author: Henrik Bengtsson
 # Created on: 2010-05-18
-# Last updated: 2010-05-18
+# Last updated: 2010-09-28
 #
 # Data:
 # rawData/GSE12702/Mapping250K_Nsp/
@@ -31,7 +31,7 @@ stopifnot(identical(getNames(dsT), getNames(dsB)));
 # CalMaTe
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 dsList <- list(total=dsT, fracB=dsB);
-asn <- CalMaTeNormalization(dsList);
+asn <- CalMaTeCalibration(dsList);
 print(asn);
 
 ugp <- getAromaUgpFile(dsT);
@@ -41,23 +41,39 @@ units <- getUnitsOnChromosome(ugp, chr);
 dsNList <- process(asn, units=units, verbose=verbose);
 print(dsNList);
 
+# Array #ii
 ii <- 1;
+
+# Extract raw (TCN,BAF)
+df <- getFile(dsList$total, ii);
+dfR <- getAverageFile(dsList$total, verbose=verbose);
+gamma <- extractRawCopyNumbers(df, logBase=NULL, chromosome=chr);
+gammaR <- extractRawCopyNumbers(dfR, logBase=NULL, chromosome=chr);
+gamma <- 2*divideBy(gamma, gammaR);
 df <- getFile(dsList$fracB, ii);
-dfN <- getFile(dsNList$fracB, ii);
-
 beta <- extractRawAlleleBFractions(df, chromosome=chr);
+
+# Extract calibrated (TCN,BAF)
+dfN <- getFile(dsNList$fracB, ii);
 betaN <- extractRawAlleleBFractions(dfN, chromosome=chr);
+dfN <- getFile(dsNList$total, ii);
+gammaN <- extractRawCopyNumbers(dfN, logBase=NULL, chromosome=chr);
 
-
-subplots(2, ncol=1);
+# Plot
+subplots(4, ncol=2, byrow=FALSE);
 plot(beta);
 title(sprintf("%s", getName(beta)));
+plot(gamma);
 plot(betaN);
 title(sprintf("%s (CalMaTe)", getName(betaN)));
+plot(gammaN);
 
 
 ###########################################################################
 # HISTORY:
+# 2010-09-28
+# o Added total CN track.
+# o Using CalMaTeCalibration formely known CalMaTeNormalization.
 # 2010-06-20
 # o Created.
 ###########################################################################

@@ -30,14 +30,27 @@ print(dsNList);
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Sample #1 and Chromosome 17
 ii <- 1;
+
+# Extract raw (TCN,BAF)
+df <- getFile(dsList$total, ii);
+dfR <- getAverageFile(dsList$total, verbose=verbose);
+gamma <- extractRawCopyNumbers(df, logBase=NULL, chromosome=chr);
+gammaR <- extractRawCopyNumbers(dfR, logBase=NULL, chromosome=chr);
+gamma <- 2*divideBy(gamma, gammaR);
 df <- getFile(dsList$fracB, ii);
-dfN <- getFile(dsNList$fracB, ii);
-
 beta <- extractRawAlleleBFractions(df, chromosome=chr);
-betaN <- extractRawAlleleBFractions(dfN, chromosome=chr);
 
-subplots(2, ncol=1);
+# Extract calibrated (TCN,BAF)
+dfN <- getFile(dsNList$fracB, ii);
+betaN <- extractRawAlleleBFractions(dfN, chromosome=chr);
+dfN <- getFile(dsNList$total, ii);
+gammaN <- extractRawCopyNumbers(dfN, logBase=NULL, chromosome=chr);
+
+# Plot
+subplots(4, ncol=2, byrow=FALSE);
 plot(beta);
 title(sprintf("%s", getName(beta)));
+plot(gamma);
 plot(betaN);
 title(sprintf("%s (CalMaTe)", getName(betaN)));
+plot(gammaN);

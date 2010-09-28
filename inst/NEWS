@@ -1,6 +1,11 @@
 Package: calmate
 ================
 
+Version: 0.6.2 [2010-09-28]
+o Updated the example for the CalMaTeCalibration help page to
+  illustrate how to extract the total copy numbers correctly.
+
+
 Version: 0.6.1 [2010-08-05]
 o ROBUSTNESS: Now calmateByThetaAB() and calmateByTotalAndFracB() 
   asserts that there is at least two samples.
