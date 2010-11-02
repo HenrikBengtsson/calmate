@@ -28,8 +28,8 @@
      of length I specifying which samples are used when calculating the
      reference signals.  If \code{\link[base]{NULL}}, all samples are used.}
   \item{...}{Additional arguments passed to internal \code{fitCalMaTe().}}
-  \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative,
-     which preserving the total CNs.}
+  \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative
+     while preserving the total CNs.}
   \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
      an argument \code{na.rm} and returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
      It should calculate some type of average for each of the J rows, e.g.

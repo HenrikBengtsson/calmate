@@ -18,8 +18,8 @@
 #     of length I specifying which samples are used when calculating the
 #     reference signals.  If @NULL, all samples are used.}
 #  \item{...}{Additional arguments passed to internal \code{fitCalMaTe().}}
-#  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative,
-#     which preserving the total CNs.}
+#  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative
+#     while preserving the total CNs.}
 #  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
 #     an argument \code{na.rm} and returns a @numeric @vector of length J.
 #     It should calculate some type of average for each of the J rows, e.g.
