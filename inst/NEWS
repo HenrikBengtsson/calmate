@@ -12,7 +12,7 @@ o Updated the example for the CalMaTeCalibration help page to
 
 Version: 0.6.1 [2010-08-05]
 o ROBUSTNESS: Now calmateByThetaAB() and calmateByTotalAndFracB() 
-  asserts that there is at least two samples.
+  asserts that there are at least two samples.
 o BUG FIX: calmateByTotalAndFracB() assumed that there where enough
   units and samples so that subsetting would not drop singleton 
   dimension.  Now we use drop=FALSE everywhere.
