@@ -21,6 +21,9 @@
 #     two data sets must be for the same chip type, have the same
 #     number of samples and the same sample names.}
 #   \item{tags}{Tags added to the output data sets.}
+#   \item{references}{An optional @numeric @vector specifying which samples
+#     should be as reference samples for estimating the model parameters.
+#     If @NULL, all samples are used.}
 #   \item{...}{Arguments passed to calmateByTotalAndFracB or calmateByThetaAB.}
 # }
 #
@@ -47,7 +50,7 @@
 # }
 #
 #*/###########################################################################
-setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", ...) {
+setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=NULL, ...) {
   # Validate arguments
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -80,7 +83,7 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", ...) {
     }
 
     # Assert that the data sets have the same number data files
-    nbrOfFiles <- nbrOfFiles(data$total)
+    nbrOfFiles <- nbrOfFiles(data$total);
     if (nbrOfFiles != nbrOfFiles(data$fracB)) {
       throw("The number of samples in 'total' and 'fracB' differ: ", 
             nbrOfFiles, " != ", nbrOfFiles(data$fracB));
@@ -90,7 +93,18 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", ...) {
     if (!identical(getNames(data$total), getNames(data$fracB))) {
       throw("The samples in 'total' and 'fracB' have different names.");
     }
+  }
 
+  # Argument 'references':
+  if (!is.null(references)) {
+    nbrOfFiles <- nbrOfFiles(data$total);
+    references <- Arguments$getIndices(references, range=c(1, nbrOfFiles));
+    references <- unique(references);
+    references <- sort(references);
+
+    if (length(references) < 6) {
+      throw("Argument 'references' specifies too few (<6) reference samples: ", length(references));
+    }
   }
 
 
@@ -102,7 +116,8 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", ...) {
   }
 
   this <- extend(Object(...), "CalMaTeCalibration",
-    .data = data
+    .data = data,
+    .references = references
   );
 
   setTags(this, tags);
@@ -123,7 +138,14 @@ setMethodS3("as.character", "CalMaTeCalibration", function(x, ...) {
     ds <- dsList[[kk]];
     s <- c(s, sprintf("<%s>:", capitalize(names(dsList)[kk])));
     s <- c(s, as.character(ds));
-  } 
+  }
+  refs <- getReferences(this);
+  nbrOfFiles <- nbrOfFiles(this);
+  nbrOfRefs <- length(refs);
+  if (nbrOfRefs == 0) 
+    nbrOfRefs <- nbrOfFiles;
+  s <- c(s, sprintf("Number of arrays: %d", nbrOfFiles));
+  s <- c(s, sprintf("Number of references: %d (%.2f%%)", nbrOfRefs, 100*nbrOfRefs/nbrOfFiles));
  
   class(s) <- "GenericSummary";
   s;
@@ -250,6 +272,11 @@ setMethodS3("nbrOfFiles", "CalMaTeCalibration", function(this, ...) {
 })
 
 
+setMethodS3("getReferences", "CalMaTeCalibration", function(this, ...) {
+  this$.references;
+})
+
+
 setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
@@ -264,7 +291,7 @@ setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbo
     this$.outputDataSets <- res;
   }
   res;
-}) 
+})
 
 
 setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
@@ -292,8 +319,9 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
                                         ii, getName(df), nbrOfFiles(ds)));
 
       filename <- getFilename(df);
-      pathname <- Arguments$getWritablePathname(filename, path=path, 
+      pathname <- Arguments$getReadablePathname(filename, path=path, 
                                                        mustNotExist=FALSE);
+
       # Skip?
       if (isFile(pathname)) {
         verbose && cat(verbose, "Already exists. Skipping.");
@@ -301,9 +329,8 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
         next;
       }
 
-      # Create temporary file
-      pathnameT <- sprintf("%s.tmp", pathname);
-      pathnameT <- Arguments$getWritablePathname(pathnameT, mustNotExist=TRUE);
+      # Create temporary file (also checks for write permissions)
+      pathnameT <- pushTemporaryFile(pathname);
 
       # Copy source file
       copyFile(getPathname(df), pathnameT);
@@ -313,21 +340,14 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
       dfT <- newInstance(df, pathnameT);
       dfT[,1] <- NA;
 
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       # Renaming temporary file
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      verbose && enter(verbose, "Renaming temporary output file");
-      file.rename(pathnameT, pathname);
-      if (!isFile(pathname)) {
-        throw("Failed to rename temporary file ('", pathnameT, "') to final file ('", pathname, "')");
-      }
-      verbose && exit(verbose);
+      pathname <- popTemporaryFile(pathnameT);
 
       verbose && cat(verbose, "Copied: ", pathname);
       verbose && exit(verbose);
     } # for (ii ...)
 
-    dsOut <- byPath(ds, path=path, ...);
+    dsOut <- byPath(ds, path=path, ..., verbose=less(verbose, 10));
 
     # AD HOC: The above byPath() grabs all *.asb files. /HB 2010-06-20
     keep <- is.element(sapply(dsOut, getFilename), sapply(ds, getFilename));
@@ -399,7 +419,7 @@ setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=F
 })
 
 
-setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", ..., force=FALSE, ram=NULL, verbose=FALSE) {
+setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", references=getReferences(this), ..., force=FALSE, ram=NULL, verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -434,7 +454,10 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", .
 
   verbose && enter(verbose, "CalMaTe calibration of ASCNs");
   nbrOfFiles <- nbrOfFiles(this);
+  nbrOfRefs <- length(references);
+  if (nbrOfRefs == 0) nbrOfRefs <- nbrOfFiles;
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
+  verbose && cat(verbose, "Number of references: ", nbrOfRefs);
 
   verbose && cat(verbose, "Units:");
   verbose && str(verbose, units);
@@ -544,7 +567,9 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", .
     verbose && exit(verbose);
 
     verbose && enter(verbose, "Calibration");
-    dataN <- calmateByTotalAndFracB(data, ..., verbose=verbose);
+    dataN <- calmateByTotalAndFracB(data, references=references, ..., 
+                                                         verbose=verbose);
+
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
     verbose && str(verbose, dataN);
@@ -611,6 +636,10 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", .
 
 ############################################################################
 # HISTORY:
+# 2011-03-08
+# o GENERALIZATION: Now allocateOutputDataSets() for CalMaTeCalibration
+#   no longer requires write permissions if the data set already exists.
+# o Added argument 'references' to the CalMaTeCalibration constructor.
 # 2010-07-31
 # o BUG FIX: process() for CalMaTeCalibration would only run one chunk.
 # 2010-07-30

@@ -49,6 +49,8 @@
 \alias{truncateThetaAB.matrix}
 \alias{fitCalMaTe}
 \alias{fitCalMaTeCNprobes}
+\alias{getReferences}
+\alias{getReferences.CalMaTeCalibration}
 
 \description{
   This page contains aliases for all "non-documented" objects that

@@ -126,11 +126,13 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   verbose && enter(verbose, "Fitting CalMaTe");
   nbrOfSNPs <- dim(dataS)[1];
   verbose && cat(verbose, "Number of SNPs: ", nbrOfSNPs);
-  verbose && printf(verbose, "Number of SNPs left:");
+  verbose && printf(verbose, "Number of SNPs left: ");
   # Drop dimnames for faster processing
   dimnames(dataS) <- NULL;
   for (jj in seq(length=nbrOfSNPs)) {
-    if (verbose && (jj %% 100 == 1)) printf(verbose, "%d,", nbrOfSNPs-jj+1);
+    if (verbose && (jj %% 100 == 1)) {
+      printf(verbose, "%d,", nbrOfSNPs-jj+1, timestamp=FALSE);
+    }
     Cjj <- dataS[jj,,,drop=FALSE];  # An 1x2xI array
     dim(Cjj) <- dim(Cjj)[-1]; # A 2xI matrix
     CCjj <- fitCalMaTe(Cjj, references=references, ...);
