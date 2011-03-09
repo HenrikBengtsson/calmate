@@ -1,0 +1,70 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+TITLE: README
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Author: Henrik Bengtsson
+Created on: 2011-03-09
+Last updated on: 2011-03-09
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+INTRODUCTION
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+SCRIPTS
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+DATA SETS
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+The following data sets are used in these scripts.  Some are
+publicly available, whereas some requires certain prior approvals
+before the resource allows you to download the data.
+
+
+DATA SET: TCGA Affymetrix data set
+
+annotationData/
+  chipTypes/
+    GenomeWideSNP_6/
+      GenomeWideSNP_6,Full,na30,hg18,HB20100215.ugp
+
+totalAndFracBData/
+  broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0,ASCRMAv2/
+    GenomeWideSNP_6/
+      .average-signals-median-mad,<hashcode>.asb
+      <sampleName>,total.asb
+      <sampleName>,fracB.asb
+  broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0,ASCRMAv2,CMTN/
+    GenomeWideSNP_6/
+      <sampleName>,total.asb
+      <sampleName>,fracB.asb
+
+Availability: This data set is available from the TCGA portal.  It is only available for people with access to the "protected" TCGA data.
+
+
+
+
+DATA SET: TCGA Illumina data set
+
+annotationData/
+  chipTypes/
+    Human1M-Duo/
+      Human1M-Duo,HB20090419.ugp
+
+totalAndFracBData/
+  hudsonalpha.org_OV.Human1MDuo.1.1.0,XY/
+    Human1M-Duo/
+      .average-signals-median-mad,<hashcode>.asb
+      <sampleName>,total.asb
+      <sampleName>,fracB.asb
+  hudsonalpha.org_OV.Human1MDuo.1.1.0,XY,CMTN/
+    Human1M-Duo/
+      <sampleName>,total.asb
+      <sampleName>,fracB.asb
+
+Availability: This data set is available from the TCGA portal.  It is only available for people with access to the "protected" TCGA data.

@@ -5,6 +5,9 @@ Version: 0.6.4 [2011-03-08]
 o GENERALIZATION: Now allocateOutputDataSets() for CalMaTeCalibration
   no longer requires write permissions if the data set already exists.
 o Added argument 'references' to the CalMaTeCalibration constructor.
+o REPRODUCIBLE RESEARCH: Added scripts to process the data and
+  generate the figures used in the CalMaTe manuscript(s).  These
+  scripts are available under testScripts/publications/.
 
 
 Version: 0.6.3 [2010-11-02]
