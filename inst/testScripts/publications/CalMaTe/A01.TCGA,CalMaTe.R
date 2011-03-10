@@ -1,17 +1,6 @@
 ###########################################################################
 # Title:
-#
 # Author: Henrik Bengtsson
-# 
-# Requirements:
-# annotationData/
-#   chipTypes/
-#     GenomeWideSNP_6/
-#
-# totalAndFracBData/
-#   broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0,ASCRMAv2/
-#     GenomeWideSNP_6/
-#       *,total.asb  *,fracB.asb
 ###########################################################################
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -66,15 +55,22 @@ verbose && print(verbose, dsList);
 # 2. Clever CalMaTe (using normal arrays as references)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 verbose && enter(verbose, "Normalization ASCNs using CalMaTe");
-## TODO:
 
-## Identify the normal samples to be used as references
-refs <- grep("-(10|11)[A-Z]-", getFullNames(dsList$total));
-# stopifnot(length(refs) == length(dsList$total)/2);
-verbose && cat(verbose, "Number of reference samples for CalMaTe: ", length(refs));
+useNormalRefs <- TRUE;
+if (useNormalRefs) {
+  ## Identify the normal samples to be used as references
+  refs <- grep("-(10|11)[A-Z]-", getFullNames(dsList$total));
+  # stopifnot(length(refs) == length(dsList$total)/2);
+  verbose && cat(verbose, "Number of reference samples for CalMaTe: ", length(refs));
+  refTag <- "refs=N";
+} else {
+  refs <- NULL;
+  refTag <- NULL;
+}
+
 
 ## CalMaTe calibration
-cmt <- CalMaTeCalibration(dsList, references=refs);
+cmt <- CalMaTeCalibration(dsList, references=refs, tags=c("*", refTag));
 verbose && print(verbose, cmt);
 
 dsCList <- process(cmt, verbose=verbose);

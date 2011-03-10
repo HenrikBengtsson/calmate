@@ -1,24 +1,6 @@
 ###########################################################################
 # Title:
-#
 # Author: Henrik Bengtsson
-# 
-# Requirements:
-# annotationData/
-#   chipTypes/
-#     GenomeWideSNP_6/
-#       GenomeWideSNP_6,Full,na30,hg18,HB20100215.ugp
-#
-# totalAndFracBData/
-#   broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0,ASCRMAv2/
-#     GenomeWideSNP_6/
-#       .average-signals-median-mad,1fb927050647e7233149f7c5da0b0ade.asb
-#       <sampleName>,total.asb
-#       <sampleName>,fracB.asb
-#   broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0,ASCRMAv2,CMTN/
-#     GenomeWideSNP_6/
-#       <sampleName>,total.asb
-#       <sampleName>,fracB.asb
 ###########################################################################
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -26,6 +26,25 @@ publicly available, whereas some requires certain prior approvals
 before the resource allows you to download the data.
 
 
+DATA SET: GEO GSE12702 Affymetrix data set
+
+annotationData/
+  chipTypes/
+    Mapping250K_Nsp/
+      Mapping250K_Nsp.cdf
+      Mapping250K_Nsp,HB20080710.acs
+      Mapping250K_Nsp,na31,HB20101007.ufl
+      Mapping250K_Nsp,na31,HB20101007.ugp
+
+rawData/
+  GSE12702/
+    Mapping250K_Nsp/
+      GSM318728.CEL [File #1]
+      ...
+      GSM318767.CEL [File #40]
+
+
+
 DATA SET: TCGA Affymetrix data set
 
 annotationData/
