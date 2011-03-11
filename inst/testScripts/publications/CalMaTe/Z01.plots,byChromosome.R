@@ -19,16 +19,12 @@ sourceTo("002.datasets.R", path=path);
 
 figPath <- file.path("figures", chipType);
 figPath <- Arguments$getWritablePath(figPath);
-
-
-
-
+  
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Calibrated or not?
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 calTag <- textMenu(calTags, title="Choose calibration method:", value=TRUE);
 if (calTag == "<none>") calTag <- NULL;
-
 
 
 dsList <- loadSets(dataSet, tags=c(tags, calTag), chipType=chipType, verbose=verbose);
@@ -80,14 +76,14 @@ for (kk in seq(along=segments)) {
 
   chrTag <- sprintf("chr%02d", chr);
   segTag <- sprintf("%s:%g-%gMb", chrTag, region[1], region[2]);
-  
+
   verbose && enter(verbose, sprintf("Segment #%d ('%s') of %d", kk, segTag, length(segments)));
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Extracting signals
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   dataList <- lapply(pair, FUN=function(name) {
-    extractSignals(dsList, sampleName=name, chromosome=chr, region=region*1e6, verbose=verbose);
+    extractSignals(dsList, sampleName=name, chromosome=chr, verbose=verbose);
   });
   names(dataList) <- names(pair);
 
@@ -127,19 +123,24 @@ for (kk in seq(along=segments)) {
 
     ascn <- cbind(A=(1-beta[,"T"])*gammaT, B=beta[,"T"]*gammaT);
 
-    fullname <- fullname(sampleName, gsub(":","_",segTag), tagsT, "BvsB", anTags);
-    devEval("png", name=fullname, width=840, aspectRatio=1, {
-      plotBvsB(beta, col=col, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    fullname <- fullname(sampleName, chrTag, tagsT, "TCN", anTags);
+    devEval("png", name=fullname, width=840, height=300, {
+      plotTrackTCN(gammaT, x=x, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
     }, path=figPath);
 
-    fullname <- fullname(sampleName, gsub(":","_",segTag), tagsT, "ASCN", anTags);
-    devEval("png", name=fullname, width=840, aspectRatio=1, {
-      plotASCN(ascn, col=col, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    fullname <- fullname(sampleName, chrTag, tagsT, "BAF", anTags);
+    devEval("png", name=fullname, width=840, height=300, {
+      plotTrackBAF(beta[,"T"], x=x, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
     }, path=figPath);
 
-    fullname <- fullname(sampleName, gsub(":","_",segTag), tagsT, "C1C2", anTags);
-    devEval("png", name=fullname, width=840, aspectRatio=0.7, {
-      plotTrackC1C2(ascn, x=x, muN=muN, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    fullname <- fullname(sampleName, chrTag, tagsT, "DH", anTags);
+    devEval("png", name=fullname, width=840, height=300, {
+      plotTrackDH(beta[,"T"], x=x, muN=muN, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    }, path=figPath);
+
+    fullname <- fullname(sampleName, chrTag, tagsT, "C1C2", anTags);
+    devEval("png", name=fullname, width=840, height=300, {
+      plotTrackC1C2(ascn, x=x, muN=muN, sampleName=sampleName, chrTag=chrTag, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
     }, path=figPath);
   } # for (tbn ...)
 

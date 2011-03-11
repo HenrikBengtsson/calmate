@@ -1,6 +1,9 @@
 ###########################################################################
 # Title:
+#
 # Author: Henrik Bengtsson
+# 
+# Requirements:
 ###########################################################################
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16,35 +19,17 @@ sourceTo("001.include.R", path=path);
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Choose chip type to study
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-chipTypes <- c("GenomeWideSNP_6", "Human1M-Duo");
-if (interactive() && require("R.menu")) {
-  chipType <- textMenu(chipTypes, title="Select chip type:", value=TRUE);
-} else {
-  chipType <- chipTypes[1];
-}
-
-
-figPath <- file.path("figures", chipType);
-figPath <- Arguments$getWritablePath(figPath);
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Setting up data set
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if (chipType == "Human1M-Duo") {
-  dataSet <- "hudsonalpha.org_OV.Human1MDuo.1.1.0";
-  tags <- "XY";
-  chipType <- "Human1M-Duo"
-} else if (chipType == "GenomeWideSNP_6") {
-  dataSet <- "broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0";
-  tags <- "ASCRMAv2";
-  chipType <- "GenomeWideSNP_6";
-}
+dataSet <- "GSE12702";
+tags <- "ACC,-XY,BPN,-XY,RMA,FLN,-XY";
+chipType <- "Mapping250K_Nsp";
 
 dsList <- loadSets(dataSet, tags=tags, chipType=chipType, verbose=verbose);
 verbose && print(verbose, dsList);
+
+# Sanity check
+stopifnot(length(dsList$total) == 40);
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,10 +43,21 @@ verbose && enter(verbose, "Normalization ASCNs using CalMaTe");
 
 useNormalRefs <- TRUE;
 if (useNormalRefs) {
-  ## Identify the normal samples to be used as references
-  refs <- grep("-(10|11)[A-Z]-", getFullNames(dsList$total));
-  # stopifnot(length(refs) == length(dsList$total)/2);
+  # Identify the 20 tumor-normal pairs
+  patientIDs <- c(24, 25, 27, 31, 45, 52, 58, 60, 75, 110, 115, 122, 128, 137, 138, 140, 154, 167, 80, 96);
+
+  sampleTypes <- c("tumor", "normal");
+  ids <- rep(patientIDs, each=length(sampleTypes));
+  types <- rep(sampleTypes, times=length(patientIDs));
+  ad <- data.frame(patient=ids, type=types, name=getNames(dsList$total));
+
+  # Identify the 20 normal samples
+  refs <- which(ad$type == "normal");
   verbose && cat(verbose, "Number of reference samples for CalMaTe: ", length(refs));
+
+  # Sanity check
+  stopifnot(length(refs) == 20);
+
   refTag <- "refs=N";
 } else {
   refs <- NULL;
@@ -77,6 +73,7 @@ dsCList <- process(cmt, verbose=verbose);
 
 dsCList <- getOutputDataSets(cmt);
 verbose && print(verbose, dsCList);
+
 verbose && exit(verbose);
 
 
@@ -84,5 +81,5 @@ verbose && exit(verbose);
 ###########################################################################
 # HISTORY:
 # 2011-03-09 [HB]
-# o Created from PN's CalMaTe,Illumina.R script from Nov 2010.
+# o Created from other scripts and online CalMaTe vignette.
 ###########################################################################
