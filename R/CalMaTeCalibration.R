@@ -320,7 +320,7 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
 
       filename <- getFilename(df);
       pathname <- Arguments$getReadablePathname(filename, path=path, 
-                                                       mustNotExist=FALSE);
+                                                          mustExist=FALSE);
 
       # Skip?
       if (isFile(pathname)) {
@@ -636,6 +636,9 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
 
 ############################################################################
 # HISTORY:
+# 2011-03-12
+# o BUG FIX: After recent update, allocateOutputDataSets() would only
+#   work for existing data sets, not to create new ones.
 # 2011-03-08
 # o GENERALIZATION: Now allocateOutputDataSets() for CalMaTeCalibration
 #   no longer requires write permissions if the data set already exists.
