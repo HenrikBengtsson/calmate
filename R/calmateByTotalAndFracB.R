@@ -17,7 +17,8 @@
 #
 # \arguments{
 #  \item{data}{An Jx2xI @numeric @array, where J is the number of loci,
-#              2 is total and fracB, and I is the number of samples.}
+#              2 is total and fracB (in that order, if unnamed), and 
+#              I is the number of samples.}
 #  \item{references}{A @logical or @numeric @vector specifying which
 #     samples should be used as the reference set.  
 #     By default, all samples are considered.}
@@ -34,7 +35,8 @@
 # }
 #
 # \value{
-#   Returns an Jx2xI @numeric @array.
+#   Returns an Jx2xI @numeric @array
+#   with the same dimension names as argument \code{data}.
 # }
 #
 # @examples "../incl/calmateByTotalAndFracB.Rex"
@@ -63,14 +65,17 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
                                                 paste(dim, collapse="x"));
   }
   if (!is.null(dimnames[[2]])) {
-    if (dimnames[[2]][2]=="freqB"){
-      dimnames(data)[[2]][2] = "fracB";  
-      dimnames[[2]][2]="fracB";
-    }    
-    if (!identical(dimnames[[2]], c("total", "fracB"))) {
-      throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames[[2]], collapse=", "));
+    # Backward compatibility
+    if (dimnames(data)[[2]][2] == "freqB"){
+      dimnames(data)[[2]][2] <- "fracB";
+    }
+    if (!identical(dimnames(data)[[2]], c("total", "fracB"))) {
+      throw("If given, the names of the allele (2nd) dimension of the Jx2xI-dimensional array (argument 'data') have to be 'total' & 'fracB': ", paste(dimnames(data)[[2]], collapse=", "));
     }
   }
+
+  # From here on we force dimension names on the 2nd dimension
+  dimnames(data)[[2]] <- c("total", "fracB");
 
   nbrOfSamples <- dim[3];
   if (nbrOfSamples <= 2) {
@@ -167,7 +172,10 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
     rm(yCR);
     verbose && exit(verbose);
   }
-  
+
+  # Enforce the same dimension names as the input data
+  dimnames(dataC) <- dimnames;
+
   verbose && cat(verbose, "Calibrated (total,fracB) signals:");
   verbose && str(verbose, dataC);
 
@@ -179,6 +187,9 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
 
 ###########################################################################
 # HISTORY:
+# 2011-03-18 [HB]
+# o BUG FIX: calmateByTotalAndFracB() required that the 2nd dimension
+#   of argument 'data' had names "total" and "fracB".
 # 2010-08-05 [HB]
 # o ROBUSTNESS: Now calmateByTotalAndFracB() asserts that there is at 
 #   least two samples.

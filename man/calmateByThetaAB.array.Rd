@@ -41,7 +41,8 @@
  }
 
  \value{
-   Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}.
+   Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}
+   with the same dimension names as argument \code{data}.
  }                                 
 
  \examples{

@@ -27,7 +27,8 @@
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,
-              2 is total and fracB, and I is the number of samples.}
+              2 is total and fracB (in that order, if unnamed), and
+              I is the number of samples.}
   \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
      samples should be used as the reference set.
      By default, all samples are considered.}
@@ -44,7 +45,8 @@
  }
 
  \value{
-   Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}.
+   Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}
+   with the same dimension names as argument \code{data}.
  }
 
  \examples{

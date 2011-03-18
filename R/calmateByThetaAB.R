@@ -31,7 +31,8 @@
 # }
 #
 # \value{
-#   Returns an Jx2xI @numeric @array.
+#   Returns an Jx2xI @numeric @array
+#   with the same dimension names as argument \code{data}.
 # }                                   
 #
 # @examples "../incl/calmateByThetaAB.Rex"
@@ -94,14 +95,18 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);    
+
+
+
+  # From here on we force dimension names on the 2nd dimension
+  dimnames(data)[[2]] <- c("A", "B");
+
   
   verbose && enter(verbose, "calmateByThetaAB()");
   verbose && cat(verbose, "ASCN signals:");
   verbose && str(verbose, data);
   verbose && cat(verbose, "Reference samples:");
   verbose && str(verbose, references);
-
-
 
   verbose && enter(verbose, "Identifying non-finite data points");
   # Keep finite values
@@ -184,6 +189,12 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     verbose && exit(verbose);
   }
 
+  # Enforce the same dimension names as the input data
+  dimnames(dataC) <- dimnames;
+
+  verbose && cat(verbose, "Calibrated (A,B) signals:");
+  verbose && str(verbose, dataC);
+
   verbose && exit(verbose);
 
   dataC;
@@ -192,6 +203,9 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
 ###########################################################################
 # HISTORY:
+# 2011-03-18 [HB]
+# o BUG FIX: calmateByThetaAB() required that the 2nd dimension
+#   of argument 'data' had names "A" and "B".
 # 2010-08-05 [HB]
 # o ROBUSTNESS: Now calmateByThetaAB() asserts that there is at least
 #   two samples.

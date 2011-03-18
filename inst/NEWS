@@ -1,6 +1,12 @@
 Package: calmate
 ================
 
+Version: 0.6.5 [2011-03-18]
+o BUG FIX: calmateByTotalAndFracB() required that the 2nd dimension
+  of argument 'data' had names "total" and "fracB".  Likewise,
+  calmateByThetaAB() required that they were "A" and "B".
+
+
 Version: 0.6.4 [2011-03-12]
 o GENERALIZATION: Now allocateOutputDataSets() for CalMaTeCalibration
   no longer requires write permissions if the data set already exists.
