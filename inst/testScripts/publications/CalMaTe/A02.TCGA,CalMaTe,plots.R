@@ -58,6 +58,18 @@ sampleName <- "TCGA-23-1027-01";
 verbose && cat(verbose, "Sample name: ", sampleName);
 
 
+# Plot dimensions etc.
+xlab <- "Position (Mb)";
+ylab <- list(tcn="Copy number", baf="Allele B Fraction");
+ylim <- list(tcn=c(0,6), baf=c(-0.1, 1.1));
+at <- list(tcn=c(0, 2, 4, 6), baf=c(0, 1/2, 1));
+
+# Default graphical parameters
+setOption("devNew/args/par", list(
+  mar=c(2.5,2.5,1.1,1)+0.1, mgp=c(1.4,0.4,0), tcl=-0.3,
+  cex=2
+));
+
 chromosomes <- 1:23;
 for (chr in chromosomes) {
   chrTag <- sprintf("Chr%02d", chr);
@@ -81,14 +93,6 @@ for (chr in chromosomes) {
   pos <- data$tcn$x;
   x <- pos/1e6;
   xlim <- range(x, na.rm=TRUE);
-  xlab <- "Position (Mb)";
-
-  ylim <- list(tcn=c(0,6), baf=c(-0.1, 1.1));
-  ylab <- list(tcn="Copy number", baf="Allele B Fraction");
-  at <- list(tcn=c(0, 2, 4, 6), baf=c(0, 1/2, 1));
-  width <- 1280;
-  width <- 840;
-  aspect <- 1/3;
 
   for (figTag in c("tcn", "baf")) {
     for (cal in c(FALSE, TRUE)) {
@@ -99,19 +103,17 @@ for (chr in chromosomes) {
         dat <- data;
         tagsT <- tags;
       }
-      figName <- fullname(sampleName, chrTag, chipType, tagsT, toupper(figTag));
-  
-      devEval("png", name=figName, width=width, aspectRatio=aspect, {
-        par(mar=c(2.5,2.5,1.1,1)+0.1, tcl=-0.3, mgp=c(1.4,0.4,0), cex=2);
+
+      tags <- c(chrTag, chipType, tagsT, toupper(figTag));
+      toPNG(name=sampleName, tags=tags, width=840, aspectRatio=1/3, {
         plot(NA, xlim=xlim, ylim=ylim[[figTag]], 
                  xlab=xlab, ylab=ylab[[figTag]], axes=FALSE);
         axis(side=1);
         axis(side=2, at=at[[figTag]]);
         points(dat[[figTag]], pch=".");
-        label <- sprintf("%s", sampleName);
-        stext(side=3, pos=0, label);
+        stext(side=3, pos=0, sprintf("%s", sampleName));
         stext(side=3, pos=1, chrTag);
-      }, path=figPath);
+      });
     } # for (cal ...)
   } # for (figTag ...)
 

@@ -13,15 +13,10 @@ pathname <- names(findSourceTraceback())[1];
 path <- dirname(pathname);
 
 # Loading include files
-sourceTo("001.include.R", path=path);
-sourceTo("002.datasets.R", path=path);
+pathT <- file.path(path, "R/");
+sourceDirectory(path=pathT);
 
-
-figPath <- file.path("figures", chipType);
-figPath <- Arguments$getWritablePath(figPath);
-
-
-
+anTags <- c("dens", "hets"); 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Calibrated or not?
@@ -38,34 +33,24 @@ verbose && print(verbose, dsList);
 # stopifnot(all(sapply(dsList, FUN=length) == 40));
 
 
-dsTags <- getTags(dsList$total, collapse=",");
+# Translated data set tags
+dsTags <- tags(fullname(dataSet, getTags(dsList[[1]])));
 dsTags <- gsub("ACC,-XY,BPN,-XY,RMA,FLN,-XY", "ASCRMAv2", dsTags);
 dsTags <- gsub("ACC,-XY,BPN,-XY,AVG,FLN,-XY", "ASCRMAv2", dsTags);
 dsTags <- gsub("CMTN", "CalMaTe", dsTags);
-  
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Identify tumor-normal pairs
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## refs <- indexOf(dsList$total, pairs[,"normal"]);
-##  # Sanity check
-##  stopifnot(length(idxs) == 20);
-## verbose && cat(verbose, "Number of reference samples for CalMaTe: ", length(refs));
+dsTags <- dropTags(dsTags, drop="refs=N");
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Extracting one tumor-normal pair
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 verbose && enter(verbose, "Extracting tumor-normal pair of interest");
-
-# Identify tumor of interest
 pairs <- getPairs(dsList);
-
-# Identify pair
 pair <- pairs[sampleName,,drop=TRUE];
 verbose && cat(verbose, "Tumor: ", pair["tumor"]);
 verbose && cat(verbose, "Normal: ", pair["normal"]);
 pairName <- paste(pair, collapse="vs"); 
 verbose && cat(verbose, "Pair: ", pairName);
-
 verbose && exit(verbose);
   
 
@@ -113,9 +98,7 @@ for (kk in seq(along=segments)) {
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     beta <- cbind(N=betaN, T=betaT);
 
-    # Drop 'refs=N' tag
-    tagsT <- dropTags(dsTags, drop="refs=N");
-
+    tagsT <- dsTags;
     if (tbn) {
       verbose && enter(verbose, "TumorBoosting");
       betaTN <- normalizeTumorBoost(betaT=betaT, betaN=betaN);
@@ -127,20 +110,51 @@ for (kk in seq(along=segments)) {
 
     ascn <- cbind(A=(1-beta[,"T"])*gammaT, B=beta[,"T"]*gammaT);
 
-    fullname <- fullname(sampleName, gsub(":","_",segTag), tagsT, "BvsB", anTags);
-    devEval("png", name=fullname, width=840, aspectRatio=1, {
+    tags <- c(gsub(":","_",segTag), tagsT, "BvsB", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, {
       plotBvsB(beta, col=col, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
-    }, path=figPath);
+    })
 
-    fullname <- fullname(sampleName, gsub(":","_",segTag), tagsT, "ASCN", anTags);
-    devEval("png", name=fullname, width=840, aspectRatio=1, {
+    tags <- c(gsub(":","_",segTag), tagsT, "ASCN", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, {
       plotASCN(ascn, col=col, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
-    }, path=figPath);
+    })
 
-    fullname <- fullname(sampleName, gsub(":","_",segTag), tagsT, "C1C2", anTags);
-    devEval("png", name=fullname, width=840, aspectRatio=0.7, {
-      plotTrackC1C2(ascn, x=x, muN=muN, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
-    }, path=figPath);
+    tags <- c(gsub(":","_",segTag), tagsT, "BvsC", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, {
+      plotCvsB(ascn, col=col, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    })
+
+
+    tags <- c(chrTag, tagsT, "TCN", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, height=300, {
+      plotTrackTCN(gammaT, x=x, cex=2, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    });
+
+    tags <- c(chrTag, tagsT, "BAFT", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, height=300, {
+      plotTrackBAF(beta[,"T"], x=x, cex=2, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    });
+
+    tags <- c(chrTag, tagsT, "BAFN", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, height=300, {
+      plotTrackBAF(beta[,"N"], x=x, cex=2, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    });
+
+    tags <- c(chrTag, tagsT, "DH", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, height=300, {
+      plotTrackDH(beta[,"T"], x=x, muN=muN, cex=2, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    });
+
+    tags <- c(gsub(":","_",segTag), tagsT, "C1C2", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, height=300, {
+      plotTrackC1C2(ascn, x=x, muN=muN, cex=2, sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    })
+
+    tags <- c(gsub(":","_",segTag), tagsT, "C1C2", "smooth", anTags);
+    toPNG(name=sampleName, tags=tags, width=840, height=300, {
+      plotTrackC1C2(ascn, x=x, muN=muN, cex=2, smooth="2Mb", sampleName=sampleName, segName=segName, segTag=segTag, dataSet=dataSet, tagsT=tagsT, chipType=chipType);
+    })
   } # for (tbn ...)
 
   verbose && exit(verbose);

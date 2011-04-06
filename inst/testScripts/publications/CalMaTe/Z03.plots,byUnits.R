@@ -13,12 +13,9 @@ pathname <- names(findSourceTraceback())[1];
 path <- dirname(pathname);
 
 # Loading include files
-sourceTo("001.include.R", path=path);
-sourceTo("002.datasets.R", path=path);
+pathT <- file.path(path, "R/");
+sourceDirectory(path=pathT);
 
-
-figPath <- file.path("figures", chipType);
-figPath <- Arguments$getWritablePath(figPath);
   
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Calibrated or not?
@@ -34,12 +31,13 @@ verbose && print(verbose, dsList);
 # stopifnot(all(sapply(dsList, FUN=length) == 40));
 
 
-dsTags <- getTags(dsList$total, collapse=",");
+# Translated data set tags
+dsTags <- tags(fullname(dataSet, getTags(dsList[[1]])));
 dsTags <- gsub("ACC,-XY,BPN,-XY,RMA,FLN,-XY", "ASCRMAv2", dsTags);
 dsTags <- gsub("ACC,-XY,BPN,-XY,AVG,FLN,-XY", "ASCRMAv2", dsTags);
 dsTags <- gsub("CMTN", "CalMaTe", dsTags);
-  
-  
+dsTags <- dropTags(dsTags, drop="refs=N");
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Extracting signals
@@ -47,9 +45,7 @@ dsTags <- gsub("CMTN", "CalMaTe", dsTags);
 units <- 1000+1:100;
 dd <- extractCACB(dsList, units=units);
 
-# Drop 'refs=N' tag
-tagsT <- dropTags(dsTags, drop="refs=N");
-
+tagsT <- dsTags;
 for (uu in seq(along=units)) {
   unit <- units[uu];
   unitTag <- sprintf("unit%06d", unit);
@@ -57,10 +53,10 @@ for (uu in seq(along=units)) {
 
   ddT <- dd[uu,,];
 
-  fullname <- fullname(sampleName, tagsT, unitTag, "CACB");
-  devEval("png", name=fullname, width=840, aspectRatio=1, {
+  tags <- c(tagsT, unitTag, "CACB");
+  toPNG(name=sampleName, tags=tags, width=840, {
     plotMultiArrayCACB(ddT, unitName=unitName, tagsT=tagsT);
-  }, path=figPath);
+  });
 } # for (uu ...)
 
 
