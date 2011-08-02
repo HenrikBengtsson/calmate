@@ -51,6 +51,8 @@
 \alias{fitCalMaTeCNprobes}
 \alias{getReferences}
 \alias{getReferences.CalMaTeCalibration}
+\alias{cat}
+\alias{sapply}
 
 \description{
   This page contains aliases for all "non-documented" objects that
