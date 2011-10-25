@@ -13,7 +13,8 @@ cat <- R.utils::cat;
 sapply <- R.filesets::sapply;
  
 
-.First.lib <- function(libname, pkgname) {
+.onAttach <- function(libname, pkgname) {
+# .First.lib <- function(libname, pkgname) {
   pd <- packageDescription(pkgname);
 
   packageStartupMessage(pkgname, " v", pd$Version, " (", 

@@ -1,6 +1,14 @@
 Package: calmate
 ================
 
+Version: 0.7.0 [2011-10-24]
+o Added a NAMESPACE.
+
+
+Version: 0.6.7 [2011-09-16]
+o Added missing authors to the DESCRIPTION.
+
+
 Version: 0.6.6 [2011-08-01]
 o Added some more test scripts.
 o WORKAROUND: In order for the package to work with the most recent
@@ -86,7 +94,7 @@ o Added argument 'truncate=FALSE' to internal calmateByThetaAB()
 
 Version: 0.3.0 [2010-06-18]
 o CLEAN UP: Rewrote calmateByThetaAB() so it is no longer 
-  old using calmate() but a new internal fitCalMaTe().
+  using old calmate() but a new internal fitCalMaTe().
   The latter should probably we incorporated "inline" in
   calmateByThetaAB() to better make use of vectorization.
 

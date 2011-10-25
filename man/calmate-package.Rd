@@ -15,7 +15,7 @@
 
 
  \description{
-   Post-calibration of allele-specific copy-number estimates (ASCNs) [UNDER DEVELOPMENT].
+   Post-calibration of allele-specific copy-number estimates (ASCNs).
 
    This package should be considered to be in an alpha phase.
    You should expect the API to be changing over time.
