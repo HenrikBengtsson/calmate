@@ -51,7 +51,9 @@
 #
 #*/###########################################################################
 setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=NULL, ...) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (!is.null(data)) {
     if (!is.list(data)) {
       throw("Argument 'data' is not a list: ", class(data)[1]);
@@ -199,6 +201,9 @@ setMethodS3("getTags", "CalMaTeCalibration", function(this, collapse=NULL, ...) 
 
 
 setMethodS3("setTags", "CalMaTeCalibration", function(this, tags="*", ...) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'tags':
   if (!is.null(tags)) {
     tags <- Arguments$getCharacters(tags);
@@ -278,12 +283,16 @@ setMethodS3("getReferences", "CalMaTeCalibration", function(this, ...) {
 
 
 setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
   if (verbose) {
     pushState(verbose);
     on.exit(popState(verbose));
-  } 
+  }
+
 
   res <- this$.outputDataSets;
   if (is.null(res)) {
@@ -295,12 +304,18 @@ setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbo
 
 
 setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
+  sapply <- R.filesets::sapply;
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
   if (verbose) {
     pushState(verbose);
     on.exit(popState(verbose));
   } 
+
 
   verbose && enter(verbose, "Retrieve/allocation output data sets");
 
@@ -372,6 +387,9 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
 
 
 setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
   if (verbose) {
