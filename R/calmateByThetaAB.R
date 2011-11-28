@@ -17,7 +17,7 @@
 #  \item{references}{An index @vector in [1,I] or a @logical @vector 
 #     of length I specifying which samples are used when calculating the
 #     reference signals.  If @NULL, all samples are used.}
-#  \item{...}{Additional arguments passed to internal \code{fitCalMaTe().}}
+#  \item{...}{Additional arguments passed to internal @seemethod "fitCalMaTe.matrix"}
 #  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative
 #     while preserving the total CNs.}
 #  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
