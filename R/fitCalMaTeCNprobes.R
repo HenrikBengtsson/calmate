@@ -36,27 +36,14 @@ setMethodS3("fitCalMaTeCNprobes", "matrix", function(T, references, ...) {
 
   res <- 2 * T/TR;
   
-  #nbrOfReferences <- length(references);
-#  H <- matrix(2, nrow=nbrOfReferences, ncol=1,byrow=FALSE);
-#  matSum <- matrix(0, nrow=1, ncol=nrow(T));
-#
-#  ind <- which(rowSums(T)!=0);
-#  fit <- matrix(0, nrow=1, ncol=length(ind));
-#
-#  for(ii in ind){
-#    fit[ii] <- rlm(T[ii,references], H, maxit=50);
-#  }
-#  
-#  if(length(ind)!=0 && ind != 0)
-#    matSum[ind] <- fit$coefficients;
-#  res <- matSum %*% T;
-#
   res;
 }, protected=TRUE) # fitCalMaTeCNprobes()
 
 
 ###########################################################################
 # HISTORY:
+# 2011-11-29 [MO]
+# o Clear code, commented lines removed
 # 2010-08-02 [HB]
 # o ROBUSTNESS: fitCalMaTeCNprobes() can now also handle missing values.
 # o Made into an S3 method for matrix:es.
