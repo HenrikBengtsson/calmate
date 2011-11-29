@@ -19,10 +19,10 @@
   Normalizes non-polymorphic copy number loci according to the CalMaTe method.
  }
 
- \usage{\method{fitCalMaTeCNprobes}{matrix}(T, references, ...)}
+ \usage{\method{fitCalMaTeCNprobes}{matrix}(dataT, references, ...)}
 
  \arguments{
-  \item{T}{A JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}, where J is the number of loci
+  \item{dataT}{A JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}, where J is the number of loci
                       and I is the number of samples.}
   \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
      samples should be used as the reference set.}

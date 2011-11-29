@@ -12,7 +12,7 @@
 # @synopsis
 #
 # \arguments{
-#  \item{T}{A JxI @numeric @matrix, where J is the number of loci
+#  \item{dataT}{A JxI @numeric @matrix, where J is the number of loci
 #                      and I is the number of samples.}
 #  \item{references}{A @logical or @numeric @vector specifying which
 #     samples should be used as the reference set.}
@@ -25,16 +25,16 @@
 #
 # @keyword internal
 #*/###########################################################################
-setMethodS3("fitCalMaTeCNprobes", "matrix", function(T, references, ...) {
+setMethodS3("fitCalMaTeCNprobes", "matrix", function(dataT, references, ...) {
   # This is an internal function. Because of this, we will assume that
   # all arguments are valid and correct.  No validation will be done.
 
   # Extract the reference samples
-  Tref <- T[,references, drop=FALSE];
+  Tref <- dataT[,references, drop=FALSE];
   
   TR <- rowMedians(Tref, na.rm=TRUE);
 
-  res <- 2 * T/TR;
+  res <- 2 * dataT/TR;
   
   res;
 }, protected=TRUE) # fitCalMaTeCNprobes()
@@ -43,6 +43,7 @@ setMethodS3("fitCalMaTeCNprobes", "matrix", function(T, references, ...) {
 ###########################################################################
 # HISTORY:
 # 2011-11-29 [MO]
+# o Change matrix "T" by "dataT"
 # o Clear code, commented lines removed
 # 2010-08-02 [HB]
 # o ROBUSTNESS: fitCalMaTeCNprobes() can now also handle missing values.
