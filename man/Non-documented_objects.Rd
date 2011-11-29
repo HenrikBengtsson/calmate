@@ -47,8 +47,6 @@
 \alias{truncateFracB.array}
 \alias{truncateFracB.matrix}
 \alias{truncateThetaAB.matrix}
-\alias{fitCalMaTe}
-\alias{fitCalMaTeCNprobes}
 \alias{getReferences}
 \alias{getReferences.CalMaTeCalibration}
 \alias{cat}

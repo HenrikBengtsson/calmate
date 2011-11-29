@@ -11,6 +11,7 @@
 \alias{fitCalMaTeCNprobes.matrix}
 \alias{fitCalMaTeCNprobes.matrix}
 
+\alias{fitCalMaTeCNprobes}
 
  \title{Normalizes non-polymorphic copy number loci according to the CalMaTe method}
 
