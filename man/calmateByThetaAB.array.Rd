@@ -81,5 +81,7 @@ stopifnot(length(dim(dummy)) == 3);
  \seealso{
   To calibrate (total,fracB) data,
   see \code{\link[calmate:calmateByTotalAndFracB.array]{*calmateByTotalAndFracB}()}.
+  To get informartion about the ... argument see
+  \code{\link[calmate:fitCalMaTe.matrix]{*fitCalMaTe}()}.
  }
 \keyword{methods}

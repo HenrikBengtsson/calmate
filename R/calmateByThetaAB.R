@@ -40,6 +40,8 @@
 # \seealso{
 #  To calibrate (total,fracB) data, 
 #  see @seemethod "calmateByTotalAndFracB".
+#  To get informartion about the ... argument see
+#  see @seemethod "fitCalMaTe".
 # }
 #*/###########################################################################
 setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, verbose=FALSE) {
