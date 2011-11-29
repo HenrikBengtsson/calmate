@@ -11,7 +11,7 @@
 \alias{fitCalMaTe.matrix}
 \alias{fitCalMaTe.matrix}
 
-\alias{fitCalMaTe}
+ \alias{fitCalMaTe}
 
 
  \title{Calibrates SNP loci according to the CalMaTe method}
