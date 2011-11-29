@@ -2,7 +2,7 @@
 # @set "class=matrix"
 # @RdocMethod fitCalMaTe
 # @alias fitCalMaTe
-
+#
 # @title "Calibrates SNP loci according to the CalMaTe method"
 #
 # \description{
