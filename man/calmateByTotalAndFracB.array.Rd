@@ -50,9 +50,6 @@
  }
 
  \examples{
-library("calmate");
-library("R.utils");
-
 # Load example (thetaA,thetaB) signals
 path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
