@@ -15,7 +15,7 @@
 
 
  \description{
-   Post-calibration of allele-specific copy-number estimates (ASCNs) [UNDER HEAVY DEVELOPLMENT].
+   Post-calibration of allele-specific copy-number estimates (ASCNs).
 
    This package should be considered to be in an alpha phase.
    You should expect the API to be changing over time.
@@ -31,7 +31,7 @@
 
  \section{To get started}{
   \enumerate{
-   \item To process SNP and non-polymorphic signals, see \code{\link{calmateByTotalAndFracB}}.  If you are working solely with SNP signals, \code{\link{calmateByThetaAB}} is also available, but we recommend the former.
+   \item To process SNP and non-polymorphic signals, see \code{\link{calmateByTotalAndFracB}}().  If you are working solely with SNP signals, \code{\link{calmateByThetaAB}}() is also available, but we recommend the former.
    \item For processing data in the aroma framework, see \code{\link{CalMaTeCalibration}}.
   }
  }

@@ -7,31 +7,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
- \name{fitCalMaTeCNprobes.matrix}
+\name{fitCalMaTeCNprobes.matrix}
 \alias{fitCalMaTeCNprobes.matrix}
 \alias{fitCalMaTeCNprobes.matrix}
 
- \alias{fitCalMaTeCNprobes}
+\alias{fitCalMaTeCNprobes}
 
- \title{Normalizes non-polymorphic copy number loci according to the CalMaTe method}
+\title{Normalizes non-polymorphic copy number loci according to the CalMaTe method}
 
- \description{
-  Normalizes non-polymorphic copy number loci according to the CalMaTe method.
- }
+\description{
+ Normalizes non-polymorphic copy number loci according to the CalMaTe method.
+}
 
- \usage{\method{fitCalMaTeCNprobes}{matrix}(dataT, references, ...)}
+\usage{\method{fitCalMaTeCNprobes}{matrix}(dataT, references, ...)}
 
- \arguments{
-  \item{dataT}{A JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}, where J is the number of loci
-                      and I is the number of samples.}
-  \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
-     samples should be used as the reference set.}
-  \item{...}{Not used.}
- }
+\arguments{
+ \item{dataT}{A JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}, where J is the number of loci
+                     and I is the number of samples.}
+ \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
+    samples should be used as the reference set.}
+ \item{...}{Not used.}
+}
 
- \value{
-   Returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
- }
+\value{
+  Returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
+}
 
 
 \keyword{methods}

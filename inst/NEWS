@@ -1,8 +1,9 @@
 Package: calmate
 ================
 
-Version: 0.7.1 [2011-11-29]
-o Documentation changed. Code cleanup.
+Version: 0.7.1 [2011-11-30]
+o Documentation updated.
+o Updated package dependencies.
 
 
 Version: 0.7.0 [2011-10-24]

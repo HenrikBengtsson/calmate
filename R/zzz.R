@@ -3,7 +3,6 @@
 .conflicts.OK <- TRUE;
 
 .onAttach <- function(libname, pkgname) {
-# .First.lib <- function(libname, pkgname) {
   pd <- packageDescription(pkgname);
 
   packageStartupMessage(pkgname, " v", pd$Version, " (", 

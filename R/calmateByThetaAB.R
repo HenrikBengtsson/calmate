@@ -17,7 +17,7 @@
 #  \item{references}{An index @vector in [1,I] or a @logical @vector 
 #     of length I specifying which samples are used when calculating the
 #     reference signals.  If @NULL, all samples are used.}
-#  \item{...}{Additional arguments passed to internal @seemethod "fitCalMaTe.matrix"}
+#  \item{...}{Additional arguments passed to @see "fitCalMaTe".}
 #  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative
 #     while preserving the total CNs.}
 #  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
@@ -40,8 +40,6 @@
 # \seealso{
 #  To calibrate (total,fracB) data, 
 #  see @seemethod "calmateByTotalAndFracB".
-#  To get informartion about the ... argument see
-#  see @seemethod "fitCalMaTe".
 # }
 #*/###########################################################################
 setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, verbose=FALSE) {
