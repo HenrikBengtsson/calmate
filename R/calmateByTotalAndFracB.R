@@ -78,7 +78,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   dimnames(data)[[2]] <- c("total", "fracB");
 
   nbrOfSamples <- dim[3];
-  if (nbrOfSamples <= 3) {
+  if (nbrOfSamples <= 2) {
     throw("Argument 'data' contains less than three samples: ", nbrOfSamples);
   }
 
