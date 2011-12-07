@@ -84,7 +84,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     }
     references <- which(references);
     if (length(references) < 3) {
-      throw("At least 3 references samples have to be given.");
+      throw("At least 3 reference samples have to be given.");
     }
   } else if (is.numeric(references)) {
     references <- as.integer(references);
@@ -92,7 +92,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
       throw(sprintf("Argument 'references' is out of range [1,%d]", nbrOfSamples));
     }
     if (length(references) < 3) {
-      throw("At least 3 references samples have to be given.");
+      throw("At least 3 reference samples have to be given.");
     }
   }
 
@@ -207,7 +207,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 ###########################################################################
 # HISTORY:
 # 2011-12-07 [MO]
-# o At least 3 references samples.
+# o At least 3 reference samples.
 # 2011-03-18 [HB]
 # o BUG FIX: calmateByThetaAB() required that the 2nd dimension
 #   of argument 'data' had names "A" and "B".

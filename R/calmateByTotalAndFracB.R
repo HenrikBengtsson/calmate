@@ -95,7 +95,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
     }
     references <- which(references);
     if (length(references) < 3) {
-      throw("At least 3 references samples have to be given.");
+      throw("At least 3 reference samples have to be given.");
     }
   } else if (is.numeric(references)) {
     references <- as.integer(references);
@@ -103,7 +103,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
       throw(sprintf("Argument 'references' is out of range [1,%d]", nbrOfSamples));
     }
     if (length(references) < 3) {
-      throw("At least 3 references samples have to be given.");
+      throw("At least 3 reference samples have to be given.");
     }
   }
 
