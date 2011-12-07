@@ -34,6 +34,11 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(dataT);
   nbrOfReferences <- length(references);
+  
+  # Argument "references"
+  if(nbrOfReferences < 3){
+    throw("At least 3 reference samples or if it is null, at least 3 samples in the dataset");
+  }
 
   # Adding a small value so there are "non" 0 values
   eps <- 1e-6;
@@ -125,6 +130,8 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
 
 ###########################################################################
 # HISTORY:
+# 2011-12-07 [MO]
+# o At least 3 reference samples.
 # 2011-04-12 [AR]
 #   · Bug fixed: there was a bug for SNPs with a single allele
 #     when using a set of references

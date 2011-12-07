@@ -23,7 +23,7 @@
 #   \item{tags}{Tags added to the output data sets.}
 #   \item{references}{An optional @numeric @vector specifying which samples
 #     should be as reference samples for estimating the model parameters.
-#     If @NULL, all samples are used.}
+#     If @NULL, all samples are used. If not NULL at least 3 samples have to be given.}
 #   \item{...}{Arguments passed to calmateByTotalAndFracB or calmateByThetaAB.}
 # }
 #
@@ -104,8 +104,8 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
     references <- unique(references);
     references <- sort(references);
 
-    if (length(references) < 6) {
-      throw("Argument 'references' specifies too few (<6) reference samples: ", length(references));
+    if (length(references) < 3) {
+      throw("Argument 'references' specifies too few (<3) reference samples: ", length(references));
     }
   }
 
@@ -474,6 +474,18 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
   nbrOfFiles <- nbrOfFiles(this);
   nbrOfRefs <- length(references);
   if (nbrOfRefs == 0) nbrOfRefs <- nbrOfFiles;
+  
+  #Argument "references"
+  if(length(references) > 0){
+    if(length(references) < 3){
+      throw("The number of references have to be at least 3");  
+    }
+  }else{
+    if(nbrOfFiles < 3){
+      throw("The number of files have to be at least 3");
+    }
+  }
+  
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
   verbose && cat(verbose, "Number of references: ", nbrOfRefs);
 
@@ -654,6 +666,9 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
 
 ############################################################################
 # HISTORY:
+# 2011-07-12 [MO]
+# o Check that the number of references has to be at least 3. If no references
+# are given, the total number of files has to be at least 3.
 # 2011-03-12
 # o BUG FIX: After recent update, allocateOutputDataSets() would only
 #   work for existing data sets, not to create new ones.

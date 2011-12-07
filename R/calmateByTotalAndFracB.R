@@ -21,7 +21,7 @@
 #              I is the number of samples.}
 #  \item{references}{A @logical or @numeric @vector specifying which
 #     samples should be used as the reference set.  
-#     By default, all samples are considered.}
+#     By default, all samples are considered. If not NULL at least 3 samples.}
 #  \item{...}{Additional arguments passed to 
 #         @seemethod "calmateByThetaAB".}
 #  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
@@ -86,23 +86,27 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
     references <- seq(length=nbrOfSamples);
-  } else if (is.logical(references)) {
+    if(nbrOfSamples < 3){
+      throw("At least 3 samples have to given as initial data.");
+    }
+  } else if(is.logical(references)) {
     if (length(references) != nbrOfSamples) {
       throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", nbrOfSamples);
     }
     references <- which(references);
-    if (length(references) == 0) {
-      throw("No references samples.");
+    if (length(references) < 3) {
+      throw("At least 3 references samples have to be given.");
     }
   } else if (is.numeric(references)) {
     references <- as.integer(references);
     if (any(references < 1 | references > nbrOfSamples)) {
       throw(sprintf("Argument 'references' is out of range [1,%d]", nbrOfSamples));
     }
-    if (length(references) == 0) {
-      throw("No references samples.");
+    if (length(references) < 3) {
+      throw("At least 3 references samples have to be given.");
     }
   }
+
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);
 
@@ -187,6 +191,8 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
 
 ###########################################################################
 # HISTORY:
+# 2011-12-07 [MO]
+# o Number of references has to be at least 3.
 # 2011-03-18 [HB]
 # o BUG FIX: calmateByTotalAndFracB() required that the 2nd dimension
 #   of argument 'data' had names "total" and "fracB".
