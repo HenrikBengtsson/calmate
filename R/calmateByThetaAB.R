@@ -67,8 +67,8 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   }
 
   nbrOfSamples <- dim[3];
-  if (nbrOfSamples <= 2) {
-    throw("Argument 'data' contains less than two samples: ", nbrOfSamples);
+  if (nbrOfSamples <= 3) {
+    throw("Argument 'data' contains less than three samples: ", nbrOfSamples);
   }
 
   # Argument 'references':
