@@ -7,6 +7,8 @@
 #
 # \description{
 #  @get "title".
+#  \emph{Note: This is an internal function of the package. It should not
+#   be used elsewhere. Its API may change at any time.}
 # }
 #
 # @synopsis
@@ -35,11 +37,6 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   nbrOfSNPs <- nrow(dataT);
   nbrOfReferences <- length(references);
   
-  # Argument "references"
-  if(nbrOfReferences < 3){
-    throw("At least 3 reference samples or if it is null, at least 3 samples in the dataset");
-  }
-
   # Adding a small value so there are "non" 0 values
   eps <- 1e-6;
   dataT[dataT < eps] <- eps;
@@ -87,10 +84,14 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   # (if there are not control samples) for most of the samples
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   H <- matrix(2, nrow=nbrOfReferences, ncol=1, byrow=FALSE);
-  fit <- rlm(H ~0 + t(TR), maxit=maxIter, weights=w1); # alternatively can be set method = "MM"
+  # Alternatively to the below, on can use method = "MM". /AR 2011-12-04
+  fit <- rlm(H ~0 + t(TR), maxit=maxIter, weights=w1);
+  # Why not the following? /HB 2011-12-15
+  ##  fit <- rlm(x=t(TR), y=H, weights=w1, maxit=maxIter);
   matSum <- fit$coefficients;
   coeffs <- fit$w;
-  coeffs[coeffs<0] <- 1e-8;
+  eps2 <- 1e-8;
+  coeffs[coeffs < eps2] <- eps2;
   coeffs <- coeffs * w1;
   dataT <- diag(matSum) %*% dataT;
 
@@ -101,6 +102,8 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   fracB <- TR[2,] / (TR[1,] + TR[2,]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
   fit <- rlm(naiveGenoDiff ~ 0 + t(TR), maxit=maxIter, weights=coeffs);
+  # Why not the following? /HB 2011-12-15
+  ##  fit <- rlm(x=t(TR), y=naiveGenoDiff, weights=coeffs, maxit=maxIter);
   matDiff <- fit$coefficients;
 
   # T matrix is:
@@ -130,14 +133,17 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
 
 ###########################################################################
 # HISTORY:
+# 2011-12-15 [HB]
+# o CORRECTION: Now doing x[x < eps] <- eps instead of x[x < 0] <- eps.
+# o Dropped the validation of argument 'references'.  This is an internal
+#   function and validation should already have been done elsewhere.
 # 2011-12-07 [MO]
 # o At least 3 reference samples.
-# 2011-04-12 [AR]
-#   · Bug fixed: there was a bug for SNPs with a single allele
-#     when using a set of references
-#   · Set some initial weights based on the median that improves
-#     the breakdown point if no reference samples are provided
-#     when using a set of references
+# 2011-12-04 [AR]
+# o BUG FIX: there was a bug for SNPs with a single allele when using a
+#   set of references. Set some initial weights based on the median that
+#   improves the breakdown point if no reference samples are provided
+#   when using a set of references.
 # 2011-11-29 [MO]
 # o Change matrix "T" by "dataT" and "P" by "T"
 # 2010-08-02 [HB]

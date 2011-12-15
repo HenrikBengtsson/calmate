@@ -17,6 +17,8 @@
 
 \description{
  Calibrates SNP loci according to the CalMaTe method.
+ \emph{Note: This is an internal function of the package. It should not
+  be used elsewhere. Its API may change at any time.}
 }
 
 \usage{\method{fitCalMaTe}{matrix}(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...)}
