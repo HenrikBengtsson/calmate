@@ -67,7 +67,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   }
 
   nbrOfSamples <- dim[3];
-  if (nbrOfSamples <= 2) {
+  if (nbrOfSamples < 3) {
     throw("Argument 'data' contains less than three samples: ", nbrOfSamples);
   }
 
@@ -75,25 +75,19 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
     references <- seq(length=nbrOfSamples);
-    if(nbrOfSamples < 3){
-      throw("At least 3 samples have to given as initial data.");
-    }
-  } else if(is.logical(references)) {
+  } else if (is.logical(references)) {
     if (length(references) != nbrOfSamples) {
       throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", nbrOfSamples);
     }
     references <- which(references);
-    if (length(references) < 3) {
-      throw("At least 3 reference samples have to be given.");
-    }
   } else if (is.numeric(references)) {
     references <- as.integer(references);
     if (any(references < 1 | references > nbrOfSamples)) {
-      throw(sprintf("Argument 'references' is out of range [1,%d]", nbrOfSamples));
+      throw(sprintf("Argument 'references' is out of range [1,%d]: %d", nbrOfSamples), length(references));
     }
-    if (length(references) < 3) {
-      throw("At least 3 reference samples have to be given.");
-    }
+  }
+  if (length(references) < 3) {
+    throw("Argument 'reference' specify less than three reference samples: ", length(references));
   }
 
   # Argument 'verbose':
@@ -206,6 +200,9 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
 ###########################################################################
 # HISTORY:
+# 2011-12-15 [HB]
+# o CLEANUP: Tidied up the validation of argument 'references' and
+#   improved the corresponding error messages.
 # 2011-12-07 [MO]
 # o At least 3 reference samples.
 # 2011-03-18 [HB]

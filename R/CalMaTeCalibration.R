@@ -23,7 +23,7 @@
 #   \item{tags}{Tags added to the output data sets.}
 #   \item{references}{An optional @numeric @vector specifying which samples
 #     should be as reference samples for estimating the model parameters.
-#     If @NULL, all samples are used. If not NULL at least 3 samples have to be given.}
+#     If @NULL, all samples are used.}
 #   \item{...}{Arguments passed to calmateByTotalAndFracB or calmateByThetaAB.}
 # }
 #
@@ -31,8 +31,23 @@
 #  @allmethods "public"  
 # }
 # 
-# \details{
-#   ...
+# \section{Reference samples}{
+#  In order to estimate the calibration parameters, the model assumes
+#  that, for any given SNP, there are a majority of samples that are
+#  diploid at that SNP.  Note that it does not have to be the same set
+#  of samples for all SNPs.
+#
+#  By using argument \code{references}, it is possible so specify which
+#  samples should be used when estimating the calibration parameters.
+#  This is useful when for instance there are several tumor samples with
+#  unknown properties as well as a set of normal samples that can be
+#  assumed to be diploid.
+#
+#  Theoretical, a minimum of three reference samples are needed in order
+#  for the model to be identifiable.  If less, an error is thrown.
+#  However, in practice more reference samples should be used, that is,
+#  in the order of at least 6-10 reference samples with a diverse set
+#  of genotypes.
 # }
 #
 # \examples{\dontrun{
@@ -105,7 +120,7 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
     references <- sort(references);
 
     if (length(references) < 3) {
-      throw("Argument 'references' specifies too few (<3) reference samples: ", length(references));
+      throw("Argument 'references' specifies too less than three reference samples: ", length(references));
     }
   }
 
@@ -457,6 +472,11 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
     units <- Arguments$getIndices(units, max=nbrOfUnits);
   }
 
+  # Argument 'references':
+  if (!missing(references)) {
+    warning("Argument 'references' to process() of CalMaTeCalibration is deprecated.  Instead specify it when setting up CalMaTeCalibration.");
+  }
+
   # Argument 'force':
   force <- Arguments$getLogical(force);
 
@@ -473,19 +493,8 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
   verbose && enter(verbose, "CalMaTe calibration of ASCNs");
   nbrOfFiles <- nbrOfFiles(this);
   nbrOfRefs <- length(references);
-  if (nbrOfRefs == 0) nbrOfRefs <- nbrOfFiles;
-  
-  #Argument "references"
-  if(length(references) > 0){
-    if(length(references) < 3){
-      throw("The number of references have to be at least 3");  
-    }
-  }else{
-    if(nbrOfFiles < 3){
-      throw("The number of files have to be at least 3");
-    }
-  }
-  
+  if (nbrOfRefs == 0L) nbrOfRefs <- nbrOfFiles;
+    
   verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
   verbose && cat(verbose, "Number of references: ", nbrOfRefs);
 
@@ -666,9 +675,17 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
 
 ############################################################################
 # HISTORY:
+# 2011-07-15 [HB]
+# o DOCUMENTATION: Added a section 'Reference samples' to the help
+#   of CalMaTeCalibration.
+# o DEPRECATED: Argument 'references' of process() of CalMaTeCalibration
+#   is deprecated.  Instead, pass it to CalMaTeCalibration().
+# o CLEANUP: Tidied up the validation of argument 'references' and
+#   improved the corresponding error messages.
 # 2011-07-12 [MO]
-# o Check that the number of references has to be at least 3. If no references
-# are given, the total number of files has to be at least 3.
+# o Check that the number of references has to be at least 3.
+#   If no references are given, the total number of files has to be
+#   at least 3. (Used to be 6).
 # 2011-03-12
 # o BUG FIX: After recent update, allocateOutputDataSets() would only
 #   work for existing data sets, not to create new ones.

@@ -26,7 +26,7 @@
           2 is the number of alleles, and I is the number of samples.}
   \item{references}{An index \code{\link[base]{vector}} in [1,I] or a \code{\link[base]{logical}} \code{\link[base]{vector}}
      of length I specifying which samples are used when calculating the
-     reference signals.  If \code{\link[base]{NULL}}, all samples are used.}
+     reference signals.  If \code{\link[base]{NULL}}, all samples are used. At least 3 samples.}
   \item{...}{Additional arguments passed to \code{\link{fitCalMaTe}}().}
   \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative
      while preserving the total CNs.}

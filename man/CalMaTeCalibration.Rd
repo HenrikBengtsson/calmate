@@ -74,8 +74,23 @@ asThis, getChecksum, $, $<-, [[, [[<-, as.character, attach, attachLocally, clea
 
  }
 
- \details{
-   ...
+ \section{Reference samples}{
+  In order to estimate the calibration parameters, the model assumes
+  that, for any given SNP, there are a majority of samples that are
+  diploid at that SNP.  Note that it does not have to be the same set
+  of samples for all SNPs.
+
+  By using argument \code{references}, it is possible so specify which
+  samples should be used when estimating the calibration parameters.
+  This is useful when for instance there are several tumor samples with
+  unknown properties as well as a set of normal samples that can be
+  assumed to be diploid.
+
+  Theoretical, a minimum of three reference samples are needed in order
+  for the model to be identifiable.  If less, an error is thrown.
+  However, in practice more reference samples should be used, that is,
+  in the order of at least 6-10 reference samples with a diverse set
+  of genotypes.
  }
 
  \examples{\dontrun{

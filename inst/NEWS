@@ -1,6 +1,15 @@
 Package: calmate
 ================
 
+Version: 0.7.2 [2011-11-15]
+o ROBUSTNESS: Improved validation of argument 'references' to
+  CalMaTeCalibration(), calmateByTotalAndFracB(), and calmateByThetaAB().
+o DOCUMENTATION: Added a section 'Reference samples' to the help
+  of CalMaTeCalibration.
+o DEPRECATED: Argument 'references' of process() of CalMaTeCalibration
+  is deprecated.  Instead, pass it to CalMaTeCalibration().
+
+
 Version: 0.7.1 [2011-11-30]
 o DOCUMENTATION: Updated links on help pages.
 o Updated package dependencies.
