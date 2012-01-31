@@ -120,7 +120,6 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   # only one allele
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (onlyOneAllele) {
-    idxs <- seq(length=ncol(res)/2);
     res[1:2,idxs] <- res[2:1,idxs, drop=FALSE];
   }
 
@@ -133,6 +132,10 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
 
 ###########################################################################
 # HISTORY:
+# 2012-1-31 [MO]
+# o BUG FIX: the index "idxs" was recalculated to un-do the change when 
+#   there is only one allele, and it was done as the previous version,
+#   taking into account all the samples, not only the references.     
 # 2011-12-15 [HB]
 # o CORRECTION: Now doing x[x < eps] <- eps instead of x[x < 0] <- eps.
 # o Dropped the validation of argument 'references'.  This is an internal
