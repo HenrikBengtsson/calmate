@@ -54,7 +54,7 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   S <- colSums(TR);
   S[S < 0] <- 0;
   CN <- 2*S/median(S);
-  # Q: Is it really supposed to be sqrt(sqrt(...)) here? /HB 2012-01-31
+  # It is intended to use sqrt(sqrt(...)) below. /AR 2012-01-31
   w1 <- 0.1 + 0.9 * sqrt(sqrt(2*(1-pnorm(abs(CN-2) / median(abs(CN-2))))));
 
   if (sum(is.nan(w1)) > 0) {
@@ -89,7 +89,8 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   H <- matrix(2, nrow=nbrOfReferences, ncol=1, byrow=FALSE);
   # Alternatively to the below, on can use method = "MM". /AR 2011-12-04
   fit <- rlm(H ~0 + t(TR), maxit=maxIter, weights=w1);
-  # Why not the following? /HB 2011-12-15
+  # Q: Why not the following? /HB 2011-12-15
+  # A: See email on 2011-12-16. /AR
   ##  fit <- rlm(x=t(TR), y=H, weights=w1, maxit=maxIter);
   matSum <- fit$coefficients;
   coeffs <- fit$w;
@@ -105,7 +106,8 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   fracB <- TR[2,] / (TR[1,] + TR[2,]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
   fit <- rlm(naiveGenoDiff ~ 0 + t(TR), maxit=maxIter, weights=coeffs);
-  # Why not the following? /HB 2011-12-15
+  # Q: Why not the following? /HB 2011-12-15
+  # A: See email on 2011-12-16. /AR
   ##  fit <- rlm(x=t(TR), y=naiveGenoDiff, weights=coeffs, maxit=maxIter);
   matDiff <- fit$coefficients;
 
