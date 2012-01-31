@@ -14,8 +14,8 @@
 # \arguments{
 #  \item{dataT}{A JxI @numeric @matrix, where J is the number of loci
 #                      and I is the number of samples.}
-#  \item{references}{A @logical or @numeric @vector specifying which
-#     samples should be used as the reference set.}
+#  \item{references}{A @integer @vector with elements in [1,I] specifying
+#     which samples should be used as the reference set.}
 #  \item{...}{Not used.}
 # }
 #
@@ -43,8 +43,8 @@ setMethodS3("fitCalMaTeCNprobes", "matrix", function(dataT, references, ...) {
 ###########################################################################
 # HISTORY:
 # 2011-11-29 [MO]
-# o Change matrix "T" by "dataT"
-# o Clear code, commented lines removed
+# o Change matrix "T" by "dataT".
+# o Clear code, commented lines removed.
 # 2010-08-02 [HB]
 # o ROBUSTNESS: fitCalMaTeCNprobes() can now also handle missing values.
 # o Made into an S3 method for matrix:es.

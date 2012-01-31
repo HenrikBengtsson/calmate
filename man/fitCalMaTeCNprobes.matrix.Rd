@@ -24,8 +24,8 @@
 \arguments{
  \item{dataT}{A JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}, where J is the number of loci
                      and I is the number of samples.}
- \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
-    samples should be used as the reference set.}
+ \item{references}{A \code{\link[base]{integer}} \code{\link[base]{vector}} with elements in [1,I] specifying
+    which samples should be used as the reference set.}
  \item{...}{Not used.}
 }
 

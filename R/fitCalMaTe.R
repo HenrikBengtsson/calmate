@@ -16,9 +16,9 @@
 # \arguments{
 #  \item{dataT}{A 2xI @numeric @matrix of allele specific copy numbers (ASCNs),
 #     where 2 is the number alleles and I is the number of samples.}
-#  \item{references}{A @logical or @numeric @vector specifying which
-#     samples should be used as the reference set.}
-#  \item{fB1,fB2}{Thresholds for calling genotypes AA, AB, BB from the
+#  \item{references}{A @integer @vector with elements in [1,I] specifying
+#     which samples should be used as the reference set.}
+#  \item{fB1, fB2}{Thresholds for calling genotypes AA, AB, BB from the
 #     allele B fractions.}
 #  \item{maxIter}{The maximum number of iterations without converging
 #     before the algorithm quits.}
@@ -41,7 +41,8 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   eps <- 1e-6;
   dataT[dataT < eps] <- eps;
 
-  a <- max(max(dataT[2,] / (pmax(dataT[1,],0) + 1e-4)), max(dataT[1,] / (pmax(dataT[2,],0) + 1e-4)));
+  eps2 <- 1e-4;
+  a <- max(max(dataT[2,] / (pmax(dataT[1,],0) + eps2)), max(dataT[1,] / (pmax(dataT[2,],0) + eps2)));
   Giro <- matrix(c(1, 1/a, 1/a, 1), nrow=2, ncol=2, byrow=FALSE);
   Giro <- solve(Giro);
   dataT <- Giro %*% dataT;
@@ -51,12 +52,13 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
 
   # Set some weights based on the median
   S <- colSums(TR);
-  S[S<0] <- 0;
-  CN <- 2* S / median(S);
-  w1 <- 0.1  + 0.9 * sqrt(sqrt(2*(1- pnorm(abs(CN -2 ) / median(abs((CN -2)))))))
+  S[S < 0] <- 0;
+  CN <- 2*S/median(S);
+  # Q: Is it really supposed to be sqrt(sqrt(...)) here? /HB 2012-01-31
+  w1 <- 0.1 + 0.9 * sqrt(sqrt(2*(1-pnorm(abs(CN-2) / median(abs(CN-2))))));
 
-  if (sum(is.nan(w1)) > 0){
-    w1 = rep(1, length(w1));
+  if (sum(is.nan(w1)) > 0) {
+    w1 = rep(1, times=length(w1));
   }
 
 
@@ -66,13 +68,14 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   fracB <- TR[2,] / (TR[1,] + TR[2,]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
 
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Twist half of the samples in case there is only one allele?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   onlyOneAllele <- (abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff));
   if (onlyOneAllele) {
-    idxs <- references[seq(length=ncol(TR)/2)];  # Changed from previous version
-    dataT[1:2,idxs] <- dataT[2:1,idxs, drop=FALSE];
+    idxsSwap <- references[seq(length=ncol(TR)/2)];
+    dataT[1:2,idxsSwap] <- dataT[2:1,idxsSwap, drop=FALSE];
 
     # Update precalcalculated signals
     TR <- dataT[,references, drop=FALSE];
@@ -90,8 +93,8 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   ##  fit <- rlm(x=t(TR), y=H, weights=w1, maxit=maxIter);
   matSum <- fit$coefficients;
   coeffs <- fit$w;
-  eps2 <- 1e-8;
-  coeffs[coeffs < eps2] <- eps2;
+  eps3 <- 1e-8;
+  coeffs[coeffs < eps3] <- eps3;
   coeffs <- coeffs * w1;
   dataT <- diag(matSum) %*% dataT;
 
@@ -110,7 +113,7 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   #  [1  1] [   ] = [MatSum[1]   MatSum[2]] (We have already applied it) MatSum is 1,1
   #  [1 -1] [ T ]   [MatDiff[1] MatDiff[2]]
   U <- matrix(c(0.5, 0.5, 0.5, -0.5), nrow=2, ncol=2, byrow=FALSE);
-  V <- matrix(c(c(1,1), matDiff), nrow=2, ncol=2, byrow=TRUE);
+  V <- matrix(c(c(1, 1), matDiff), nrow=2, ncol=2, byrow=TRUE);
   T <- U %*% V;
 
   res <- T %*% dataT;
@@ -120,7 +123,7 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
   # only one allele
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (onlyOneAllele) {
-    res[1:2,idxs] <- res[2:1,idxs, drop=FALSE];
+    res[1:2,idxsSwap] <- res[2:1,idxsSwap, drop=FALSE];
   }
 
   # Return parameter estimates(?)
@@ -132,8 +135,14 @@ setMethodS3("fitCalMaTe", "matrix", function(dataT, references, fB1=1/3, fB2=2/3
 
 ###########################################################################
 # HISTORY:
-# 2012-1-31 [MO]
-# o BUG FIX: the index "idxs" was recalculated to un-do the change when 
+# 2012-01-31 [HB]
+# o CLEANUP: Pruning up the code, e.g. dropping extraneous spaces and
+#   parenthesis and adding missing ones. Dropping ambigous comments 
+#   using terminologies such as "previous", "latest" and "final".
+# o DOCUMENTATION: Argument "references" have to be an index vector
+#   (and cannot be a logical vector as previously said).
+# 2012-01-31 [MO]
+# o BUG FIX: the index "idxs" was recalculated to undo the change when 
 #   there is only one allele, and it was done as the previous version,
 #   taking into account all the samples, not only the references.     
 # 2011-12-15 [HB]

@@ -26,9 +26,9 @@
 \arguments{
  \item{dataT}{A 2xI \code{\link[base]{numeric}} \code{\link[base]{matrix}} of allele specific copy numbers (ASCNs),
     where 2 is the number alleles and I is the number of samples.}
- \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
-    samples should be used as the reference set.}
- \item{fB1,fB2}{Thresholds for calling genotypes AA, AB, BB from the
+ \item{references}{A \code{\link[base]{integer}} \code{\link[base]{vector}} with elements in [1,I] specifying
+    which samples should be used as the reference set.}
+ \item{fB1, fB2}{Thresholds for calling genotypes AA, AB, BB from the
     allele B fractions.}
  \item{maxIter}{The maximum number of iterations without converging
     before the algorithm quits.}
