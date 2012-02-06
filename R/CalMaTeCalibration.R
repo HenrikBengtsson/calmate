@@ -24,7 +24,7 @@
 #   \item{references}{An optional @numeric @vector specifying which samples
 #     should be as reference samples for estimating the model parameters.
 #     If @NULL, all samples are used.}
-#   \item{...}{Arguments passed to calmateByTotalAndFracB or calmateByThetaAB.}
+#   \item{...}{Additional arguments passed to @see "calmateByTotalAndFracB".}
 # }
 #
 # \section{Fields and Methods}{
@@ -125,16 +125,24 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
   }
 
 
-  # Arguments '...':
-  args <- list(...);
-  if (length(args) > 0) {
-    argsStr <- paste(names(args), collapse=", ");
-    throw("Unknown arguments: ", argsStr);
+  # Arguments '...'; optional arguments to calmateByTotalAndFracB()
+  extraArgs <- list(...);
+  if (length(extraArgs) > 0) {
+    keys <- names(extraArgs);
+    if (is.null(keys)) {
+      throw("Optional arguments to CalMaTeCalibration passed via '...' must be named.");
+    }
+
+    nok <- which(nchar(keys) == 0);
+    if (length(nok) == 0) {
+      throw("All arguments to CalMaTeCalibration passed via '...' must be named.");
+    }
   }
 
   this <- extend(Object(...), "CalMaTeCalibration",
     .data = data,
-    .references = references
+    .references = references,
+    .extraArgs = extraArgs
   );
 
   setTags(this, tags);
@@ -296,6 +304,13 @@ setMethodS3("getReferences", "CalMaTeCalibration", function(this, ...) {
   this$.references;
 })
 
+setMethodS3("getParameters", "CalMaTeCalibration", function(this, ...) {
+  params <- list();
+  params$references <- getReferences(this);
+  params <- c(params, this$.extraArgs);
+  params;
+}, protected=TRUE);
+
 
 setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -452,7 +467,7 @@ setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=F
 })
 
 
-setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", references=getReferences(this), ..., force=FALSE, ram=NULL, verbose=FALSE) {
+setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", force=FALSE, ram=NULL, verbose=FALSE, ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -472,11 +487,6 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
     units <- Arguments$getIndices(units, max=nbrOfUnits);
   }
 
-  # Argument 'references':
-  if (!missing(references)) {
-    warning("Argument 'references' to process() of CalMaTeCalibration is deprecated.  Instead specify it when setting up CalMaTeCalibration.");
-  }
-
   # Argument 'force':
   force <- Arguments$getLogical(force);
 
@@ -490,16 +500,36 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
     on.exit(popState(verbose));
   }
 
+  # Argument '...':
+  userArgs <- list(...);
+  if (length(userArgs) > 0) {
+    if (is.element("references", names(userArgs))) {
+      throw("Argument 'references' must not be passed via process(), but instead to the CalMaTeCalibration constructor.");
+    }
+
+    warning("Do not pass extra arguments via process(), but instead via CalMaTeCalibration: ", paste(names(userArgs), collapse=", "));
+  }
+
+
+
   verbose && enter(verbose, "CalMaTe calibration of ASCNs");
+
+  params <- getParameters(this);
+
   nbrOfFiles <- nbrOfFiles(this);
+  verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
+
+  references <- params$references;
   nbrOfRefs <- length(references);
   if (nbrOfRefs == 0L) nbrOfRefs <- nbrOfFiles;
-    
-  verbose && cat(verbose, "Number of arrays: ", nbrOfFiles);
   verbose && cat(verbose, "Number of references: ", nbrOfRefs);
 
   verbose && cat(verbose, "Units:");
   verbose && str(verbose, units);
+
+  verbose && cat(verbose, "All parameters:");
+  verbose && str(verbose, params);
+
 
   # Skip already processed units or not?
   if (!force) {
@@ -606,8 +636,16 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
     verbose && exit(verbose);
 
     verbose && enter(verbose, "Calibration");
-    dataN <- calmateByTotalAndFracB(data, references=references, ..., 
-                                                         verbose=verbose);
+    args <- params;
+    # BACKWARD COMPATIBILITY: Override with user arguments. /HB 2012-02-05
+    for (key in names(userArgs)) {
+      args[[key]] <- userArgs[[key]];
+    }
+    args$verbose <- verbose;
+    verbose && cat(verbose, "Arguments passed to calmateByTotalAndFracB():");
+    verbose && str(verbose, args);
+
+    dataN <- do.call("calmateByTotalAndFracB", args=args);
 
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
@@ -675,6 +713,10 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", r
 
 ############################################################################
 # HISTORY:
+# 2012-02-05 [HB]
+# o DEPRECATED: Now argument 'references' of process() is obsolete and
+#   gives an error.  Specify it via CalMaTeCalibration() instead.
+# o Added getParameters() for CalMaTeCalibration.
 # 2011-07-15 [HB]
 # o DOCUMENTATION: Added a section 'Reference samples' to the help
 #   of CalMaTeCalibration.

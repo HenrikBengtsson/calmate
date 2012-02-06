@@ -47,7 +47,7 @@ extends \link[R.oo]{Object}\cr
    \item{references}{An optional \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which samples
      should be as reference samples for estimating the model parameters.
      If \code{\link[base]{NULL}}, all samples are used.}
-   \item{...}{Arguments passed to calmateByTotalAndFracB or calmateByThetaAB.}
+   \item{...}{Additional arguments passed to \code{\link{calmateByTotalAndFracB}}().}
  }
 
  \section{Fields and Methods}{

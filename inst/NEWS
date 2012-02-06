@@ -1,6 +1,14 @@
 Package: calmate
 ================
 
+Version: 0.7.4 [2012-02-05]
+o Now additional arguments '...' of CalMaTeCalibration(...) are
+  passed to calmateByTotalAndFracB() by process().  This makes
+  it possible to specify all tuning parameters of the CalMaTe method.
+o DEPRECATED: Now argument 'references' of process() is obsolete and
+  gives an error.  Specify it via CalMaTeCalibration() instead.
+
+
 Version: 0.7.3 [2012-01-31]
 o Updated package dependencies.
 o BUG FIX: The bug fix in v0.7.2 for handling the special case where
