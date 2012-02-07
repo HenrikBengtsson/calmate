@@ -52,6 +52,7 @@
 \alias{cat}
 \alias{sapply}
 \alias{getParameters.CalMaTeCalibration}
+\alias{getParametersAsString.CalMaTeCalibration}
 
 \description{
   This page contains aliases for all "non-documented" objects that

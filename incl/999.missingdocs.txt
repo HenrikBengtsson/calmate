@@ -18,4 +18,4 @@ process.CalMaTeCalibration setTags setTags.CalMaTeCalibration
 getReferences getReferences.CalMaTeCalibration
 cat sapply
 getParameters.CalMaTeCalibration
-
+getParametersAsString.CalMaTeCalibration

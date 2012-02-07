@@ -1,7 +1,7 @@
 Package: calmate
 ================
 
-Version: 0.7.4 [2012-02-05]
+Version: 0.7.4 [2012-02-06]
 o Now additional arguments '...' of CalMaTeCalibration(...) are
   passed to calmateByTotalAndFracB() by process().  This makes
   it possible to specify all tuning parameters of the CalMaTe method.

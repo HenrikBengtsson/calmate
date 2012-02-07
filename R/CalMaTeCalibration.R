@@ -134,12 +134,12 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
     }
 
     nok <- which(nchar(keys) == 0);
-    if (length(nok) == 0) {
+    if (length(nok) > 0) {
       throw("All arguments to CalMaTeCalibration passed via '...' must be named.");
     }
   }
 
-  this <- extend(Object(...), "CalMaTeCalibration",
+  this <- extend(Object(), "CalMaTeCalibration",
     .data = data,
     .references = references,
     .extraArgs = extraArgs
@@ -166,12 +166,19 @@ setMethodS3("as.character", "CalMaTeCalibration", function(x, ...) {
   }
   refs <- getReferences(this);
   nbrOfFiles <- nbrOfFiles(this);
-  nbrOfRefs <- length(refs);
-  if (nbrOfRefs == 0) 
-    nbrOfRefs <- nbrOfFiles;
   s <- c(s, sprintf("Number of arrays: %d", nbrOfFiles));
-  s <- c(s, sprintf("Number of references: %d (%.2f%%)", nbrOfRefs, 100*nbrOfRefs/nbrOfFiles));
+  nbrOfRefs <- length(refs);
+  if (nbrOfRefs == 0) {
+    s <- c(s, "Number of references: <all arrays> (100%)");
+  } else {
+    s <- c(s, sprintf("Number of references: %d (%.2f%%)", nbrOfRefs, 100*nbrOfRefs/nbrOfFiles));
+  }
  
+  params <- getParametersAsString(this);
+  nparams <- length(params);
+  params <- paste(params, collapse=", ");
+  s <- c(s, sprintf("Additional parameters: [%d] %s", nparams, params));
+
   class(s) <- "GenericSummary";
   s;
 }, private=TRUE)
@@ -310,6 +317,17 @@ setMethodS3("getParameters", "CalMaTeCalibration", function(this, ...) {
   params <- c(params, this$.extraArgs);
   params;
 }, protected=TRUE);
+
+
+setMethodS3("getParametersAsString", "CalMaTeCalibration", function(this, ...) {
+  params <- getParameters(this, expand=FALSE);
+  params <- trim(capture.output(str(params)))[-1];
+  params <- gsub("^[$][ ]*", "", params);
+  params <- gsub(" [ ]*", " ", params);
+  params <- gsub("[ ]*:", ":", params);
+  params;
+}, private=TRUE)
+
 
 
 setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
@@ -641,9 +659,10 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     for (key in names(userArgs)) {
       args[[key]] <- userArgs[[key]];
     }
-    args$verbose <- verbose;
+    args <- c(list(data), args);
     verbose && cat(verbose, "Arguments passed to calmateByTotalAndFracB():");
     verbose && str(verbose, args);
+    args$verbose <- verbose;
 
     dataN <- do.call("calmateByTotalAndFracB", args=args);
 
@@ -713,6 +732,9 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 
 ############################################################################
 # HISTORY:
+# 2012-02-06 [HB]
+# o Now as.character() also reports any optional parameters.
+# o Added getParametersAsString().
 # 2012-02-05 [HB]
 # o DEPRECATED: Now argument 'references' of process() is obsolete and
 #   gives an error.  Specify it via CalMaTeCalibration() instead.
