@@ -42,6 +42,8 @@
 # \seealso{
 #  To calibrate (total,fracB) data, 
 #  see @seemethod "calmateByTotalAndFracB".
+#  We strongly recommend to always work with (total,fracB) data
+#  instead of (CA,CB) data, because it is much more general.
 #
 #  For further information on the internal fit functions, see
 #  @see "fitCalMaTeInternal".
