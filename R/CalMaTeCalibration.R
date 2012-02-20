@@ -458,33 +458,110 @@ setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=F
 
   verbose && enter(verbose, "Finding units to do");
 
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # (a) Check for missing values in total CNs, because then we will 
+  #     check both non-polymorphic loci and SNPs.
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   dsList <- getOutputDataSets(this);
+  dsT <- dsList$total;
+  verbose && print(verbose, dsT);
 
-  # The last data set is always updated last
-  ds <- dsList[[length(dsList)]];
-  verbose && print(verbose, ds);
-
-  # The last file (in lexicographic ordering) is always updated last
-  fullnames <- getFullNames(ds);
+  fullnames <- getFullNames(dsT);
   verbose && str(verbose, fullnames);
 
   o <- order(fullnames, decreasing=TRUE);
   idx <- o[1];
-  df <- getFile(ds, idx);
-  verbose && print(verbose, df);
+  dfT <- getFile(dsT, idx);
+  verbose && print(verbose, dfT);
 
   # Read all values
-  values <- df[,1,drop=TRUE];
+  values <- dfT[,1,drop=TRUE];
 
-  verbose && cat(verbose, "Number of units: ", length(values));
-
+  nbrOfUnits <- length(values);
+  verbose && cat(verbose, "Number of units: ", nbrOfUnits);
 
   # Identify all missing values
-  nok <- is.na(values);
+  nokT <- is.na(values);
+  unitsT <- which(nokT);
+  verbose && printf(verbose, "Number of TCNs missing values: %d (%.2f%%)\n", length(unitsT), 100*length(unitsT)/nbrOfUnits);
+
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # (b) In case the BAFs were not stored but the TCNs were, which may
+  #     happen during a user interrupt or power failure and because BAFs
+  #     are stored after TCNs, we must make sure to check those as well.
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # The last data set is always updated last
+  dsB <- dsList$fracB;
+  verbose && print(verbose, dsB);
+
+  # The last file (in lexicographic ordering) is always updated last
+  # (This should be the same as above, but just in case...)
+  fullnames <- getFullNames(dsB);
+  verbose && str(verbose, fullnames);
+
+  o <- order(fullnames, decreasing=TRUE);
+  idx <- o[1];
+  dfB <- getFile(dsB, idx);
+  verbose && print(verbose, dfB);
+
+  # Read all values
+  values <- dfB[,1,drop=TRUE];
+
+  # Identify all missing values
+  nokB <- is.na(values);
+  unitsB <- which(nokB);
+  verbose && printf(verbose, "Number of BAFs with missing values: %d (%.2f%%)\n", length(unitsB), 100*length(unitsB)/nbrOfUnits);
+
+
+  # Identify units that *may* be unfitted.
+  nok <- (nokT | nokB);
   units <- which(nok);
 
+
+  # Potentially unfitted units?
+  if (length(units) > 0) {
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # (c) Now, for BAFs we will get missing values for all non-polymorphic 
+    #     loci.  The problem is that we don't know which they are (without 
+    #     turning to chip type-specific annotation data files which cannot
+    #     assume exist).  Instead, we will check the corresponding input
+    #     BAF file to see whether those units also have missing values.
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    dsList <- getDataSets(this);
+    # The last data set is always updated last
+    dsB <- dsList$fracB;
+    verbose && print(verbose, dsB);
+  
+    idxs <- indexOf(dsB, getFullName(dfB));
+    # Sanity check
+    stopifnot(length(idxs) > 0);
+  
+    idx <- idxs[1];
+    dfB <- getFile(dsB, idx);
+    verbose && print(verbose, dfB);
+  
+    values <- dfB[,1,drop=TRUE];
+  
+    # Identify all missing values
+    nokBin <- is.na(values);
+    unitsB <- which(nokBin);
+    verbose && printf(verbose, "Number of input BAFs with missing values: %d (%.2f%%)\n", length(unitsB), 100*length(unitsB)/nbrOfUnits);
+  
+    # Conclusions
+    nokB <- (nokB & !nokBin);
+    unitsB <- which(nokB);
+    verbose && printf(verbose, "Number of BAFs with missing values in output but not in input: %d (%.2f%%)\n", length(unitsB), 100*length(unitsB)/nbrOfUnits);
+  
+    # Update units that are unfitted.
+    nok <- (nokT | nokB);
+    units <- which(nok);
+  } # if (length(units) > 0)
+
   verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
-                       length(units), 100*length(units)/length(values));
+                     length(units), 100*length(units)/length(values));
 
   verbose && cat(verbose, "Units to do (with missing values):");
   verbose && str(verbose, units);
@@ -743,6 +820,8 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 ############################################################################
 # HISTORY:
 # 2012-02-19 [HB]
+# o Made findUnitsTodo() for CalMaTeCalibration smarter. Before it would
+#   detect all non-polymorphic loci as non-fitted.
 # o Added argument 'flavor' to CalMaTeCalibration, which now also add
 #   the "flavor" to the default set of tags.
 # 2012-02-06 [HB]

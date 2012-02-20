@@ -12,7 +12,7 @@ pathname <- names(findSourceTraceback())[1];
 path <- dirname(pathname);
 
 # Loading include files
-sourceTo(file.path(path, "001.include.R"));
+sourceTo("R/001.include.R", path=path);
 
 
 
@@ -26,6 +26,16 @@ if (interactive() && require("R.menu")) {
   chipType <- chipTypes[1];
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Choose CalMaTe version
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+flavors <- c("v1", "v2");
+if (interactive() && require("R.menu")) {
+  flavor <- textMenu(flavors, title="Select CalMaTe version:", value=TRUE);
+} else {
+  flavor <- flavor[1];
+}
 
 figPath <- file.path("figures", chipType);
 figPath <- Arguments$getWritablePath(figPath);
@@ -47,7 +57,7 @@ if (chipType == "Human1M-Duo") {
 
 if (!exists("dsCList", mode="list")) {
   dsList <- loadSets(dataSet, tags=tags, chipType=chipType, verbose=verbose);
-  dsCList <- loadSets(dataSet, tags=c(tags, "CMTN"), chipType=chipType, verbose=verbose);
+  dsCList <- loadSets(dataSet, tags=c(tags, "CMTN", flavor, "refs=N"), chipType=chipType, verbose=verbose);
 }
 verbose && print(verbose, dsList);
 verbose && print(verbose, dsCList);
@@ -104,8 +114,8 @@ for (chr in chromosomes) {
         tagsT <- tags;
       }
 
-      tags <- c(chrTag, chipType, tagsT, toupper(figTag));
-      toPNG(name=sampleName, tags=tags, width=840, aspectRatio=1/3, {
+      tagsF <- c(chrTag, chipType, tagsT, toupper(figTag));
+      toPNG(name=sampleName, tags=tagsF, width=840, aspectRatio=1/3, {
         plot(NA, xlim=xlim, ylim=ylim[[figTag]], 
                  xlab=xlab, ylab=ylab[[figTag]], axes=FALSE);
         axis(side=1);
@@ -124,6 +134,8 @@ for (chr in chromosomes) {
 
 ###########################################################################
 # HISTORY:
+# 2012-02-19 [HB]
+# o Now supporting CalMaTe 'flavor' (calmate >= v0.8.0).
 # 2011-03-09 [HB]
 # o Created from PN's CalMaTe,Illumina.R script from Nov 2010.
 ###########################################################################

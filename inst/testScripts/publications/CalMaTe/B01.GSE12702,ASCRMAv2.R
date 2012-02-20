@@ -12,7 +12,7 @@ pathname <- names(findSourceTraceback())[1];
 path <- dirname(pathname);
 
 # Loading include files
-sourceTo("001.include.R", path=path);
+sourceTo("R/001.include.R", path=path);
 
 
 library("aroma.affymetrix");

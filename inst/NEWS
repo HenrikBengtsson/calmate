@@ -1,6 +1,11 @@
 Package: calmate
 ================
 
+Version: 0.8.1 [2012-02-19]
+o Made findUnitsTodo() for CalMaTeCalibration smarter. Before it would
+  detect all non-polymorphic loci as non-fitted.
+
+
 Version: 0.8.0 [2012-02-19]
 o BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB()
   and CalMaTeCalibration so that it is possible use previous versions

@@ -15,7 +15,7 @@ pathname <- names(findSourceTraceback())[1];
 path <- dirname(pathname);
 
 # Loading include files
-sourceTo("001.include.R", path=path);
+sourceTo("R/001.include.R", path=path);
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,6 +40,9 @@ stopifnot(length(dsList$total) == 40);
 # 2. Clever CalMaTe (using normal arrays as references)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 verbose && enter(verbose, "Normalization ASCNs using CalMaTe");
+
+flavor <- c("v1", "v2")[1];
+verbose && cat(verbose, "Flavor: ", flavor);
 
 useNormalRefs <- TRUE;
 if (useNormalRefs) {
@@ -66,7 +69,7 @@ if (useNormalRefs) {
 
 
 ## CalMaTe calibration
-cmt <- CalMaTeCalibration(dsList, references=refs, tags=c("*", refTag));
+cmt <- CalMaTeCalibration(dsList, references=refs, flavor=flavor, tags=c("*", refTag));
 verbose && print(verbose, cmt);
 
 dsCList <- process(cmt, verbose=verbose);
@@ -80,6 +83,8 @@ verbose && exit(verbose);
 
 ###########################################################################
 # HISTORY:
+# 2012-02-19 [HB]
+# o Now supporting CalMaTe 'flavor' (calmate >= v0.8.0).
 # 2011-03-09 [HB]
 # o Created from other scripts and online CalMaTe vignette.
 ###########################################################################

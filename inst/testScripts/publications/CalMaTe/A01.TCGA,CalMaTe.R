@@ -12,7 +12,7 @@ pathname <- names(findSourceTraceback())[1];
 path <- dirname(pathname);
 
 # Loading include files
-sourceTo("001.include.R", path=path);
+sourceTo("R/001.include.R", path=path);
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,6 +56,9 @@ verbose && print(verbose, dsList);
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 verbose && enter(verbose, "Normalization ASCNs using CalMaTe");
 
+flavor <- c("v1", "v2")[1];
+verbose && cat(verbose, "Flavor: ", flavor);
+
 useNormalRefs <- TRUE;
 if (useNormalRefs) {
   ## Identify the normal samples to be used as references
@@ -70,7 +73,7 @@ if (useNormalRefs) {
 
 
 ## CalMaTe calibration
-cmt <- CalMaTeCalibration(dsList, references=refs, tags=c("*", refTag));
+cmt <- CalMaTeCalibration(dsList, references=refs, flavor=flavor, tags=c("*", refTag));
 verbose && print(verbose, cmt);
 
 dsCList <- process(cmt, verbose=verbose);
@@ -83,6 +86,9 @@ verbose && exit(verbose);
 
 ###########################################################################
 # HISTORY:
+# 2012-02-19 [HB]
+# o Now expliticly specifying argument 'flavor' of CalMaTeCalibration,
+#   which was introduced in calmate v0.8.0.
 # 2011-03-09 [HB]
 # o Created from PN's CalMaTe,Illumina.R script from Nov 2010.
 ###########################################################################
