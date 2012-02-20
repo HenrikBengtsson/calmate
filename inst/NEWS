@@ -9,6 +9,8 @@ o BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB()
 o SPEEDUP: the internal CalMaTe fit function is now called directly,
   which avoids the method dispatch overhead that otherwise applies 
   to each SNP fitted.
+o ROBUSTNESS: Added system tests to test all flavors of the fitting
+  algorithms.
 
 
 Version: 0.7.4 [2012-02-06]
