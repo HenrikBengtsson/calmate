@@ -150,18 +150,20 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   verbose && printf(verbose, "Number of SNPs left: ");
   # Drop dimnames for faster processing
   dimnames(dataS) <- NULL;
+  # Used for sanity check inside loop
+  dimCjj <- dim(dataS)[-1];
   for (jj in seq(length=nbrOfSNPs)) {
-    if (verbose && (jj %% 100 == 1)) {
-      printf(verbose, "%d,", nbrOfSNPs-jj+1, timestamp=FALSE);
+    if (verbose && (jj %% 500 == 1)) {
+      writeRaw(verbose, sprintf("%d, ", nbrOfSNPs-jj+1));
     }
     Cjj <- dataS[jj,,,drop=FALSE];  # An 1x2xI array
-    dim(Cjj) <- dim(Cjj)[-1]; # A 2xI matrix
+    dim(Cjj) <- dimCjj;             # A 2xI matrix
     CCjj <- fitFcn(Cjj, references=references, ...);
     # Sanity check
-    stopifnot(identical(dim(CCjj), dim(Cjj)));
+    stopifnot(identical(dim(CCjj), dimCjj));
     dataS[jj,,] <- CCjj;
   } # for (jj ...)
-  if (verbose) cat(verbose, "done.");
+  if (verbose) writeRaw(verbose, "done.\n");
   verbose && exit(verbose);
 
   if (hasNonFinite) {
@@ -219,6 +221,10 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
 ###########################################################################
 # HISTORY:
+# 2012-02-20 [HB]
+# o Minor speed up of calmateByThetaAB() by precalculating dim(Cjj)
+#   outside the loop.
+# o Made the progress verbose messages of calmateByThetaAB() tighter.
 # 2012-02-19 [HB]
 # o BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB()
 #   to be able to use previous versions of CalMaTe model estimators.
