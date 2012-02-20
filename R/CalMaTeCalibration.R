@@ -26,7 +26,7 @@
 #     If @NULL, all samples are used.}
 #   \item{flavor}{A @character string specifying which flavor of the
 #     CalMaTe algorithm to use for fitting the model.
-#     See @see "fitCalMaTeInternal". details.}
+#     See @see "fitCalMaTeInternal" for details.}
 #   \item{...}{Additional arguments passed to @see "calmateByTotalAndFracB".}
 # }
 #

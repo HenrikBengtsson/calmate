@@ -49,7 +49,7 @@ extends \link[R.oo]{Object}\cr
      If \code{\link[base]{NULL}}, all samples are used.}
    \item{flavor}{A \code{\link[base]{character}} string specifying which flavor of the
      CalMaTe algorithm to use for fitting the model.
-     See \code{\link{fitCalMaTeInternal}}. details.}
+     See \code{\link{fitCalMaTeInternal}} for details.}
    \item{...}{Additional arguments passed to \code{\link{calmateByTotalAndFracB}}().}
  }
 
