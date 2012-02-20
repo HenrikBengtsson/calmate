@@ -17,26 +17,30 @@
 
 \description{
  Calibrates SNP loci according to the CalMaTe method.
- \emph{Note: This is an internal function of the package. It should not
-  be used elsewhere. Its API may change at any time.}
+ \emph{Note: This is an internal function of the package, which is kept
+  only kept to provide easy access to the internal fit functions.
+  It it actually not elsewhere in the package, and should nor by others.}
 }
 
-\usage{\method{fitCalMaTe}{matrix}(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...)}
+\usage{\method{fitCalMaTe}{matrix}(dataT, references, flavor=c("v2", "v1"), ...)}
 
 \arguments{
  \item{dataT}{A 2xI \code{\link[base]{numeric}} \code{\link[base]{matrix}} of allele specific copy numbers (ASCNs),
     where 2 is the number alleles and I is the number of samples.}
  \item{references}{A \code{\link[base]{integer}} \code{\link[base]{vector}} with elements in [1,I] specifying
     which samples should be used as the reference set.}
- \item{fB1, fB2}{Thresholds for calling genotypes AA, AB, BB from the
-    allele B fractions.}
- \item{maxIter}{The maximum number of iterations without converging
-    before the algorithm quits.}
- \item{...}{Not used.}
+ \item{...}{Additional arguments passed to the internal fit functions.}
+ \item{flavor}{A \code{\link[base]{character}} string specifying which internal fit function
+    (flavor of the CalMaTe algorithm) to use for fitting the model.}
 }
 
 \value{
   Returns a 2xI \code{\link[base]{numeric}} \code{\link[base]{matrix}} of calibrated ASCNs.
+}
+
+\seealso{
+  For further information on the internal fit functions, see
+  \code{\link{fitCalMaTeInternal}}.
 }
 
 

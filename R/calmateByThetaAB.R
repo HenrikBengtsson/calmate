@@ -17,7 +17,7 @@
 #  \item{references}{An index @vector in [1,I] or a @logical @vector 
 #     of length I specifying which samples are used when calculating the
 #     reference signals.  If @NULL, all samples are used. At least 3 samples.}
-#  \item{...}{Additional arguments passed to @see "fitCalMaTe".}
+#  \item{...}{Additional arguments passed to the internal fit function.}
 #  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative
 #     while preserving the total CNs.}
 #  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
@@ -27,6 +27,8 @@
 #     If specified, then the total copy numbers of the calibrated ASCNs
 #     are standardized toward (twice) the average of the total copy numbers
 #     of the calibrated reference ASCNs.}
+#  \item{flavor}{A @character string specifying which flavor of the
+#     CalMaTe algorithm to use for fitting the model.}
 #  \item{verbose}{See @see "R.utils::Verbose".}
 # }
 #
@@ -40,9 +42,12 @@
 # \seealso{
 #  To calibrate (total,fracB) data, 
 #  see @seemethod "calmateByTotalAndFracB".
+#
+#  For further information on the internal fit functions, see
+#  @see "fitCalMaTeInternal".
 # }
 #*/###########################################################################
-setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, verbose=FALSE) {
+setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, flavor=c("v2", "v1"), verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -90,6 +95,9 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     throw("Argument 'reference' specify less than three reference samples: ", length(references));
   }
 
+  # Argument 'flavor':
+  flavor <- match.arg(flavor);
+
   # Argument 'verbose':
   verbose <- Arguments$getVerbose(verbose);    
 
@@ -126,6 +134,15 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
 
   verbose && enter(verbose, "Fitting CalMaTe");
+  verbose && cat(verbose, "Algorithm flavor: ", flavor);
+  if (flavor == "v2") {
+    fitFcn <- fitCalMaTeV2;
+  } else if (flavor == "v1") {
+    fitFcn <- fitCalMaTeV1;
+  } else {
+    throw("Unknown algorithm flavor: ", flavor);
+  }
+
   nbrOfSNPs <- dim(dataS)[1];
   verbose && cat(verbose, "Number of SNPs: ", nbrOfSNPs);
   verbose && printf(verbose, "Number of SNPs left: ");
@@ -137,7 +154,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     }
     Cjj <- dataS[jj,,,drop=FALSE];  # An 1x2xI array
     dim(Cjj) <- dim(Cjj)[-1]; # A 2xI matrix
-    CCjj <- fitCalMaTe(Cjj, references=references, ...);
+    CCjj <- fitFcn(Cjj, references=references, ...);
     # Sanity check
     stopifnot(identical(dim(CCjj), dim(Cjj)));
     dataS[jj,,] <- CCjj;
@@ -200,6 +217,13 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
 ###########################################################################
 # HISTORY:
+# 2012-02-19 [HB]
+# o BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB()
+#   to be able to use previous versions of CalMaTe model estimators.
+#   Flavor "v2" was introduced 2011-12-05.
+# o SPEEDUP: the internal CalMaTe fit function is now called directly,
+#   which avoids the method dispatch overhead that otherwise applies 
+#   to each SNP fitted.
 # 2011-12-15 [HB]
 # o CLEANUP: Tidied up the validation of argument 'references' and
 #   improved the corresponding error messages.

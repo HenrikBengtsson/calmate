@@ -24,6 +24,9 @@
 #   \item{references}{An optional @numeric @vector specifying which samples
 #     should be as reference samples for estimating the model parameters.
 #     If @NULL, all samples are used.}
+#   \item{flavor}{A @character string specifying which flavor of the
+#     CalMaTe algorithm to use for fitting the model.
+#     See @see "fitCalMaTeInternal". details.}
 #   \item{...}{Additional arguments passed to @see "calmateByTotalAndFracB".}
 # }
 #
@@ -60,12 +63,15 @@
 #
 # \seealso{
 #   Low-level versions of the CalMaTe method is available
-#   via the @see "calmateByThetaAB.array" and 
-#   @see "calmateByTotalAndFracB.array" methods.
+#   via the @see "calmateByThetaAB" and 
+#   @see "calmateByTotalAndFracB" methods.
+#
+#  For further information on the internal fit functions, see
+#  @see "fitCalMaTeInternal".
 # }
 #
 #*/###########################################################################
-setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=NULL, ...) {
+setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=NULL, flavor=c("v2", "v1"), ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -124,6 +130,8 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
     }
   }
 
+  # Argument 'flavor':
+  flavor <- match.arg(flavor);
 
   # Arguments '...'; optional arguments to calmateByTotalAndFracB()
   extraArgs <- list(...);
@@ -142,6 +150,7 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
   this <- extend(Object(), "CalMaTeCalibration",
     .data = data,
     .references = references,
+    .flavor = flavor,
     .extraArgs = extraArgs
   );
 
@@ -187,7 +196,7 @@ setMethodS3("as.character", "CalMaTeCalibration", function(x, ...) {
 
 setMethodS3("getAsteriskTags", "CalMaTeCalibration", function(this, collapse=NULL, ...) {
   tags <- "CMTN";
-
+  tags <- c(tags, this$.flavor);
   if (!is.null(collapse)) {
     tags <- paste(tags, collapse=collapse);
   }
@@ -314,6 +323,7 @@ setMethodS3("getReferences", "CalMaTeCalibration", function(this, ...) {
 setMethodS3("getParameters", "CalMaTeCalibration", function(this, ...) {
   params <- list();
   params$references <- getReferences(this);
+  params$flavor <- this$.flavor;
   params <- c(params, this$.extraArgs);
   params;
 }, protected=TRUE);
@@ -732,6 +742,9 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 
 ############################################################################
 # HISTORY:
+# 2012-02-19 [HB]
+# o Added argument 'flavor' to CalMaTeCalibration, which now also add
+#   the "flavor" to the default set of tags.
 # 2012-02-06 [HB]
 # o Now as.character() also reports any optional parameters.
 # o Added getParametersAsString().

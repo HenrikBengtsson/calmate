@@ -34,7 +34,7 @@ extends \link[R.oo]{Object}\cr
   (ASCNs).
  }
 
- \usage{CalMaTeCalibration(data=NULL, tags="*", references=NULL, ...)}
+ \usage{CalMaTeCalibration(data=NULL, tags="*", references=NULL, flavor=c("v2", "v1"), ...)}
 
  \arguments{
    \item{data}{A named \code{\link[base]{list}} with data set named \code{"total"} and
@@ -47,6 +47,9 @@ extends \link[R.oo]{Object}\cr
    \item{references}{An optional \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which samples
      should be as reference samples for estimating the model parameters.
      If \code{\link[base]{NULL}}, all samples are used.}
+   \item{flavor}{A \code{\link[base]{character}} string specifying which flavor of the
+     CalMaTe algorithm to use for fitting the model.
+     See \code{\link{fitCalMaTeInternal}}. details.}
    \item{...}{Additional arguments passed to \code{\link{calmateByTotalAndFracB}}().}
  }
 
@@ -159,7 +162,10 @@ plot(gammaN);
 
  \seealso{
    Low-level versions of the CalMaTe method is available
-   via the \code{\link{calmateByThetaAB.array}}() and
-   \code{\link{calmateByTotalAndFracB.array}}() methods.
+   via the \code{\link{calmateByThetaAB}}() and
+   \code{\link{calmateByTotalAndFracB}}() methods.
+
+  For further information on the internal fit functions, see
+  \code{\link{fitCalMaTeInternal}}.
  }
 \keyword{classes}

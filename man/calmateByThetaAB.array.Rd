@@ -19,7 +19,7 @@
   Normalize allele-specific copy numbers (CA,CB).
  }
 
- \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, verbose=FALSE)}
+ \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, flavor=c("v2", "v1"), verbose=FALSE)}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of SNPs,
@@ -27,7 +27,7 @@
   \item{references}{An index \code{\link[base]{vector}} in [1,I] or a \code{\link[base]{logical}} \code{\link[base]{vector}}
      of length I specifying which samples are used when calculating the
      reference signals.  If \code{\link[base]{NULL}}, all samples are used. At least 3 samples.}
-  \item{...}{Additional arguments passed to \code{\link{fitCalMaTe}}().}
+  \item{...}{Additional arguments passed to the internal fit function.}
   \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative
      while preserving the total CNs.}
   \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
@@ -37,6 +37,8 @@
      If specified, then the total copy numbers of the calibrated ASCNs
      are standardized toward (twice) the average of the total copy numbers
      of the calibrated reference ASCNs.}
+  \item{flavor}{A \code{\link[base]{character}} string specifying which flavor of the
+     CalMaTe algorithm to use for fitting the model.}
   \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
  }
 
@@ -78,5 +80,8 @@ stopifnot(length(dim(dummy)) == 3);
  \seealso{
   To calibrate (total,fracB) data,
   see \code{\link[calmate:calmateByTotalAndFracB.array]{*calmateByTotalAndFracB}()}.
+
+  For further information on the internal fit functions, see
+  \code{\link{fitCalMaTeInternal}}.
  }
 \keyword{methods}

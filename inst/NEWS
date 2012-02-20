@@ -1,6 +1,16 @@
 Package: calmate
 ================
 
+Version: 0.8.0 [2012-02-19]
+o BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB()
+  and CalMaTeCalibration so that it is possible use previous versions
+  of CalMaTe model estimators.  The flavor is now reflected in the
+  "asterisk" (the default) tags of CalMaTeCalibration.
+o SPEEDUP: the internal CalMaTe fit function is now called directly,
+  which avoids the method dispatch overhead that otherwise applies 
+  to each SNP fitted.
+
+
 Version: 0.7.4 [2012-02-06]
 o Now additional arguments '...' of CalMaTeCalibration(...) are
   passed to calmateByTotalAndFracB() by process().  This makes
