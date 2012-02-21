@@ -78,7 +78,6 @@ fitCalMaTeV1 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   res;
 } # fitCalMaTeV1()
 
-
 ###########################################################################
 # HISTORY:
 # 2012-02-19 [HB]
