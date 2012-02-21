@@ -4,11 +4,10 @@
 #  \item{data}{An Jx2xI @numeric array, where J is the number of SNPs,
 #          2 is the number of alleles, and I is the number of samples.}
 #
-# In this case, the variable data has the J=100 SNPs in the I=40 samples used in the manuscript
+# In this case, the variable data has the J=100 SNPs in the I=40 samples
+# used in the manuscript
 # - - - - - - - - - - - - - - - - - - - - - - -
-
 library("calmate");
-library("R.utils");
 
 # Load example (thetaA,thetaB) signals
 path <- system.file("exData", package="calmate"); 
@@ -20,22 +19,36 @@ C <- 2*theta/thetaR;
 
 # Transform to (total,fracB) signals
 data <- thetaAB2TotalAndFracB(theta);
-dimnames(data)[[2]][2] <- "fracB";
 
-# It returns a list where the elements of the list are the SNPs and their total
-# copy number and fracB      
+# It returns a list where the elements of the list are the SNPs and 
+# their total copy number and fracB      
 dataC <- calmateByTotalAndFracB(data);
 
-# Allele specific copy numbers
-dataAC <- dataC[,1,]*(1-dataC[,2,]);
-dataBC <- dataC[,1,]*dataC[,2,];
+# Allele-specific copy numbers after CalMaTe
+CC <- C;
+CC[,"A",] <- dataC[,"total",]*(1-dataC[,"fracB",]);
+CC[,"B",] <- dataC[,"total",] - CC[,"A",];
 
-# Comparing allele specific copy number results before and after CalMaTe calibration for sample 3 
-nSample = 3;                 
-plot(C[,1,nSample],C[,2,nSample], xlim = c(0,3), ylim = c(0,3));
-points(dataAC[,nSample],dataBC[,nSample], col="blue");
 
-# Comparing fracB results before and after CalMaTe calibration for sample 3 
-nSample = 3;                 
-x11();plot(C[,2,nSample], ylim = c(0,1));
-points(dataC[,2,nSample], col="blue");
+if (interactive()) {
+  devNew(type="x11", aspectRatio=1.9);
+} else {
+  devNew(type="png", "test-testScriptCalMaTe.png", aspectRatio=1.9);
+}
+
+subplots(2, ncol=1, byrow=FALSE);
+par(mar=c(3,3,1,1)+0.1, mgp=c(1.8,0.7,0));
+
+# Comparing allele-specific copy numbers before and after CalMaTe
+# calibration for Sample #3
+ii <- 3;                 
+Clim <- c(-0.2,3);
+plot(C[,,ii], xlim=Clim, ylim=Clim);
+points(CC[,,ii], col="blue");
+
+# Comparing BAFs before and after CalMaTe calibration for Sample #3.
+ii <- 3;
+plot(data[,"fracB",ii], ylab="BAF", ylim=c(0,1));
+points(dataC[,"fracB",ii], col="blue");
+
+devDone();

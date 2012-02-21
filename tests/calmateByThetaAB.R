@@ -22,9 +22,14 @@ for (flavor in flavors) {
 }
 
 # Create plot
-Clim <- c(0,4);
+Clim <- c(-0.2,4);
 
-if (interactive()) devNew(type="x11", aspectRatio=1.6);
+if (interactive()) {
+  devNew(type="x11", aspectRatio=1.9);
+} else {
+  devNew(type="png", "test-calmateByTheta.png", aspectRatio=1.9);
+}
+
 subplots(2*length(CList)+2, ncol=2, byrow=FALSE);
 par(mar=c(3,3,1,1)+0.1, mgp=c(1.8,0.7,0));
 # Plot two "random" arrays
@@ -43,15 +48,17 @@ for (ii in c(1,5)) {
     stext(side=3, pos=0.5, label);
   } # for (kk ...)
 
-  for (kk in 2:length(CList)) {
+  for (kk in 1:length(CList)) {
     key <- names(CList)[kk];
     C <- CList[[key]];
 
-    if (kk == 2L) {
+    if (kk == 1L) {
       plot(C[,,ii], col=kk, xlim=Clim, ylim=Clim);
     } else {
       points(C[,,ii], col=kk);
     }
-    stext(side=3, pos=0.5, "All calibration flavors");
+    stext(side=3, pos=0.5, "All together");
   } # for (kk ...)
 } # for (ii ...)
+
+devDone();
