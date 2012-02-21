@@ -45,7 +45,15 @@
  \value{
    Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}
    with the same dimension names as argument \code{data}.
- }                                 
+ }
+
+ \section{Flavors}{
+   For backward compatibility, we try to keep all major versions of
+   the CalMaTe algorithm available.  Older versions can be used by
+   specifying argument \code{flavor}.
+   For more information about the different flavors,
+   see \code{\link{fitCalMaTeInternal}}.
+ }
 
  \examples{
 # Load example (thetaA,thetaB) signals
@@ -70,11 +78,6 @@ for (ii in c(1,5)) {
   plot(CC[,,ii], xlim=Clim, ylim=Clim);
   title(main=sprintf("\%s\ncalibrated", sampleLabel));
 }
-
-
-# Assert that it also works with a single unit
-dummy <- calmateByThetaAB(theta[1,,,drop=FALSE]);
-stopifnot(length(dim(dummy)) == 3);
 }
 
  \seealso{

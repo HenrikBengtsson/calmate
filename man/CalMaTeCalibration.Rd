@@ -96,6 +96,14 @@ asThis, getChecksum, $, $<-, [[, [[<-, as.character, attach, attachLocally, clea
   of genotypes.
  }
 
+ \section{Flavors}{
+   For backward compatibility, we try to keep all major versions of
+   the CalMaTe algorithm available.  Older versions can be used by
+   specifying argument \code{flavor}.
+   For more information about the different flavors,
+   see \code{\link{fitCalMaTeInternal}}.
+ }
+
  \examples{\dontrun{
   
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

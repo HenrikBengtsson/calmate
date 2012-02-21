@@ -28,9 +28,17 @@
 #   Returns a 2xI @numeric @matrix of calibrated ASCNs.
 # }
 #
+# \section{Flavors}{
+#   For backward compatibility, we try to keep all major versions of
+#   the CalMaTe algorithm available.  Older versions can be used by
+#   specifying argument \code{flavor}.
+#   For more information about the different flavors, 
+#   see @see "fitCalMaTeInternal".
+# }
+#
 # \seealso{
-#   For further information on the internal fit functions, see
-#   @see "fitCalMaTeInternal".
+#   For further information on the internal fit functions, 
+#   see @see "fitCalMaTeInternal".
 # }
 #
 # @keyword internal

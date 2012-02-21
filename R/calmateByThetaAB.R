@@ -35,7 +35,15 @@
 # \value{
 #   Returns an Jx2xI @numeric @array
 #   with the same dimension names as argument \code{data}.
-# }                                   
+# }
+#
+# \section{Flavors}{
+#   For backward compatibility, we try to keep all major versions of
+#   the CalMaTe algorithm available.  Older versions can be used by
+#   specifying argument \code{flavor}.
+#   For more information about the different flavors, 
+#   see @see "fitCalMaTeInternal".
+# }
 #
 # @examples "../incl/calmateByThetaAB.Rex"
 #
