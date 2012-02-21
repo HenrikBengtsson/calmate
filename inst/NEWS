@@ -1,6 +1,17 @@
 Package: calmate
 ================
 
+Version: 0.9.0 [2012-02-21]
+o UPDATE: CalMaTe algorithm v2 is being finalized. Main updates are:
+  (a) The estimation of the model parameters are now done solely
+      based on reference samples.  In previous versions, some of the
+      initial estimation steps were using also non-reference samples.
+  (b) For a small number of SNPs, the main CalMaTe scheme for 
+      estimating parameters would not converge or converge poorly.
+      For such SNPs, CalMaTe now falls back to using a median-based
+      estimator.  For more details, see help(fitCalMaTeInternal).
+
+
 Version: 0.8.1 [2012-02-19]
 o Made findUnitsTodo() for CalMaTeCalibration smarter. Before it would
   detect all non-polymorphic loci as non-fitted.

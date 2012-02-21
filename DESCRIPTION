@@ -1,6 +1,6 @@
 Package: calmate
-Version: 0.8.1
-Date: 2012-02-19
+Version: 0.9.0
+Date: 2012-02-21
 Title: Post-calibration of allele-specific copy-number estimates (ASCNs)
 Author: Maria Ortiz, Ander Aramburu, Henrik Bengtsson, Pierre Neuvial, Angel Rubio
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
