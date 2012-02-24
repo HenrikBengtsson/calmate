@@ -3,7 +3,7 @@
 .conflicts.OK <- TRUE;
 
 .onAttach <- function(libname, pkgname) {
-  pd <- packageDescription(pkgname);
+  pd <- utils::packageDescription(pkgname);
 
   packageStartupMessage(pkgname, " v", pd$Version, " (", 
     pd$Date, ") successfully loaded. See ?", pkgname, " for help.");

@@ -56,7 +56,7 @@ verbose && print(verbose, dsList);
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 verbose && enter(verbose, "Normalization ASCNs using CalMaTe");
 
-flavor <- c("v1", "v2")[1];
+flavor <- c("v1", "v2")[2];
 verbose && cat(verbose, "Flavor: ", flavor);
 
 useNormalRefs <- TRUE;
