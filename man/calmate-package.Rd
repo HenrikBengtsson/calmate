@@ -40,11 +40,11 @@
  }
 
  \author{
-  A.B. Olshen, H. Bengtsson, P. Neuvial, P.T. Spellman, R.A. Olshen, V.E. Seshan.
+  Maria Ortiz, Ander Aramburu, Henrik Bengtsson, Pierre Neuvial, Angel Rubio.
  }
 
  \section{License}{
-  GPL (>= 2).
+  LGPL (>= 2.1).
  }
 
  \references{

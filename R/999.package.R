@@ -27,11 +27,11 @@
 # }
 #
 # \author{
-#  @eval "packageDescription('PSCBS')$Author". 
+#  @eval "packageDescription('calmate')$Author". 
 # }
 #
 # \section{License}{
-#  @eval "packageDescription('PSCBS')$License".
+#  @eval "packageDescription('calmate')$License".
 # }
 # 
 # \references{
