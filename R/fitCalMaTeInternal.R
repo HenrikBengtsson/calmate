@@ -35,14 +35,17 @@
 # }
 #
 # \section{Flavor v1}{
-#   \emph{To be documented.}
+#   This is an early version (June 2010-January 2012) of the algorithm
+#   described in [1].
 # }
 #
 # \section{Flavor v2}{
+#   This is the model and algorithm described in [1].
+#
 #   This version was introduced to decrease the number of
 #   "artificial outliers" introduced by CalMaTe for some SNPs 
 #   due to non-converging or wreak-havoc estimates of the SNP effects.
-#   Flavor~v2 differ from Flavor~v1 as follows:
+#   Flavor v2 differ from Flavor v1 as follows:
 #   \itemize{
 #    \item The estimation of the model parameters are now done solely
 #          based on reference samples.  In previous versions, some of the
@@ -58,6 +61,10 @@
 #   The \code{fitCalMaTeMedians()} method is used as a fallback method
 #   by \code{fitCalMaTeV2()}.  It fits CalMaTe without using the
 #   @see "MASS::rlm" function.
+# }
+#
+# \references{
+#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr 
 # }
 #
 # \seealso{

@@ -17,7 +17,8 @@
 #  \item{references}{An index @vector in [1,I] or a @logical @vector 
 #     of length I specifying which samples are used when calculating the
 #     reference signals.  If @NULL, all samples are used. At least 3 samples.}
-#  \item{...}{Additional arguments passed to the internal fit function.}
+#  \item{...}{Additional arguments passed to the internal fit function
+#     @see "fitCalMaTeInternal".}
 #  \item{truncate}{If @TRUE, final ASCNs are forced to be non-negative
 #     while preserving the total CNs.}
 #  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
@@ -41,6 +42,7 @@
 #   For backward compatibility, we try to keep all major versions of
 #   the CalMaTe algorithm available.  Older versions can be used by
 #   specifying argument \code{flavor}.
+#   The default flavor is \code{v2}.
 #   For more information about the different flavors, 
 #   see @see "fitCalMaTeInternal".
 # }

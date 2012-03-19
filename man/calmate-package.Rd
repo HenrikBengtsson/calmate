@@ -16,17 +16,16 @@
 
  \description{
    Post-calibration of allele-specific copy-number estimates (ASCNs).
-
-   This package should be considered to be in an alpha phase.
-   You should expect the API to be changing over time.
  }
 
  \section{Requirements}{
-   This package requires...
+   This package depends on a set of packages that are all available
+   via CRAN.  It has been tested and verified to run on all common
+   operating systems on which R runs, including Linux, Windows and OSX.
  }
 
  \section{Installation and updates}{
-   TBA.
+   To install this package, do \code{install.packages("calmate")}.
  }
 
  \section{To get started}{
@@ -36,20 +35,20 @@
   }
  }
 
+ \section{How to cite}{
+   Please cite [1] when using CalMaTe.
+ }
+
  \author{
-   Maria Ortiz-Estevez <mortiz@ceit.es>,
-   Ander Aramburu,
-   Henrik Bengtsson <henrikb@braju.com>,
-   Pierre Neuvial <pierre@stat.berkeley.edu>,
-   Angel Rubio <arubio@ceit.es>.
+  A.B. Olshen, H. Bengtsson, P. Neuvial, P.T. Spellman, R.A. Olshen, V.E. Seshan.
  }
 
  \section{License}{
-   The releases of this package is licensed under
-   LGPL version 2.1 or newer.
+  GPL (>= 2).
  }
 
  \references{
-   TBA.
+  [1] M. Ortiz-Estevez, A. Aramburu, H. Bengtsson, P. Neuvial and A. Rubio, \emph{CalMaTe: A method and software to improve allele-specific copy number of SNP arrays for downstream segmentation} (submitted)
+ \cr
  }
 \keyword{package}

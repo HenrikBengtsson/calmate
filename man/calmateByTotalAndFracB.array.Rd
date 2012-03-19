@@ -32,8 +32,7 @@
   \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
      samples should be used as the reference set.
      By default, all samples are considered. If not NULL at least 3 samples.}
-  \item{...}{Additional arguments passed to
-         \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
+  \item{...}{Additional arguments passed to \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
   \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
      an argument \code{na.rm} and returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
      It should calculate some type of average for each of the J rows, e.g.

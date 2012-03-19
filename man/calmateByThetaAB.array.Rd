@@ -27,7 +27,8 @@
   \item{references}{An index \code{\link[base]{vector}} in [1,I] or a \code{\link[base]{logical}} \code{\link[base]{vector}}
      of length I specifying which samples are used when calculating the
      reference signals.  If \code{\link[base]{NULL}}, all samples are used. At least 3 samples.}
-  \item{...}{Additional arguments passed to the internal fit function.}
+  \item{...}{Additional arguments passed to the internal fit function
+     \code{\link{fitCalMaTeInternal}}.}
   \item{truncate}{If \code{\link[base:logical]{TRUE}}, final ASCNs are forced to be non-negative
      while preserving the total CNs.}
   \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
@@ -51,6 +52,7 @@
    For backward compatibility, we try to keep all major versions of
    the CalMaTe algorithm available.  Older versions can be used by
    specifying argument \code{flavor}.
+   The default flavor is \code{v2}.
    For more information about the different flavors,
    see \code{\link{fitCalMaTeInternal}}.
  }
