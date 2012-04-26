@@ -49,6 +49,10 @@
 #
 # @examples "../incl/calmateByThetaAB.Rex"
 #
+# \references{
+#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr 
+# }
+#
 # \seealso{
 #  To calibrate (total,fracB) data, 
 #  see @seemethod "calmateByTotalAndFracB".

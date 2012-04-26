@@ -66,7 +66,7 @@
 # }}
 #
 # \references{
-#   [1] ...
+#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr 
 # }
 #
 # \seealso{

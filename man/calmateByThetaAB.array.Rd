@@ -82,6 +82,11 @@ for (ii in c(1,5)) {
 }
 }
 
+ \references{
+  [1] M. Ortiz-Estevez, A. Aramburu, H. Bengtsson, P. Neuvial and A. Rubio, \emph{CalMaTe: A method and software to improve allele-specific copy number of SNP arrays for downstream segmentation}, Bioinformatics, 2012 (in print).
+ \cr
+ }
+
  \seealso{
   To calibrate (total,fracB) data,
   see \code{\link[calmate:calmateByTotalAndFracB.array]{*calmateByTotalAndFracB}()}.

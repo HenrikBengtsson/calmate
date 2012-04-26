@@ -36,6 +36,10 @@
 #   see @see "fitCalMaTeInternal".
 # }
 #
+# \references{
+#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr 
+# }
+#
 # \seealso{
 #   For further information on the internal fit functions, 
 #   see @see "fitCalMaTeInternal".

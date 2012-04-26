@@ -40,6 +40,10 @@
 #
 # @examples "../incl/calmateByTotalAndFracB.Rex"
 #
+# \references{
+#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr 
+# }
+#
 # \seealso{
 #  To calibrate (thetaA,thetaB) or (CA,CB) signals, 
 #  see @seemethod "calmateByThetaAB".

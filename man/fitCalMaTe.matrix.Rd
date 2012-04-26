@@ -46,6 +46,11 @@
   see \code{\link{fitCalMaTeInternal}}.
 }
 
+\references{
+ [1] M. Ortiz-Estevez, A. Aramburu, H. Bengtsson, P. Neuvial and A. Rubio, \emph{CalMaTe: A method and software to improve allele-specific copy number of SNP arrays for downstream segmentation}, Bioinformatics, 2012 (in print).
+ \cr
+}
+
 \seealso{
   For further information on the internal fit functions,
   see \code{\link{fitCalMaTeInternal}}.

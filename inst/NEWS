@@ -1,6 +1,11 @@
 Package: calmate
 ================
 
+Version: 0.9.3 [2012-04-24]
+o Updated package dependencies.
+o Updated references to the CalMaTe manuscript.
+
+
 Version: 0.9.2 [2012-03-18]
 o Updated help("calmate").
 
