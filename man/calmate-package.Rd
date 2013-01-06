@@ -15,7 +15,7 @@
 
 
  \description{
-   Post-calibration of allele-specific copy-number estimates (ASCNs).
+   A multi-array post-processing method of allele-specific copy-number estimates (ASCNs)
  }
 
  \section{Requirements}{

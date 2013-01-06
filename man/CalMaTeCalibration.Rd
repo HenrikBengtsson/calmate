@@ -19,13 +19,15 @@
 
 \code{\link[R.oo]{Object}}\cr
 \code{~~|}\cr
-\code{~~+--}\code{CalMaTeCalibration}\cr
+\code{~~+--}\code{\link[aroma.core]{ParametersInterface}}\cr
+\code{~~~~~~~|}\cr
+\code{~~~~~~~+--}\code{CalMaTeCalibration}\cr
 
 \bold{Directly known subclasses:}\cr
 \cr
 
 public static class \bold{CalMaTeCalibration}\cr
-extends \link[R.oo]{Object}\cr
+extends \link[aroma.core]{ParametersInterface}\cr
 
 
 
@@ -71,8 +73,11 @@ extends \link[R.oo]{Object}\cr
 }
 
 
+ \bold{Methods inherited from ParametersInterface}:\cr
+getParameters, getParametersAsString, getParameterSets
+
  \bold{Methods inherited from Object}:\cr
-asThis, getChecksum, $, $<-, [[, [[<-, as.character, attach, attachLocally, clearCache, clearLookupCache, clone, detach, equals, extend, finalize, gc, getEnvironment, getFieldModifier, getFieldModifiers, getFields, getInstantiationTime, getStaticInstance, hasField, hashCode, ll, load, objectSize, print, registerFinalizer, save
+$, $<-, [[, [[<-, as.character, attach, attachLocally, clearCache, clearLookupCache, clone, detach, equals, extend, finalize, gc, getEnvironment, getFieldModifier, getFieldModifiers, getFields, getInstantiationTime, getStaticInstance, hasField, hashCode, ll, load, objectSize, print, registerFinalizer, save, asThis
 
 
  }

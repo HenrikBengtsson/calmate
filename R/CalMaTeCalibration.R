@@ -155,7 +155,7 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
     }
   }
 
-  this <- extend(Object(), "CalMaTeCalibration",
+  this <- extend(Object(), c("CalMaTeCalibration", uses("ParametersInterface")),
     .data = data,
     .references = references,
     .flavor = flavor,
@@ -337,16 +337,6 @@ setMethodS3("getParameters", "CalMaTeCalibration", function(this, ...) {
 }, protected=TRUE);
 
 
-setMethodS3("getParametersAsString", "CalMaTeCalibration", function(this, ...) {
-  params <- getParameters(this, expand=FALSE);
-  params <- trim(capture.output(str(params)))[-1];
-  params <- gsub("^[$][ ]*", "", params);
-  params <- gsub(" [ ]*", " ", params);
-  params <- gsub("[ ]*:", ":", params);
-  params;
-}, private=TRUE)
-
-
 
 setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -370,8 +360,6 @@ setMethodS3("getOutputDataSets", "CalMaTeCalibration", function(this, ..., verbo
 
 
 setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., verbose=FALSE) {
-  sapply <- R.filesets::sapply;
-
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -431,7 +419,7 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
     dsOut <- byPath(ds, path=path, ..., verbose=less(verbose, 10));
 
     # AD HOC: The above byPath() grabs all *.asb files. /HB 2010-06-20
-    keep <- is.element(sapply(dsOut, getFilename), sapply(ds, getFilename));
+    keep <- is.element(sapply(dsOut, FUN=getFilename), sapply(ds, FUN=getFilename));
     dsOut <- extract(dsOut, keep);
 
     res[[kk]] <- dsOut;
@@ -827,6 +815,9 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 
 ############################################################################
 # HISTORY:
+# 2013-01-05 [HB]
+# o CLEANUP: Dropped getParametersAsString() since CalMaTeCalibration 
+#   now implements ParametersInterface.
 # 2012-02-19 [HB]
 # o Made findUnitsTodo() for CalMaTeCalibration smarter. Before it would
 #   detect all non-polymorphic loci as non-fitted.

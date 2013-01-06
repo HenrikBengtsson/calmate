@@ -1,8 +1,24 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # IMPORTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# importFrom(R.utils, cat)
-import(R.utils)
+importFrom("R.methodsS3", "setMethodS3")
+importFrom("R.methodsS3", "throw")
+import("R.oo") 
+
+import("R.utils")
+
+#import("R.filesets")
+importFrom("R.filesets", "getAsteriskTags")
+importFrom("R.filesets", "getTags")
+importFrom("R.filesets", "setTags")
+importFrom("R.filesets", "getFullName");
+
+import("aroma.core")
+#importFrom("R.rsp", "getParameters");
+
+# Misc.
+importFrom("MASS", "rlm")
+importFrom("matrixStats", "rowMedians")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11,3 +27,28 @@ import(R.utils)
 # Export all public methods, that is, those without a preceeding dot
 # in their names.
 exportPattern("^[^\\.]")
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# DECLARATIONS
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+S3method("calmateByThetaAB", "array");
+S3method("calmateByTotalAndFracB", "array");
+
+S3method("fitCalMaTe", "matrix");
+
+S3method("as.character", "CalMaTeCalibration");
+S3method("getAsteriskTags", "CalMaTeCalibration");
+S3method("getName", "CalMaTeCalibration");
+S3method("getTags", "CalMaTeCalibration");
+S3method("setTags", "CalMaTeCalibration");
+S3method("getFullName", "CalMaTeCalibration");
+S3method("getDataSets", "CalMaTeCalibration");
+S3method("getRootPath", "CalMaTeCalibration");
+S3method("getPath", "CalMaTeCalibration");
+S3method("getReferences", "CalMaTeCalibration");
+## S3method("getParameters", "CalMaTeCalibration");
+S3method("getOutputDataSets", "CalMaTeCalibration");
+S3method("allocateOutputDataSets", "CalMaTeCalibration");
+S3method("findUnitsTodo", "CalMaTeCalibration");
+S3method("process", "CalMaTeCalibration");

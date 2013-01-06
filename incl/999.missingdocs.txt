@@ -16,6 +16,6 @@ process.CalMaTeCalibration setTags setTags.CalMaTeCalibration
  truncateFracB truncateFracB.array
  truncateFracB.matrix truncateThetaAB.matrix
 getReferences getReferences.CalMaTeCalibration
-cat sapply
+cat
 getParameters.CalMaTeCalibration
-getParametersAsString.CalMaTeCalibration
+
