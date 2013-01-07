@@ -134,7 +134,7 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
     references <- sort(references);
 
     if (length(references) < 3) {
-      throw("Argument 'references' specifies too less than three reference samples: ", length(references));
+      throw("Argument 'references' specifies less than three reference samples: ", length(references));
     }
   }
 
