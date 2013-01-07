@@ -129,7 +129,7 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
   # Argument 'references':
   if (!is.null(references)) {
     nbrOfFiles <- nbrOfFiles(data$total);
-    references <- Arguments$getIndices(references, range=c(1, nbrOfFiles));
+    references <- Arguments$getIndices(references, max=nbrOfFiles);
     references <- unique(references);
     references <- sort(references);
 
