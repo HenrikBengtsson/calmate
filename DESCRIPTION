@@ -1,8 +1,8 @@
 Package: calmate
-Version: 0.10.0
-Depends: R (>= 2.10.1), R.utils (>= 1.19.3), aroma.core (>= 2.8.0)
-Imports: utils, MASS, matrixStats (>= 0.6.2), R.methodsS3 (>= 1.4.2), R.oo (>= 1.11.4), R.utils (>= 1.19.3), R.filesets (>= 1.9.0), aroma.core (>= 2.8.0)
-Date: 2013-01-05
+Version: 0.10.1
+Depends: R (>= 2.10.1), R.utils (>= 1.23.2), aroma.core (>= 2.9.0)
+Imports: utils, MASS, matrixStats (>= 0.8.1), R.methodsS3 (>= 1.4.2), R.oo (>= 1.13.0), R.utils (>= 1.23.2), R.filesets (>= 2.0.1), aroma.core (>= 2.9.0)
+Date: 2013-05-22
 Title: CalMaTe - Improved allele-specific copy number of SNP arrays for downstream segmentation
 Description: A multi-array post-processing method of allele-specific copy-number estimates (ASCNs)
 Author: Maria Ortiz, Ander Aramburu, Henrik Bengtsson, Pierre Neuvial, Angel Rubio

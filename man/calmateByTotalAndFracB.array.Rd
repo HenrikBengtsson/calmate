@@ -9,8 +9,6 @@
 
  \name{calmateByTotalAndFracB.array}
 \alias{calmateByTotalAndFracB.array}
-\alias{calmateByTotalAndFracB.array}
-
  \alias{calmateByTotalAndFracB}
 
  \title{Normalize allele-specific copy numbers (total,fracB)}
@@ -23,7 +21,9 @@
   are left untouched.
  }
 
- \usage{\method{calmateByTotalAndFracB}{array}(data, references=NULL, ..., refAvgFcn=NULL, verbose=FALSE)}
+ \usage{
+\method{calmateByTotalAndFracB}{array}(data, references=NULL, ..., refAvgFcn=NULL, verbose=FALSE)
+}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,

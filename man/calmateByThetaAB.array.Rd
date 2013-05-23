@@ -9,8 +9,6 @@
 
  \name{calmateByThetaAB.array}
 \alias{calmateByThetaAB.array}
-\alias{calmateByThetaAB.array}
-
  \alias{calmateByThetaAB}
 
  \title{Normalize allele-specific copy numbers (CA,CB)}
@@ -19,7 +17,10 @@
   Normalize allele-specific copy numbers (CA,CB).
  }
 
- \usage{\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, flavor=c("v2", "v1"), verbose=FALSE)}
+ \usage{
+\method{calmateByThetaAB}{array}(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL,
+  flavor=c("v2", "v1"), verbose=FALSE)
+}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of SNPs,

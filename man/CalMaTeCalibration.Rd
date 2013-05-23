@@ -36,7 +36,9 @@ extends \link[aroma.core]{ParametersInterface}\cr
   (ASCNs).
  }
 
- \usage{CalMaTeCalibration(data=NULL, tags="*", references=NULL, flavor=c("v2", "v1"), ...)}
+ \usage{
+CalMaTeCalibration(data=NULL, tags="*", references=NULL, flavor=c("v2", "v1"), ...)
+}
 
  \arguments{
    \item{data}{A named \code{\link[base]{list}} with data set named \code{"total"} and
@@ -74,7 +76,7 @@ extends \link[aroma.core]{ParametersInterface}\cr
 
 
  \bold{Methods inherited from ParametersInterface}:\cr
-getParameters, getParametersAsString, getParameterSets
+getParameterSets, getParameters, getParametersAsString
 
  \bold{Methods inherited from Object}:\cr
 $, $<-, [[, [[<-, as.character, attach, attachLocally, clearCache, clearLookupCache, clone, detach, equals, extend, finalize, gc, getEnvironment, getFieldModifier, getFieldModifiers, getFields, getInstantiationTime, getStaticInstance, hasField, hashCode, ll, load, objectSize, print, registerFinalizer, save, asThis

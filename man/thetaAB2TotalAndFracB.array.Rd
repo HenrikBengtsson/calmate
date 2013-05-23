@@ -9,8 +9,6 @@
 
  \name{thetaAB2TotalAndFracB.array}
 \alias{thetaAB2TotalAndFracB.array}
-\alias{thetaAB2TotalAndFracB.array}
-
  \alias{thetaAB2TotalAndFracB}
  \alias{totalAndFracB2ThetaAB}
  \alias{totalAndFracB2ThetaAB.array}
@@ -21,7 +19,9 @@
   Converts an Jx2xI array between (thetaA,thetaB) and (total,fracB) formats.
  }
 
- \usage{\method{thetaAB2TotalAndFracB}{array}(data, ..., verbose=FALSE)}
+ \usage{
+\method{thetaAB2TotalAndFracB}{array}(data, ..., verbose=FALSE)
+}
 
  \arguments{
   \item{data}{An Jx2xI \code{\link[base]{numeric}} array, where J is the number of SNPs,

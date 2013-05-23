@@ -9,8 +9,6 @@
 
 \name{fitCalMaTe.matrix}
 \alias{fitCalMaTe.matrix}
-\alias{fitCalMaTe.matrix}
-
 \alias{fitCalMaTe}
 
 \title{Calibrates SNP loci according to the CalMaTe method}
@@ -22,7 +20,9 @@
   It it actually not elsewhere in the package, and should nor by others.}
 }
 
-\usage{\method{fitCalMaTe}{matrix}(dataT, references, flavor=c("v2", "v1"), ...)}
+\usage{
+\method{fitCalMaTe}{matrix}(dataT, references, flavor=c("v2", "v1"), ...)
+}
 
 \arguments{
  \item{dataT}{A 2xI \code{\link[base]{numeric}} \code{\link[base]{matrix}} of allele specific copy numbers (ASCNs),

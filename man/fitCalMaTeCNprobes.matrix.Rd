@@ -9,8 +9,6 @@
 
 \name{fitCalMaTeCNprobes.matrix}
 \alias{fitCalMaTeCNprobes.matrix}
-\alias{fitCalMaTeCNprobes.matrix}
-
 \alias{fitCalMaTeCNprobes}
 
 \title{Normalizes non-polymorphic copy number loci according to the CalMaTe method}
@@ -19,7 +17,9 @@
  Normalizes non-polymorphic copy number loci according to the CalMaTe method.
 }
 
-\usage{\method{fitCalMaTeCNprobes}{matrix}(dataT, references, ...)}
+\usage{
+\method{fitCalMaTeCNprobes}{matrix}(dataT, references, ...)
+}
 
 \arguments{
  \item{dataT}{A JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}, where J is the number of loci

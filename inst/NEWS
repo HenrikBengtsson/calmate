@@ -1,6 +1,11 @@
 Package: calmate
 ================
 
+Version: 0.10.1 [2013-05-22]
+o CRAN POLICY: Now all Rd \usage{} lines are at most 90 characters long.
+o Updated package dependencies.
+
+
 Version: 0.10.0 [2013-01-05]
 o Updated package dependencies.
 o Now CalMaTeCalibration implements ParametersInterface.
