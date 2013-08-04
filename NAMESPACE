@@ -3,7 +3,7 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 importFrom("R.methodsS3", "setMethodS3")
 importFrom("R.methodsS3", "throw")
-import("R.oo") 
+import("R.oo")
 
 import("R.utils")
 
@@ -19,11 +19,12 @@ import("aroma.core")
 # Misc.
 importFrom("MASS", "rlm")
 importFrom("matrixStats", "rowMedians")
+importFrom("matrixStats", "rowAlls")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # EXPORTS
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Export all public methods, that is, those without a preceeding dot
 # in their names.
 exportPattern("^[^\\.]")
