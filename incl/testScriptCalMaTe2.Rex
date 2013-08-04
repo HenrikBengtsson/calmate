@@ -70,7 +70,7 @@ dataCalMaTe <- calmateByThetaAB(dataAB);
 
 # Comparing allele specific copy number results before and after CalMaTe calibration
 # Scaling the initial data to Copy Number values
-dataAB <- 2*dataAB/rowMedians(dataAB[,1,]+dataAB[,2,]);
+dataAB <- 2*dataAB/matrixStats::rowMedians(dataAB[,1,]+dataAB[,2,]);
 
 # Plot to "random" arrays
 Clim <- c(0,3);
@@ -81,4 +81,3 @@ for (ii in c(1,5)) {
   plot(dataCalMaTe[,,ii], cex = .3, pch = 16, xlim=Clim, ylim=Clim);
   title(main=sprintf("%s\ncalibrated", dimnames(C)[[3]][ii]));
 }
-

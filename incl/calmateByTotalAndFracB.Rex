@@ -10,7 +10,7 @@ dataC <- calmateByTotalAndFracB(data);
 
 # Calculate copy-number ratios
 theta <- data[,"total",];
-thetaR <- rowMedians(theta, na.rm=TRUE);
+thetaR <- matrixStats::rowMedians(theta, na.rm=TRUE);
 data[,"total",] <- 2*theta/thetaR;
 
 # Plot two "random" arrays

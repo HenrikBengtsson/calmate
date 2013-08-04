@@ -10,18 +10,18 @@
 library("calmate");
 
 # Load example (thetaA,thetaB) signals
-path <- system.file("exData", package="calmate"); 
+path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
 
 # Scaling the initial data to CN scale
-thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
+thetaR <- matrixStats::rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
 C <- 2*theta/thetaR;
 
 # Transform to (total,fracB) signals
 data <- thetaAB2TotalAndFracB(theta);
 
-# It returns a list where the elements of the list are the SNPs and 
-# their total copy number and fracB      
+# It returns a list where the elements of the list are the SNPs and
+# their total copy number and fracB
 dataC <- calmateByTotalAndFracB(data);
 
 # Allele-specific copy numbers after CalMaTe
@@ -41,7 +41,7 @@ par(mar=c(3,3,1,1)+0.1, mgp=c(1.8,0.7,0));
 
 # Comparing allele-specific copy numbers before and after CalMaTe
 # calibration for Sample #3
-ii <- 3;                 
+ii <- 3;
 Clim <- c(-0.2,3);
 plot(C[,,ii], xlim=Clim, ylim=Clim);
 points(CC[,,ii], col="blue");

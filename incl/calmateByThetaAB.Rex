@@ -3,7 +3,7 @@ path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
 
 # Calculate (CA,CB)
-thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
+thetaR <- matrixStats::rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
 C <- 2*theta/thetaR;
 
 # Calibrate (CA,CB) by CalMaTe

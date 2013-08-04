@@ -1,6 +1,15 @@
 Package: calmate
 ================
 
+Version: 0.10.2 [2013-08-03]
+o Updated examples and system tests to use matrixStats::rowMedians()
+  so that they work with aroma.core (>= 2.10.0) without having to 
+  load the 'matrixStats' package.
+o Forgot to import rowAlls() from 'matrixStats'.
+o Added an Authors@R field to DESCRIPTION.
+o Updated package dependencies.
+
+
 Version: 0.10.1 [2013-05-22]
 o CRAN POLICY: Now all Rd \usage{} lines are at most 90 characters long.
 o Updated package dependencies.

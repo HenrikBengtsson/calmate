@@ -1,11 +1,11 @@
 library("calmate");
 
 # Load example (thetaA,thetaB) signals
-path <- system.file("exData", package="calmate"); 
+path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
 
 # Calculate (CA,CB)
-thetaR <- rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
+thetaR <- matrixStats::rowMedians(theta[,"A",] + theta[,"B",], na.rm=TRUE);
 C <- 2*theta/thetaR;
 
 # For each available CalMaTe fitting algorithm...
@@ -15,7 +15,7 @@ CList <- list(raw=C);
 for (flavor in flavors) {
   # Calibrate (CA,CB) by CalMaTe
   CList[[flavor]] <- calmateByThetaAB(theta, flavor=flavor);
-  
+
   # Assert that it also works with a single unit
   dummy <- calmateByThetaAB(theta[1,,,drop=FALSE], flavor=flavor);
   stopifnot(length(dim(dummy)) == 3);
