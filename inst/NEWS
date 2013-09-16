@@ -1,6 +1,10 @@
 Package: calmate
 ================
 
+Version: 0.10.3 [2013-09-16]
+o Updated package dependencies.
+
+
 Version: 0.10.2 [2013-08-03]
 o Updated examples and system tests to use matrixStats::rowMedians()
   so that they work with aroma.core (>= 2.10.0) without having to 
