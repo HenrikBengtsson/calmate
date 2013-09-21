@@ -1,7 +1,9 @@
 Package: calmate
 ================
 
-Version: 0.10.3 [2013-09-16]
+Version: 0.10.3 [2013-09-21]
+o CLEANUP: Now only using 'Authors@R' in DESCRIPTION, which is possible
+  since R (>= 2.14.0).
 o Updated package dependencies.
 
 
