@@ -1,6 +1,10 @@
 Package: calmate
 ================
 
+Version: 0.11.1 [2013-10-17]
+o Updated the reference to the CalMaTe paper.
+
+
 Version: 0.11.0 [2013-10-17]
 o ROBUSTNESS: Now importing only what needs to be imported and
   formally declaring all S3 methods in NAMESPACE.
