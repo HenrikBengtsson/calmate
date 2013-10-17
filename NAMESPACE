@@ -2,24 +2,79 @@
 # IMPORTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 importFrom("R.methodsS3", "setMethodS3")
-importFrom("R.methodsS3", "throw")
-import("R.oo")
+importFrom("R.oo", "setConstructorS3")
+importFrom("R.oo", "extend")
+importFrom("R.oo", "uses")
 
-import("R.utils")
+## Importing Class:es
+importFrom("R.oo", "Object")
+importFrom("R.oo", "Package")
 
-#import("R.filesets")
+
+## Importing generics
+importFrom("aroma.core", "findUnitsTodo")
+importFrom("aroma.core", "getParameters")
+importFrom("aroma.core", "getRootPath")
+importFrom("aroma.core", "process")
 importFrom("R.filesets", "getAsteriskTags")
+importFrom("R.filesets", "getFullName")
 importFrom("R.filesets", "getTags")
+importFrom("R.filesets", "nbrOfFiles")
 importFrom("R.filesets", "setTags")
-importFrom("R.filesets", "getFullName");
+importFrom("R.filesets", "getName") ## Multi-sources: R.oo, R.filesets
+importFrom("R.filesets", "getPath") ## Multi-sources: R.oo, R.filesets
 
-import("aroma.core")
-#importFrom("R.rsp", "getParameters");
-
-# Misc.
+## Importing functions
+importFrom("aroma.core", "getChipType")
+importFrom("aroma.core", "getParametersAsString")
+importFrom("aroma.core", "getRam")
+importFrom("aroma.core", "processTime")
 importFrom("MASS", "rlm")
-importFrom("matrixStats", "rowMedians")
 importFrom("matrixStats", "rowAlls")
+importFrom("matrixStats", "rowMedians")
+importFrom("R.filesets", "byPath")
+importFrom("R.filesets", "extractMatrix")
+importFrom("R.filesets", "getFile")
+importFrom("R.filesets", "getFullNames")
+importFrom("R.filesets", "getNames")
+importFrom("R.filesets", "getPathname")
+importFrom("R.filesets", "indexOf")
+importFrom("R.methodsS3", "throw")
+importFrom("R.oo", "newInstance")
+importFrom("R.oo", "startupMessage")
+importFrom("R.oo", "trim")
+importFrom("R.utils", "capitalize")
+importFrom("R.utils", "cat") ## Multi-sources: R.utils, base
+importFrom("R.utils", "copyFile")
+importFrom("R.utils", "enter")
+importFrom("R.utils", "exit")
+importFrom("R.utils", "filePath")
+importFrom("R.utils", "getAbsolutePath")
+importFrom("R.utils", "isDirectory")
+importFrom("R.utils", "isFile") ## Multi-sources: R.utils, R.filesets
+importFrom("R.utils", "less")
+importFrom("R.utils", "mkdirs")
+importFrom("R.utils", "popState")
+importFrom("R.utils", "popTemporaryFile")
+importFrom("R.utils", "printf")
+importFrom("R.utils", "pushState")
+importFrom("R.utils", "pushTemporaryFile")
+importFrom("R.utils", "writeRaw")
+importFrom("utils", "str")
+
+
+## Manually adjusted
+importFrom("R.filesets", "extract") ## Multi-sources: R.utils, R.filesets
+importFrom("R.filesets", "getFilename") ## Multi-sources: R.utils, R.filesets
+## Cannot import explicitly from 'base';
+## importFrom("base", "colSums") ## Multi-sources: aroma.core, base
+
+
+# Manual imports
+importFrom("R.utils", "Arguments")
+if (packageVersion("R.utils") < "1.27.5") {
+  importFrom("R.utils", "cat.default")
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -33,23 +88,34 @@ exportPattern("^[^\\.]")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # DECLARATIONS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-S3method("calmateByThetaAB", "array");
-S3method("calmateByTotalAndFracB", "array");
+# array
+S3method("calmateByThetaAB", "array")
+S3method("calmateByTotalAndFracB", "array")
+S3method("thetaAB2TotalAndFracB", "array")
+S3method("totalAndFracB2ThetaAB", "array")
+S3method("truncateFracB", "array")
+S3method("truncateThetaAB", "array")
 
-S3method("fitCalMaTe", "matrix");
-
+# CalMaTeCalibration
+S3method("allocateOutputDataSets", "CalMaTeCalibration")
 S3method("as.character", "CalMaTeCalibration");
+S3method("findUnitsTodo", "CalMaTeCalibration")
 S3method("getAsteriskTags", "CalMaTeCalibration");
-S3method("getName", "CalMaTeCalibration");
-S3method("getTags", "CalMaTeCalibration");
-S3method("setTags", "CalMaTeCalibration");
-S3method("getFullName", "CalMaTeCalibration");
-S3method("getDataSets", "CalMaTeCalibration");
-S3method("getRootPath", "CalMaTeCalibration");
-S3method("getPath", "CalMaTeCalibration");
-S3method("getReferences", "CalMaTeCalibration");
-## S3method("getParameters", "CalMaTeCalibration");
-S3method("getOutputDataSets", "CalMaTeCalibration");
-S3method("allocateOutputDataSets", "CalMaTeCalibration");
-S3method("findUnitsTodo", "CalMaTeCalibration");
-S3method("process", "CalMaTeCalibration");
+S3method("getDataSets", "CalMaTeCalibration")
+S3method("getFullName", "CalMaTeCalibration")
+S3method("getName", "CalMaTeCalibration")
+S3method("getOutputDataSets", "CalMaTeCalibration")
+S3method("getParameters", "CalMaTeCalibration")
+S3method("getPath", "CalMaTeCalibration")
+S3method("getReferences", "CalMaTeCalibration")
+S3method("getRootPath", "CalMaTeCalibration")
+S3method("getTags", "CalMaTeCalibration")
+S3method("nbrOfFiles", "CalMaTeCalibration")
+S3method("process", "CalMaTeCalibration")
+S3method("setTags", "CalMaTeCalibration")
+
+# matrix
+S3method("fitCalMaTe", "matrix")
+S3method("fitCalMaTeCNprobes", "matrix")
+S3method("truncateFracB", "matrix")
+S3method("truncateThetaAB", "matrix")

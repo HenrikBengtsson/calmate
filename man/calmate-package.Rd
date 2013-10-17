@@ -40,7 +40,11 @@
  }
 
  \author{
-  Maria Ortiz, Ander Aramburu, Henrik Bengtsson, Pierre Neuvial, Angel Rubio.
+  Maria Ortiz [aut, ctb],
+  Ander Aramburu [ctb],
+  Henrik Bengtsson [aut, cre, cph],
+  Pierre Neuvial [aut, ctb],
+  Angel Rubio [aut, ctb].
  }
 
  \section{License}{

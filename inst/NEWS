@@ -1,6 +1,13 @@
 Package: calmate
 ================
 
+Version: 0.11.0 [2013-10-17]
+o ROBUSTNESS: Now importing only what needs to be imported and
+  formally declaring all S3 methods in NAMESPACE.
+o Package now requires R (>= 2.15.0) [and Bioc (>= 2.10.0)].
+o Updated package dependences.
+
+
 Version: 0.10.3 [2013-09-21]
 o CLEANUP: Now only using 'Authors@R' in DESCRIPTION, which is possible
   since R (>= 2.14.0).

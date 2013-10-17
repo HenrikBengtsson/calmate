@@ -1,10 +1,10 @@
-# Allows conflicts. For more information, see library() and
-# conflicts() in [R] base.
-.conflicts.OK <- TRUE;
+.onLoad <- function(libname, pkgname) {
+  ns <- getNamespace(pkgname);
+  pkg <- Package(pkgname);
+  assign(pkgname, pkg, envir=ns);
+}
 
 .onAttach <- function(libname, pkgname) {
-  pd <- utils::packageDescription(pkgname);
-
-  packageStartupMessage(pkgname, " v", pd$Version, " (", 
-    pd$Date, ") successfully loaded. See ?", pkgname, " for help.");
+  pkg <- get(pkgname, envir=getNamespace(pkgname));
+  startupMessage(pkg);
 }
