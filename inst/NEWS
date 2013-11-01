@@ -9,7 +9,7 @@ Version: 0.11.0 [2013-10-17]
 o ROBUSTNESS: Now importing only what needs to be imported and
   formally declaring all S3 methods in NAMESPACE.
 o Package now requires R (>= 2.15.0) [and Bioc (>= 2.10.0)].
-o Updated package dependences.
+o Updated package dependencies.
 
 
 Version: 0.10.3 [2013-09-21]
@@ -110,7 +110,7 @@ o DEPRECATED: Argument 'references' of process() of CalMaTeCalibration
   is deprecated.  Instead, pass it to CalMaTeCalibration().
 o ROBUSTNESS/BUG FIX: If in some SNPs, the samples include only a single
   genotype (usually AA or BB), the genotype AA is interpreted as BB in
-  half of the samples and vice versa (and the returned value is
+  half of the samples and vice verse (and the returned value is
   reversed again). There was a bug in the code that occurred iff all
   the reference samples have the same genotype and the number of 
   reference samples is smaller than half of the total number of samples.
