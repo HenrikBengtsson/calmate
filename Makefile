@@ -11,6 +11,7 @@ MAKE=make
 MV=mv
 RM=rm -f
 MKDIR=mkdir -p
+RMDIR=$(RM) -r
 
 # PACKAGE MACROS
 PKG_VERSION := $(shell grep -i ^version DESCRIPTION | cut -d : -d \  -f 2)
@@ -49,10 +50,11 @@ R_OUTDIR := _R-$(R_VERSION_FULL)
 ## R_BUILD_OPTS := 
 ## R_BUILD_OPTS := $(R_BUILD_OPTS) --no-build-vignettes
 R_CHECK_OUTDIR := $(R_OUTDIR)/$(PKG_NAME).Rcheck
-_R_CHECK_CRAN_INCOMING_ = $(shell $(R_SCRIPT) -e "cat(Sys.getenv('_R_CHECK_CRAN_INCOMING_', 'TRUE'))")
+_R_CHECK_CRAN_INCOMING_ = $(shell $(R_SCRIPT) -e "cat(Sys.getenv('_R_CHECK_CRAN_INCOMING_', 'FALSE'))")
 _R_CHECK_XREFS_REPOSITORIES_ = $(shell if $(_R_CHECK_CRAN_INCOMING_) = "TRUE"; then echo ""; else echo "invalidURL"; fi)
-R_CHECK_FULL = $(shell $(R_SCRIPT) -e "cat(Sys.getenv('R_CHECK_FULL', ''))")
+_R_CHECK_FULL_ = $(shell $(R_SCRIPT) -e "cat(Sys.getenv('_R_CHECK_FULL_', ''))")
 R_CHECK_OPTS = --as-cran --timings
+R_RD4PDF = $(shell $(R_SCRIPT) -e "if (getRversion() < 3) cat('times,hyper')")
 R_CRAN_OUTDIR := $(R_OUTDIR)/$(PKG_NAME)_$(PKG_VERSION).CRAN
 
 HAS_ASPELL := $(shell $(R_SCRIPT) -e "cat(Sys.getenv('HAS_ASPELL', !is.na(utils:::aspell_find_program('aspell'))))")
@@ -89,8 +91,9 @@ debug:
 	@echo R_CHECK_OUTDIR=\'$(R_CHECK_OUTDIR)\'
 	@echo _R_CHECK_CRAN_INCOMING_=\'$(_R_CHECK_CRAN_INCOMING_)\'
 	@echo _R_CHECK_XREFS_REPOSITORIES_=\'$(_R_CHECK_XREFS_REPOSITORIES_)\'
-	@echo R_CHECK_FULL=\'$(R_CHECK_FULL)\'
+	@echo _R_CHECK_FULL_=\'$(_R_CHECK_FULL_)\'
 	@echo R_CHECK_OPTS=\'$(R_CHECK_OPTS)\'
+	@echo R_RD4PDF=\'$(R_RD4PDF)\'
 	@echo
 	@echo R_CRAN_OUTDIR=\'$(R_CRAN_OUTDIR)\'
 
@@ -124,6 +127,9 @@ deps: DESCRIPTION
 setup:	update deps
 	$(R_SCRIPT) -e "source('http://aroma-project.org/hbLite.R'); hbLite('R.oo')"
 
+
+ns:
+	$(R_SCRIPT) -e "library('$(PKG_NAME)'); source('X:/devtools/NAMESPACE.R'); writeNamespaceSection('$(PKG_NAME)'); writeNamespaceImports('$(PKG_NAME)');"
 
 # Build source tarball
 ../$(R_OUTDIR)/$(PKG_TARBALL): $(PKG_FILES)
@@ -160,7 +166,8 @@ install_force:
 	export _R_CHECK_DOT_INTERNAL_=1;\
 	export _R_CHECK_USE_CODETOOLS_=1;\
 	export _R_CHECK_FORCE_SUGGESTS_=0;\
-	export _R_CHECK_FULL_=$(R_CHECK_FULL);\
+	export R_RD4PDF=$(R_RD4PDF);\
+	export _R_CHECK_FULL_=$(_R_CHECK_FULL_);\
 	$(R) --no-init-file CMD check $(R_CHECK_OPTS) $(PKG_TARBALL);\
 	echo done > $(PKG_NAME).Rcheck/.check.complete
 
@@ -217,6 +224,7 @@ vignettes: ../$(R_OUTDIR)/vigns
 
 # Run package tests
 ../$(R_OUTDIR)/tests/%.R: $(FILES_TESTS)
+	$(RMDIR) ../$(R_OUTDIR)/tests
 	$(MKDIR) ../$(R_OUTDIR)/tests
 	$(CP) $? ../$(R_OUTDIR)/tests
 
@@ -224,6 +232,11 @@ test_files: ../$(R_OUTDIR)/tests/*.R
 
 test: ../$(R_OUTDIR)/tests/%.R
 	$(CD) ../$(R_OUTDIR)/tests;\
+	$(R_SCRIPT) -e "for (f in list.files(pattern='[.]R$$')) { source(f, echo=TRUE) }"
+
+test_full: ../$(R_OUTDIR)/tests/%.R
+	$(CD) ../$(R_OUTDIR)/tests;\
+	export _R_CHECK_FULL_=TRUE;\
 	$(R_SCRIPT) -e "for (f in list.files(pattern='[.]R$$')) { source(f, echo=TRUE) }"
 
 
