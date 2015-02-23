@@ -13,5 +13,5 @@ install.packages('calmate')
 | Resource:     | CRAN        | Travis CI        | Appveyor         |
 | ------------- | ------------------- | ---------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux_          | _Windows_        |
-| R CMD check   | [status](http://cran.r-project.org/web/checks/check_results_calmate.html) |     |  |
+| R CMD check   | [status](http://cran.r-project.org/web/checks/check_results_calmate.html) | <a href="https://travis-ci.org/HenrikBengtsson/calmate"><img src="https://travis-ci.org/HenrikBengtsson/calmate.svg" alt="Build status"></a>    |  |
 | Test coverage |                     |  |                  |
