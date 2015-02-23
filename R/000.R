@@ -1,3 +1,5 @@
+## covr: skip=all
+
 ## Look for existing generic functions also in imported namespaces.
 ## This will affect whether setGenericS3() creates a generic function
 ## or not.

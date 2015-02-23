@@ -71,6 +71,7 @@ importFrom("R.filesets", "getFilename") ## Multi-sources: R.utils, R.filesets
 
 
 # Manual imports
+importFrom("aroma.core", "aromaSettings")
 importFrom("R.utils", "Arguments")
 
 
