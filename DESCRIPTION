@@ -1,11 +1,11 @@
 Package: calmate
-Version: 0.11.2
-Depends: R (>= 2.15.0), R.utils (>= 1.29.8), aroma.core (>= 2.11.0)
-Imports: utils, MASS, R.methodsS3 (>= 1.6.1), R.oo (>= 1.17.0), matrixStats (>= 0.8.14), R.filesets (>= 2.3.0)
+Version: 0.11.2-9000
+Depends: R (>= 3.0.3), R.utils (>= 1.34.0), aroma.core (>= 2.13.0)
+Imports: utils, MASS, R.methodsS3 (>= 1.7.0), R.oo (>= 1.18.0), matrixStats (>= 0.14.0), R.filesets (>= 2.7.0)
 Suggests: DNAcopy
-Date: 2014-01-30
-Title: CalMaTe - Improved allele-specific copy number of SNP arrays for downstream segmentation
-Description: A multi-array post-processing method of allele-specific copy-number estimates (ASCNs)
+Date: 2015-02-23
+Title: Improved Allele-Specific Copy Number of SNP Microarrays for Downstream Segmentation
+Description: A multi-array post-processing method of allele-specific copy-number estimates (ASCNs).
 Authors@R: c(
   person("Maria", "Ortiz", role=c("aut", "ctb")),
   person("Ander", "Aramburu", role=c("ctb")),
@@ -14,6 +14,7 @@ Authors@R: c(
   person("Pierre", "Neuvial", role=c("aut", "ctb")),
   person("Angel", "Rubio", role=c("aut", "ctb")))
 License: LGPL (>= 2.1)
-URL: http://r-forge.r-project.org/projects/snpsprocessing/
+URL: https://github.com/HenrikBengtsson/calmate/
+BugReports: https://github.com/HenrikBengtsson/calmate/issues
 LazyLoad: TRUE
-biocViews: Infrastructure, Microarray, DNACopyNumber, Preprocessing, aCGH, SNP, CopyNumberVariants
+biocViews: aCGH, CopyNumberVariants, SNP, Microarray, OneChannel, TwoChannel, Genetics
