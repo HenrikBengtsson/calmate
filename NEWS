@@ -1,6 +1,12 @@
 Package: calmate
 ================
 
+Version: 0.12.1 [2015-10-26]
+o ROBUSTNESS: Explicitly importing core R functions.
+o Package now requires R (>= 3.1.1) released July 2014.
+  This allows us to use BioC (>= 3.0) (October 2014).
+
+
 Version: 0.12.0 [2015-02-23]
 o ROBUSTNESS: Package test coverage is 32%.
 o ROBUSTNESS: Added missing import.
