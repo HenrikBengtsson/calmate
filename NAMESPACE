@@ -60,8 +60,9 @@ importFrom("R.utils", "printf")
 importFrom("R.utils", "pushState")
 importFrom("R.utils", "pushTemporaryFile")
 importFrom("R.utils", "writeRaw")
-importFrom("utils", "str")
 
+importFrom("stats", "median", "pnorm")
+importFrom("utils", "str")
 
 ## Manually adjusted
 importFrom("R.filesets", "extract") ## Multi-sources: R.utils, R.filesets
