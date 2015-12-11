@@ -305,9 +305,7 @@ setMethodS3("getPath", "CalMaTeCalibration", function(this, create=TRUE, ...) {
   }
 
   # Create path?
-  if (create) {
-    if (!isDirectory(path)) mkdirs(path, mustWork=TRUE)
-  }
+  if (create && !isDirectory(path)) mkdirs(path, mustWork=TRUE)
 
   path;
 })
