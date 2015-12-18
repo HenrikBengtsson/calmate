@@ -4,7 +4,8 @@ Package: calmate
 Version: 0.12.1-9000 [2015-12-18]
 o Package now requires R (>= 3.1.1) because of aroma.core.
 o Updated package dependencies.
-o ROBUSTNESS: Package test coverage is 50% (was 32%).
+o SPEEDUP: Utilizing subsetted matrixStats (>= 0.50.0) calculations.
+o ROBUSTNESS: Package test coverage is 51% (was 32%).
 o FIX: calmateByThetaAB() and calmateByTotalAndFracB() generated a
   "too few arguments" error when they tried to generate another error.
 

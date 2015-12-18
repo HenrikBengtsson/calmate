@@ -31,9 +31,9 @@ fitCalMaTeMedians <- function(dataT, references, fB1=1/3, fB2=2/3, ...) {
   idxsBB <- which(naiveGenoDiff == -2)
   wgths <- c(length(idxsAA), length(idxsAB), length(idxsBB))
 
-  TR <- cbind(rowMedians(TR[,idxsAA, drop=FALSE]),
-              rowMedians(TR[,idxsAB, drop=FALSE]),
-              rowMedians(TR[,idxsBB, drop=FALSE]));
+  TR <- cbind(rowMedians(TR, cols=idxsAA),
+              rowMedians(TR, cols=idxsAB),
+              rowMedians(TR, cols=idxsBB));
   # Remove possible missing values
   TR[is.nan(TR)] <- 0;
 
@@ -79,9 +79,9 @@ fitCalMaTeMedians <- function(dataT, references, fB1=1/3, fB2=2/3, ...) {
     idxsBB <- which(naiveGenoDiff == -2)
     wgths <- c(length(idxsAA), length(idxsAB), length(idxsBB))
 
-    TR <- cbind(rowMedians(TR[,idxsAA, drop=FALSE]),
-                rowMedians(TR[,idxsAB, drop=FALSE]),
-                rowMedians(TR[,idxsBB, drop=FALSE]));
+    TR <- cbind(rowMedians(TR, cols=idxsAA),
+                rowMedians(TR, cols=idxsAB),
+                rowMedians(TR, cols=idxsBB));
     # Remove possible missing values
     TR[is.nan(TR)] <- 0;
 
