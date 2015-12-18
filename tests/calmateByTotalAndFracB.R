@@ -40,12 +40,12 @@ message("*** calmateByTotalAndFracB() - misc ...")
 
 dataT <- data[1:2,,]
 dataU <- truncateFracB(dataT)
-str(thetaU)
+str(dataU)
 stopifnot(all(dataU[,2,] >= 0))
 
 dataT <- data[1:2,,1]
 dataV <- truncateFracB(dataT)
-str(thetaV)
+str(dataV)
 stopifnot(all(dataV[,2] >= 0))
 stopifnot(all.equal(dataV, dataU[,,1]))
 
