@@ -1,6 +1,10 @@
 Package: calmate
 ================
 
+Version: 0.12.1-9000 [2015-12-17]
+o FIX: calmateByTotalAndFracB() failed to generate a proper error.
+
+
 Version: 0.12.1 [2015-10-26]
 o ROBUSTNESS: Explicitly importing core R functions.
 o Package now requires R (>= 3.1.1) released July 2014.
@@ -36,7 +40,7 @@ o Updated package dependencies.
 
 Version: 0.10.2 [2013-08-03]
 o Updated examples and system tests to use matrixStats::rowMedians()
-  so that they work with aroma.core (>= 2.10.0) without having to 
+  so that they work with aroma.core (>= 2.10.0) without having to
   load the 'matrixStats' package.
 o Forgot to import rowAlls() from 'matrixStats'.
 o Added an Authors@R field to DESCRIPTION.
@@ -54,7 +58,7 @@ o Now CalMaTeCalibration implements ParametersInterface.
 o ROBUSTNESS: Now package declares S3 methods in the namespace.
 o CLEANUP: Now packages MASS, matrixStats, R.methodsS3 and
   R.oo are only imported (not loaded/attached).
-o BUG FIX: Previous version was not compatible with R.filesets 
+o BUG FIX: Previous version was not compatible with R.filesets
   1.9.0 and aroma.core 2.8.0 resulting in "Error: 'sapply' is not
   an exported object from 'namespace:R.filesets'".  Thanks
   to Zheng Siyuan (MD Anderson) for reporting on this.
@@ -79,7 +83,7 @@ o UPDATE: CalMaTe algorithm v2 is being finalized. Main updates are:
   (a) The estimation of the model parameters are now done solely
       based on reference samples.  In previous versions, some of the
       initial estimation steps were using also non-reference samples.
-  (b) For a small number of SNPs, the main CalMaTe scheme for 
+  (b) For a small number of SNPs, the main CalMaTe scheme for
       estimating parameters would not converge or converge poorly.
       For such SNPs, CalMaTe now falls back to using a median-based
       estimator.  For more details, see help(fitCalMaTeInternal).
@@ -96,7 +100,7 @@ o BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB()
   of CalMaTe model estimators.  The flavor is now reflected in the
   "asterisk" (the default) tags of CalMaTeCalibration.
 o SPEEDUP: the internal CalMaTe fit function is now called directly,
-  which avoids the method dispatch overhead that otherwise applies 
+  which avoids the method dispatch overhead that otherwise applies
   to each SNP fitted.
 o ROBUSTNESS: Added system tests to test all flavors of the fitting
   algorithms.
@@ -128,7 +132,7 @@ o ROBUSTNESS/BUG FIX: If in some SNPs, the samples include only a single
   genotype (usually AA or BB), the genotype AA is interpreted as BB in
   half of the samples and vice verse (and the returned value is
   reversed again). There was a bug in the code that occurred iff all
-  the reference samples have the same genotype and the number of 
+  the reference samples have the same genotype and the number of
   reference samples is smaller than half of the total number of samples.
 
 
@@ -178,10 +182,10 @@ o Updated the example for the CalMaTeCalibration help page to
 
 
 Version: 0.6.1 [2010-08-05]
-o ROBUSTNESS: Now calmateByThetaAB() and calmateByTotalAndFracB() 
+o ROBUSTNESS: Now calmateByThetaAB() and calmateByTotalAndFracB()
   asserts that there are at least two samples.
 o BUG FIX: calmateByTotalAndFracB() assumed that there where enough
-  units and samples so that subsetting would not drop singleton 
+  units and samples so that subsetting would not drop singleton
   dimension.  Now we use drop=FALSE everywhere.
 o BUG FIX: calmateByThetaAB() would not work if there was only one unit.
 
@@ -206,7 +210,7 @@ o Renamed CalMaTeNormalization to CalMaTeCalibration.
 
 
 Version: 0.4.2 [2010-07-22]
-o BUG FIX: Now process() for CalMaTeNormalization returns immediately 
+o BUG FIX: Now process() for CalMaTeNormalization returns immediately
   if there are no units left.
 
 
@@ -229,7 +233,7 @@ o Added argument 'truncate=FALSE' to internal calmateByThetaAB()
 
 
 Version: 0.3.0 [2010-06-18]
-o CLEAN UP: Rewrote calmateByThetaAB() so it is no longer 
+o CLEAN UP: Rewrote calmateByThetaAB() so it is no longer
   using old calmate() but a new internal fitCalMaTe().
   The latter should probably we incorporated "inline" in
   calmateByThetaAB() to better make use of vectorization.
