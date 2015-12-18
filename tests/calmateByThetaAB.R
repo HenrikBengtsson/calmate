@@ -66,6 +66,16 @@ for (ii in c(1,5)) {
 devDone()
 
 
+("*** calmateByThetaAB() - NAs ...")
+
+thetaT <- theta
+thetaT[,2,4] <- NA_real_
+fit <- calmateByThetaAB(thetaT)
+str(fit)
+
+("*** calmateByThetaAB() - NAs ... DONE")
+
+
 ("*** calmateByThetaAB() - misc ...")
 
 thetaT <- theta[1:2,,]
@@ -84,6 +94,10 @@ thetaV <- truncateThetaAB(thetaV)
 str(thetaV)
 stopifnot(all(thetaV >= 0))
 stopifnot(all.equal(thetaV, thetaU[,,1]))
+
+references <- rep(TRUE, length=dim(theta)[3])
+fit <- calmateByThetaAB(theta, references=references)
+str(fit)
 
 ("*** calmateByThetaAB() - misc ... DONE")
 
