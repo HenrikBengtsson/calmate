@@ -1,7 +1,9 @@
 Package: calmate
 ================
 
-Version: 0.12.1-9000 [2015-12-17]
+Version: 0.12.1-9000 [2015-12-18]
+o Package now requires R (>= 3.1.1) because of aroma.core.
+o Updated package dependencies.
 o FIX: calmateByThetaAB() and calmateByTotalAndFracB() generated a
   "too few arguments" error when they tried to generate another error.
 
