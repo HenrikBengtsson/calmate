@@ -2,7 +2,8 @@ Package: calmate
 ================
 
 Version: 0.12.1-9000 [2015-12-17]
-o FIX: calmateByTotalAndFracB() failed to generate a proper error.
+o FIX: calmateByThetaAB() and calmateByTotalAndFracB() generated a
+  "too few arguments" error when they tried to generate another error.
 
 
 Version: 0.12.1 [2015-10-26]

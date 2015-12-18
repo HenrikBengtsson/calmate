@@ -65,4 +65,38 @@ for (ii in c(1,5)) {
 
 devDone()
 
+
+("*** calmateByThetaAB() - misc ...")
+
+thetaT <- theta[1,,,drop=FALSE]
+fit <- calmateByThetaAB(thetaT, truncate=TRUE)
+str(fit)
+
+fit <- calmateByThetaAB(thetaT, refAvgFcn=matrixStats::rowMedians)
+str(fit)
+
+("*** calmateByThetaAB() - misc ... DONE")
+
+
+message("*** calmateByThetaAB() - exceptions ...")
+
+thetaT <- theta[1,,,drop=FALSE]
+dim(thetaT) <- c(dim(thetaT), 1L)
+res <- try(fit <- calmateByThetaAB(thetaT))
+stopifnot(inherits(res, "try-error"))
+
+thetaT <- theta[1,1,,drop=FALSE]
+res <- try(fit <- calmateByThetaAB(thetaT))
+stopifnot(inherits(res, "try-error"))
+
+references <- rep(TRUE, length=dim(theta)[3]-1L)
+res <- try(fit <- calmateByThetaAB(theta, references=references))
+stopifnot(inherits(res, "try-error"))
+
+references <- seq_len(dim(theta)[3]+1L)
+res <- try(fit <- calmateByThetaAB(theta, references=references))
+stopifnot(inherits(res, "try-error"))
+
+message("*** calmateByThetaAB() - exceptions ... DONE")
+
 message("*** calmateByThetaAB() ... DONE")
