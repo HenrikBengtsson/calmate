@@ -38,19 +38,19 @@ fitCalMaTeMedians <- function(dataT, references, fB1=1/3, fB2=2/3, ...) {
 
   # Handle cases a single genotype is present in the samples
 
-  # A very unlikely case: all the samples are heterozygous
   if ((wgths[1] == 0) && (wgths[3] == 0)) {
+    ## A very unlikely case: all the samples are heterozygous
     TR[1,1] <- 2.0*TR[1,2];
     TR[2,1] <- 0.1*TR[2,2];
     wgths[1] <- wgths[2];
   }
-  # All BB
   if ((wgths[1] == 0) && (wgths[2] == 0)) {
+    ## All BB
     TR[,1] <- TR[2:1,3];
     wgths[1] <- wgths[3];
   }
-  # All AA
   if ((wgths[3] == 0) && (wgths[2] == 0)) {
+    ## All AA
     TR[,3] <- TR[2:1,1];
     wgths[3] <- wgths[1];
   }
