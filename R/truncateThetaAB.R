@@ -12,13 +12,13 @@ setMethodS3("truncateThetaAB", "array", function(data, ...) {
   x <- data[,1,];
   idxsA <- which(x < 0);
   dA <- x[idxsA];
-  rm(x);
+  x <- NULL  ## Not needed anymore
 
   # (CA*,CB*) = (CA,CB) + (+dB,-dB) for all SNPs where CB < 0.
   x <- data[,2,];
   idxsB <- which(x < 0);
   dB <- x[idxsB];
-  rm(x);
+  x <- NULL  ## Not needed anymore
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -26,17 +26,17 @@ setMethodS3("truncateThetaAB", "array", function(data, ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   delta <- array(0, dim=dim[-2]);
   delta[idxsA] <- dA;
-  rm(idxsA,dA);
+  idxsA <- dA <- NULL  ## Not needed anymore
   data[,1,] <- data[,1,] - delta;
   data[,2,] <- data[,2,] + delta;
-  rm(delta);
+  delta <- NULL  ## Not needed anymore
 
   delta <- array(0, dim=dim[-2]);
   delta[idxsB] <- dB;
-  rm(idxsB,dB);
+  idxsB <- dB <- NULL  ## Not needed anymore
   data[,1,] <- data[,1,] + delta;
   data[,2,] <- data[,2,] - delta;
-  rm(delta);
+  delta <- NULL  ## Not needed anymore
 
   data;
 }) # truncateThetaAB()
@@ -54,13 +54,13 @@ setMethodS3("truncateThetaAB", "matrix", function(data, ...) {
   x <- data[1,];
   idxsA <- which(x < 0);
   dA <- x[idxsA];
-  rm(x);
+  x <- NULL  ## Not needed anymore
 
   # (CA*,CB*) = (CA,CB) + (+dB,-dB) for all SNPs where CB < 0.
   x <- data[2,];
   idxsB <- which(x < 0);
   dB <- x[idxsB];
-  rm(x);
+  x <- NULL  ## Not needed anymore
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,17 +68,17 @@ setMethodS3("truncateThetaAB", "matrix", function(data, ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   delta <- array(0, dim=ncol(data));
   delta[idxsA] <- dA;
-  rm(idxsA,dA);
+  idxsA <- dA <- NULL  ## Not needed anymore
   data[1,] <- data[1,] - delta;
   data[2,] <- data[2,] + delta;
-  rm(delta);
+  delta <- NULL  ## Not needed anymore
 
   delta <- array(0, dim=ncol(data));
   delta[idxsB] <- dB;
-  rm(idxsB,dB);
+  idxsB <- dB <- NULL  ## Not needed anymore
   data[1,] <- data[1,] + delta;
   data[2,] <- data[2,] - delta;
-  rm(delta);
+  delta <- NULL  ## Not needed anymore
 
   data;
 }) # truncateThetaAB()

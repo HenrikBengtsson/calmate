@@ -417,7 +417,7 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
     dsOut <- extract(dsOut, keep);
 
     res[[kk]] <- dsOut;
-    rm(ds, dsOut);
+    ds <- dsOut <- NULL  ## Not needed anymore
 
     verbose && exit(verbose);
   } # for (kk ...)
@@ -637,7 +637,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     verbose && cat(verbose, "Units:");
     verbose && str(verbose, units);
 
-    rm(unitsTodo);
+    unitsTodo <- NULL  ## Not needed anymore
     verbose && exit(verbose);
   }
 
@@ -648,7 +648,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
-  rm(dsList);
+  dsList <- NULL  ## Not needed anymore
 
 
   sampleNames <- getNames(dsTCN);
@@ -724,7 +724,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     verbose && enter(verbose, "Combining into an (total,fracB) array");
     dim <- c(nrow(total), ncol(total), 2);
     data <- c(total, fracB);
-    rm(total, fracB);
+    total <- fracB <- NULL  ## Not needed anymore
     data <- array(data, dim=dim, dimnames=dimnames);
     data <- aperm(data, perm=c(1,3,2));
     verbose && str(verbose, data);
@@ -748,7 +748,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     verbose && str(verbose, dataN);
     verbose && exit(verbose);
 
-    rm(data);  # Not needed anymore
+    data <- NULL  ## Not needed anymore
     gc <- gc();
     verbose && print(verbose, gc);
 
@@ -780,7 +780,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
         verbose && cat(verbose, "Signals:");
         verbose && str(verbose, signals);
         df[units[uu],1] <- signals;
-        rm(signals);
+        signals <- NULL  ## Not needed anymore
 
         verbose && exit(verbose);
       } # for (ii ...)

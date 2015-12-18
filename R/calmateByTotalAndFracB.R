@@ -133,24 +133,24 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   verbose && exit(verbose);
 
   thetaC <- calmateByThetaAB(theta, references=references, ..., verbose=verbose);
-  rm(theta); # Not needed anymore
+  theta <- NULL  ## Not needed anymore
 
   verbose && enter(verbose, "Backtransforming SNPs to (total, fracB)");
   dataC <- data;
   dataC[snps,,] <- thetaAB2TotalAndFracB(thetaC, verbose=less(verbose, 5));
   verbose && str(verbose, dataC);
 
-  rm(snps, thetaC); # Not needed anymore
+  snps <- thetaC <- NULL ## Not needed anymore
   verbose && exit(verbose);
 
   verbose && enter(verbose, "Calibrating non-polymorphic probes");
   # Extract total CNs
   units <- which(nok);
-  rm(nok);
+  nok <- NULL  ## Not needed anymore
   theta <- data[units,"total",,drop=FALSE];
   dim(theta) <- dim(theta)[-2]; # Drop the 2nd dimension
   thetaC <- fitCalMaTeCNprobes(theta, references=references);
-  rm(theta); # Not needed anymore
+  theta <- NULL  ## Not needed anymore
 
   dataC[units,"total",] <- thetaC;
 
@@ -158,7 +158,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
 ##  save(aux,file="dataC.Rdata")
   verbose && str(verbose, dataC[units,,,drop=FALSE]);
 
-  rm(units, thetaC); # Not needed anymore
+  units <- thetaC <- NULL ## Not needed anymore
   verbose && exit(verbose);
 
 
@@ -174,7 +174,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
     yCR <- refAvgFcn(yCR, na.rm=TRUE);
     # Standardize total copy numbers to this average
     dataC[,"total",] <- (2/yCR) * dataC[,"total",,drop=FALSE];
-    rm(yCR);
+    yCR <- NULL  ## Not needed anymore
     verbose && exit(verbose);
   }
 

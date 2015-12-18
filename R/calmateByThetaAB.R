@@ -190,7 +190,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     dataC <- dataS;
     dimnames(dataC) <- dimnames(data);
   }
-  rm(dataS);
+  dataS <- NULL ## Not needed anymore
 
   # Sanity check
   stopifnot(identical(dim(dataC), dim(data)));
