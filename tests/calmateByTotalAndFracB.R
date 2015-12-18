@@ -36,6 +36,22 @@ dummy <- calmateByTotalAndFracB(data[1,,,drop=FALSE])
 stopifnot(length(dim(dummy)) == 3)
 
 
+message("*** calmateByTotalAndFracB() - misc ...")
+
+dataT <- data[1:2,,]
+dataU <- truncateFracB(dataT)
+str(thetaU)
+stopifnot(all(dataU[,2,] >= 0))
+
+dataT <- data[1:2,,1]
+dataV <- truncateFracB(dataT)
+str(thetaV)
+stopifnot(all(dataV[,2] >= 0))
+stopifnot(all.equal(dataV, dataU[,,1]))
+
+message("*** calmateByTotalAndFracB() - misc ... DONE")
+
+
 message("*** calmateByTotalAndFracB(..., references) ...")
 
 references <- rep(TRUE, length=dim(data)[3])

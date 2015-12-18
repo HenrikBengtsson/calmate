@@ -68,12 +68,22 @@ devDone()
 
 ("*** calmateByThetaAB() - misc ...")
 
-thetaT <- theta[1,,,drop=FALSE]
+thetaT <- theta[1:2,,]
 fit <- calmateByThetaAB(thetaT, truncate=TRUE)
 str(fit)
 
 fit <- calmateByThetaAB(thetaT, refAvgFcn=matrixStats::rowMedians)
 str(fit)
+
+thetaU <- truncateThetaAB(thetaT)
+str(thetaU)
+stopifnot(all(thetaU >= 0))
+
+thetaV <- theta[1:2,,1]
+thetaV <- truncateThetaAB(thetaV)
+str(thetaV)
+stopifnot(all(thetaV >= 0))
+stopifnot(all.equal(thetaV, thetaU[,,1]))
 
 ("*** calmateByThetaAB() - misc ... DONE")
 
