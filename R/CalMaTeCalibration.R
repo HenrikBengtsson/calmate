@@ -741,7 +741,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     verbose && str(verbose, args);
     args$verbose <- verbose;
 
-    dataN <- do.call("calmateByTotalAndFracB", args=args);
+    dataN <- do.call(calmateByTotalAndFracB, args=args);
 
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
