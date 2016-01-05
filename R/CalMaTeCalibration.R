@@ -376,7 +376,7 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
     verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d",
                                  kk, getName(ds), length(dsList)));
 
-    for (ii in seq(ds)) {
+    for (ii in seq(along=ds)) {
       df <- getFile(ds, ii);
       verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d",
                                         ii, getName(df), nbrOfFiles(ds)));
