@@ -92,7 +92,7 @@ setMethodS3("calmateByTotalAndFracB", "array", function(data, references=NULL, .
   # Argument 'references':
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
-    references <- seq(length=nbrOfSamples);
+    references <- seq_len(nbrOfSamples);
   } else if (is.logical(references)) {
     if (length(references) != nbrOfSamples) {
       throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", nbrOfSamples);

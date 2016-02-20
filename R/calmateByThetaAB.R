@@ -95,7 +95,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   # Argument 'references':
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
-    references <- seq(length=nbrOfSamples);
+    references <- seq_len(nbrOfSamples);
   } else if (is.logical(references)) {
     if (length(references) != nbrOfSamples) {
       throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", nbrOfSamples);
@@ -166,7 +166,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   dimnames(dataS) <- NULL;
   # Used for sanity check inside loop
   dimCjj <- dim(dataS)[-1];
-  for (jj in seq(length=nbrOfSNPs)) {
+  for (jj in seq_len(nbrOfSNPs)) {
     if (verbose && (jj %% 500 == 1)) {
       writeRaw(verbose, sprintf("%d, ", nbrOfSNPs-jj+1));
     }

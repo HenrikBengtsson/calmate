@@ -3,11 +3,11 @@ fitCalMaTeV1 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # all arguments are valid and correct.  No validation will be done.
   nbrOfSNPs <- nrow(dataT);
   nbrOfReferences <- length(references);
-  
+
   # Adding a small value so there are "non" 0 values
   eps <- 1e-6;
   dataT[dataT < eps] <- eps;
-  
+
   eps2 <- 1e-4;
   a <- max(max(dataT[2,] / (pmax(dataT[1,],0) + eps2)), max(dataT[1,] / (pmax(dataT[2,],0) + eps2)));
   Giro <- matrix(c(1, 1/a, 1/a, 1), nrow=2, ncol=2, byrow=FALSE);
@@ -28,7 +28,7 @@ fitCalMaTeV1 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   onlyOneAllele <- (abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff));
   if (onlyOneAllele) {
-    idxsSwap <- references[seq(length=ncol(TR)/2)];
+    idxsSwap <- references[seq_len(ncol(TR)/2)];
     dataT[1:2,idxsSwap] <- dataT[2:1,idxsSwap, drop=FALSE];
 
     # Update precalcalculated signals
@@ -61,12 +61,12 @@ fitCalMaTeV1 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   U <- matrix(c(0.5, 0.5, 0.5, -0.5), nrow=2, ncol=2, byrow=FALSE);
   V <- matrix(c(c(1, 1), matDiff), nrow=2, ncol=2, byrow=TRUE);
   T <- U %*% V;
-  
+
   res <- T %*% dataT;
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Undo the previous change applied to the data in case there is 
-  # only one allele    
+  # Undo the previous change applied to the data in case there is
+  # only one allele
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (onlyOneAllele) {
     res[1:2,idxsSwap] <- res[2:1,idxsSwap, drop=FALSE];
@@ -85,9 +85,9 @@ fitCalMaTeV1 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
 #   samples that are "twisted".
 # o Created internal fit functions for the different versions of CalMaTe.
 # 2012-01-31 [MO]
-# o BUG FIX: the index "idxs" was recalculated to undo the change when 
+# o BUG FIX: the index "idxs" was recalculated to undo the change when
 #   there is only one allele, and it was done as the previous version,
-#   taking into account all the samples, not only the references.     
+#   taking into account all the samples, not only the references.
 # 2011-11-29 [MO]
 # o Change matrix "T" by "dataT" and "P" by "T"
 # 2010-08-02 [HB]

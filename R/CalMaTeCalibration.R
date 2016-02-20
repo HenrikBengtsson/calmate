@@ -176,7 +176,7 @@ setMethodS3("as.character", "CalMaTeCalibration", function(x, ...) {
 
   dsList <- getDataSets(this);
   s <- c(s, sprintf("Data sets (%d):", length(dsList)));
-  for (kk in seq(along=dsList)) {
+  for (kk in seq_along(dsList)) {
     ds <- dsList[[kk]];
     s <- c(s, sprintf("<%s>:", capitalize(names(dsList)[kk])));
     s <- c(s, as.character(ds));
@@ -371,12 +371,12 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
   path <- getPath(this);
 
   res <- list();
-  for (kk in seq(along=dsList)) {
+  for (kk in seq_along(dsList)) {
     ds <- dsList[[kk]];
     verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d",
                                  kk, getName(ds), length(dsList)));
 
-    for (ii in seq(along=ds)) {
+    for (ii in seq_along(ds)) {
       df <- getFile(ds, ii);
       verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d",
                                         ii, getName(df), nbrOfFiles(ds)));
@@ -577,7 +577,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
   df <- getFile(dsTCN, 1);
   nbrOfUnits <- nbrOfUnits(df);
   if (identical(units, "remaining")) {
-    units <- seq(length=nbrOfUnits);
+    units <- seq_len(nbrOfUnits);
   } else {
     units <- Arguments$getIndices(units, max=nbrOfUnits);
   }
@@ -762,7 +762,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     # Storing calibrated data
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     verbose && enter(verbose, "Storing calibrated data");
-    for (kk in seq(along=res)) {
+    for (kk in seq_along(res)) {
       ds <- res[[kk]];
       verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d",
                                            kk, getName(ds), length(res)));
