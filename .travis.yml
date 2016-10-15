@@ -18,10 +18,6 @@ env:
   global:
     - _R_CHECK_FORCE_SUGGESTS_=FALSE
  
-before_install:
-  - Rscript -e 'install.packages("devtools")'
-  - Rscript -e 'devtools::install_github("HenrikBengtsson/fake-GLAD")'
-
 matrix:
   include:
     - os: linux
