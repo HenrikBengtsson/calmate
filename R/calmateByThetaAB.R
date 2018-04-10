@@ -174,7 +174,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     dim(Cjj) <- dimCjj;             # A 2xI matrix
     CCjj <- fitFcn(Cjj, references=references, ...);
     # Sanity check
-    stopifnot(identical(dim(CCjj), dimCjj));
+    stop_if_not(identical(dim(CCjj), dimCjj));
     dataS[jj,,] <- CCjj;
   } # for (jj ...)
   if (verbose) writeRaw(verbose, "done.\n");
@@ -193,7 +193,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   dataS <- NULL ## Not needed anymore
 
   # Sanity check
-  stopifnot(identical(dim(dataC), dim(data)));
+  stop_if_not(identical(dim(dataC), dim(data)));
 
   verbose && cat(verbose, "Calibrated ASCN signals:");
   verbose && str(verbose, dataC);

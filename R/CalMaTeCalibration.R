@@ -527,7 +527,7 @@ setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=F
 
     idxs <- indexOf(dsB, getFullName(dfB));
     # Sanity check
-    stopifnot(length(idxs) > 0);
+    stop_if_not(length(idxs) > 0);
 
     idx <- idxs[1];
     dfB <- getFile(dsB, idx);
