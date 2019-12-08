@@ -2,18 +2,17 @@ Package: calmate
 Version: 0.12.1-9000
 Depends:
   R (>= 3.1.1),
-  R.utils (>= 2.2.0),
-  aroma.core (>= 2.14.0)
+  R.utils (>= 2.9.0),
+  aroma.core (>= 3.2.0)
 Imports:
   utils,
   MASS,
   R.methodsS3 (>= 1.7.1),
   R.oo (>= 1.23.0),
-  matrixStats (>= 0.51.0),
-  R.filesets (>= 2.10.0)
+  matrixStats (>= 0.55.0),
+  R.filesets (>= 2.13.0)
 Suggests:
   DNAcopy
-Date: 2015-12-17
 Title: Improved Allele-Specific Copy Number of SNP Microarrays for Downstream Segmentation
 Description: A multi-array post-processing method of allele-specific copy-number estimates (ASCNs).
 Authors@R: c(
