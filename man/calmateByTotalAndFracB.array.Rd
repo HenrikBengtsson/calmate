@@ -7,48 +7,48 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
- \name{calmateByTotalAndFracB.array}
+\name{calmateByTotalAndFracB.array}
 \alias{calmateByTotalAndFracB.array}
- \alias{calmateByTotalAndFracB}
+\alias{calmateByTotalAndFracB}
 
- \title{Normalize allele-specific copy numbers (total,fracB)}
+\title{Normalize allele-specific copy numbers (total,fracB)}
 
- \description{
-  Normalize allele-specific copy numbers (total,fracB), where total is the total (non-polymorphic) signal and
-  fracB is the allele B fraction.
-  It is only loci with a non-missing (\code{\link[base]{NA}}) fracB value that are
-  considered to be SNPs and normalized by CalMaTe.  The other loci
-  are left untouched.
- }
+\description{
+ Normalize allele-specific copy numbers (total,fracB), where total is the total (non-polymorphic) signal and
+ fracB is the allele B fraction.
+ It is only loci with a non-missing (\code{\link[base]{NA}}) fracB value that are
+ considered to be SNPs and normalized by CalMaTe.  The other loci
+ are left untouched.
+}
 
- \usage{
+\usage{
 \method{calmateByTotalAndFracB}{array}(data, references=NULL, ..., refAvgFcn=NULL, verbose=FALSE)
 }
 
- \arguments{
-  \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,
-              2 is total and fracB (in that order, if unnamed), and
-              I is the number of samples.}
-  \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
-     samples should be used as the reference set.
-     By default, all samples are considered. If not NULL at least 3 samples.}
-  \item{...}{Additional arguments passed to \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
-  \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
-     an argument \code{na.rm} and returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
-     It should calculate some type of average for each of the J rows, e.g.
-     \code{\link[matrixStats]{rowMedians}}.
-     If specified, then the total copy numbers of the calibrated ASCNs
-     are standardized toward (twice) the average of the total copy numbers
-     of the calibrated reference ASCNs.}
-  \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
- }
+\arguments{
+ \item{data}{An Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}, where J is the number of loci,
+             2 is total and fracB (in that order, if unnamed), and
+             I is the number of samples.}
+ \item{references}{A \code{\link[base]{logical}} or \code{\link[base]{numeric}} \code{\link[base]{vector}} specifying which
+    samples should be used as the reference set.
+    By default, all samples are considered. If not NULL at least 3 samples.}
+ \item{...}{Additional arguments passed to \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.}
+ \item{refAvgFcn}{(optional) A \code{\link[base]{function}} that takes a JxI \code{\link[base]{numeric}} \code{\link[base]{matrix}}
+    an argument \code{na.rm} and returns a \code{\link[base]{numeric}} \code{\link[base]{vector}} of length J.
+    It should calculate some type of average for each of the J rows, e.g.
+    \code{\link[matrixStats]{rowMedians}}.
+    If specified, then the total copy numbers of the calibrated ASCNs
+    are standardized toward (twice) the average of the total copy numbers
+    of the calibrated reference ASCNs.}
+ \item{verbose}{See \code{\link[R.utils]{Verbose}}.}
+}
 
- \value{
-   Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}
-   with the same dimension names as argument \code{data}.
- }
+\value{
+  Returns an Jx2xI \code{\link[base]{numeric}} \code{\link[base]{array}}
+  with the same dimension names as argument \code{data}.
+}
 
- \examples{
+\examples{
 # Load example (thetaA,thetaB) signals
 path <- system.file("exData", package="calmate");
 theta <- loadObject("thetaAB,100x2x40.Rbin", path=path);
@@ -83,13 +83,13 @@ dummy <- calmateByTotalAndFracB(data[1,,,drop=FALSE]);
 stopifnot(length(dim(dummy)) == 3);
 }
 
- \references{
-  [1] M. Ortiz-Estevez, A. Aramburu, H. Bengtsson, P. Neuvial and A. Rubio, \emph{CalMaTe: A method and software to improve allele-specific copy number of SNP arrays for downstream segmentation}, Bioinformatics, 2012 [PMC3381965].
+\references{
+ [1] M. Ortiz-Estevez, A. Aramburu, H. Bengtsson, P. Neuvial and A. Rubio, \emph{CalMaTe: A method and software to improve allele-specific copy number of SNP arrays for downstream segmentation}, Bioinformatics, 2012 [PMC3381965].
  \cr
- }
+}
 
- \seealso{
-  To calibrate (thetaA,thetaB) or (CA,CB) signals,
-  see \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.
- }
+\seealso{
+ To calibrate (thetaA,thetaB) or (CA,CB) signals,
+ see \code{\link[calmate:calmateByThetaAB.array]{*calmateByThetaAB}()}.
+}
 \keyword{methods}

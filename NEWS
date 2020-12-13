@@ -24,7 +24,7 @@ Version: 0.12.1 [2015-10-26]
 SIGNIFICANT CHANGES:
 
  * Package now requires R (>= 3.1.1) released July 2014. This allows us to
-   use BioC (>= 3.0) (October 2014).
+   use Bioconductor (>= 3.0) (October 2014).
   
 SOFTWARE QUALITY:
 
