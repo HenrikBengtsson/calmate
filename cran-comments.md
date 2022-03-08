@@ -32,7 +32,4 @@ res <- rhub::check(platform = c(
 print(res)
 ```
 
-gives
-
-```
-```
+passed with all OK.
