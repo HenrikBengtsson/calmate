@@ -1,10 +1,11 @@
-## Avoid R CMD check NOTEs on unknown words
+## Avoid R CMD check NOTEs on unknown words in package description
 ##
 ## Usage:
-## saveRDS(readLines("inst/WORDLIST"), file = ".aspell/WORDLIST.rds", version = 2L)
+## saveRDS(readLines(".aspell/WORDLIST"), file = ".aspell/WORDLIST.rds", version = 2L)
 ##
 ## References:
-## * https://dirk.eddelbuettel.com/blog/2017/08/10/
+## 1. help("aspell-utils", package = "utils")
+## 2. https://dirk.eddelbuettel.com/blog/2017/08/10/
 Rd_files <- vignettes <- R_files <- description <-
     list(encoding = "UTF-8",
          language = "en",
