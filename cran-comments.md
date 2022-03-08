@@ -1,26 +1,35 @@
-# CRAN submission calmate 0.12.1
-on 2015-10-26
+# CRAN submission calmate 0.13.0
 
-Updates related to R / CRAN:
-
-* Explicitly importing core R functions
+on 2022-03-08
 
 Thanks in advance
 
 
 ## Notes not sent to CRAN
+
+### R CMD check validation
+
 The package has been verified using `R CMD check --as-cran` on:
 
-* Platform x86_64-pc-linux-gnu (64-bit):
-  - R version 3.1.3 (2015-03-09)
-  - R version 3.2.2 (2015-08-14)
-  - R Under development (unstable) (2015-10-24 r69569)
+| R version     | GitHub | R-hub    | win-builder |
+| ------------- | ------ | -------- | ----------- |
+| 3.4.x         | L      |          |             |
+| 3.6.x         | L      |          |             |
+| 4.0.x         | L      | L        |             |
+| 4.1.x         | L M W  | L M M1 W | W           |
+| devel         | L M W  | L        | W           |
 
-* Platform: x86_64-apple-darwin13.4.0 (64-bit):
-  - R version 3.2.2 Patched (2015-10-22 r69556)
+*Legend: OS: L = Linux, M = macOS, M1 = macOS M1, W = Windows*
 
-* Platform x86_64-w64-mingw32/x64 (64-bit):
-  - R version 3.2.2 Patched (2015-10-19 r69550)
-  - R Under development (unstable) (2015-10-23 r69563)
 
-It has also verified using the <http://win-builder.r-project.org/> service.
+R-hub checks:
+
+```r
+res <- rhub::check(platform = c(
+  "debian-clang-devel", "debian-gcc-patched", "linux-x86_64-centos-epel",
+  "macos-highsierra-release-cran", "macos-m1-bigsur-release",
+  "windows-x86_64-release"))
+print(res)
+```
+
+passed with all OK.

@@ -6,12 +6,12 @@
 # \description{
 #  @classhierarchy
 #
-#  This class represents the CalMaTe method [1], which 
+#  This class represents the CalMaTe method [1], which
 #  corrects for SNP effects in allele-specific copy-number estimates
 #  (ASCNs).
 # }
-# 
-# @synopsis 
+#
+# @synopsis
 #
 # \arguments{
 #   \item{data}{A named @list with data set named \code{"total"} and
@@ -31,9 +31,9 @@
 # }
 #
 # \section{Fields and Methods}{
-#  @allmethods "public"  
+#  @allmethods "public"
 # }
-# 
+#
 # \section{Reference samples}{
 #  In order to estimate the calibration parameters, the model assumes
 #  that, for any given SNP, there are a majority of samples that are
@@ -57,7 +57,7 @@
 #   For backward compatibility, we try to keep all major versions of
 #   the CalMaTe algorithm available.  Older versions can be used by
 #   specifying argument \code{flavor}.
-#   For more information about the different flavors, 
+#   For more information about the different flavors,
 #   see @see "fitCalMaTeInternal".
 # }
 #
@@ -66,12 +66,12 @@
 # }}
 #
 # \references{
-#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr 
+#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr
 # }
 #
 # \seealso{
 #   Low-level versions of the CalMaTe method is available
-#   via the @see "calmateByThetaAB" and 
+#   via the @see "calmateByThetaAB" and
 #   @see "calmateByTotalAndFracB" methods.
 #
 #  For further information on the internal fit functions, see
@@ -109,14 +109,14 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
 
     # Assert that the chip types are compatile
     if (getChipType(data$total) != getChipType(data$fracB)) {
-      throw("The 'total' and 'fracB' data sets have different chip types: ", 
+      throw("The 'total' and 'fracB' data sets have different chip types: ",
             getChipType(data$total), " != ", getChipType(data$fracB));
     }
 
     # Assert that the data sets have the same number data files
     nbrOfFiles <- nbrOfFiles(data$total);
     if (nbrOfFiles != nbrOfFiles(data$fracB)) {
-      throw("The number of samples in 'total' and 'fracB' differ: ", 
+      throw("The number of samples in 'total' and 'fracB' differ: ",
             nbrOfFiles, " != ", nbrOfFiles(data$fracB));
     }
 
@@ -164,7 +164,7 @@ setConstructorS3("CalMaTeCalibration", function(data=NULL, tags="*", references=
 
   setTags(this, tags);
 
-  this; 
+  this;
 })
 
 
@@ -176,7 +176,7 @@ setMethodS3("as.character", "CalMaTeCalibration", function(x, ...) {
 
   dsList <- getDataSets(this);
   s <- c(s, sprintf("Data sets (%d):", length(dsList)));
-  for (kk in seq(along=dsList)) {
+  for (kk in seq_along(dsList)) {
     ds <- dsList[[kk]];
     s <- c(s, sprintf("<%s>:", capitalize(names(dsList)[kk])));
     s <- c(s, as.character(ds));
@@ -190,7 +190,7 @@ setMethodS3("as.character", "CalMaTeCalibration", function(x, ...) {
   } else {
     s <- c(s, sprintf("Number of references: %d (%.2f%%)", nbrOfRefs, 100*nbrOfRefs/nbrOfFiles));
   }
- 
+
   params <- getParametersAsString(this);
   nparams <- length(params);
   params <- paste(params, collapse=", ");
@@ -208,16 +208,16 @@ setMethodS3("getAsteriskTags", "CalMaTeCalibration", function(this, collapse=NUL
   if (!is.null(collapse)) {
     tags <- paste(tags, collapse=collapse);
   }
-  
+
   tags;
-}, private=TRUE) 
+}, private=TRUE)
 
 
 setMethodS3("getName", "CalMaTeCalibration", function(this, ...) {
   dsList <- getDataSets(this);
   ds <- dsList$total;
   getName(ds);
-}) 
+})
 
 
 
@@ -257,7 +257,7 @@ setMethodS3("setTags", "CalMaTeCalibration", function(this, tags="*", ...) {
     tags <- trim(unlist(strsplit(tags, split=",")));
     tags <- tags[nchar(tags) > 0];
   }
-  
+
   this$.tags <- tags;
 })
 
@@ -274,7 +274,7 @@ setMethodS3("getFullName", "CalMaTeCalibration", function(this, ...) {
 setMethodS3("getDataSets", "CalMaTeCalibration", function(this, ...) {
   this$.data;
 })
- 
+
 
 setMethodS3("getRootPath", "CalMaTeCalibration", function(this, ...) {
   "totalAndFracBData";
@@ -290,7 +290,7 @@ setMethodS3("getPath", "CalMaTeCalibration", function(this, create=TRUE, ...) {
   # Full name
   fullname <- getFullName(this);
 
-  # Chip type    
+  # Chip type
   dsList <- getDataSets(this);
   ds <- dsList$total;
   chipType <- getChipType(ds, fullname=FALSE);
@@ -305,13 +305,7 @@ setMethodS3("getPath", "CalMaTeCalibration", function(this, create=TRUE, ...) {
   }
 
   # Create path?
-  if (create) {
-    if (!isDirectory(path)) {
-      mkdirs(path);
-      if (!isDirectory(path))
-        throw("Failed to create output directory: ", path);
-    }
-  }
+  if (create && !isDirectory(path)) mkdirs(path, mustWork=TRUE)
 
   path;
 })
@@ -368,7 +362,7 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
   if (verbose) {
     pushState(verbose);
     on.exit(popState(verbose));
-  } 
+  }
 
 
   verbose && enter(verbose, "Retrieve/allocation output data sets");
@@ -377,18 +371,18 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
   path <- getPath(this);
 
   res <- list();
-  for (kk in seq(along=dsList)) {
+  for (kk in seq_along(dsList)) {
     ds <- dsList[[kk]];
-    verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d", 
+    verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d",
                                  kk, getName(ds), length(dsList)));
 
-    for (ii in seq(ds)) {
+    for (ii in seq_along(ds)) {
       df <- getFile(ds, ii);
-      verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d", 
+      verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d",
                                         ii, getName(df), nbrOfFiles(ds)));
 
       filename <- getFilename(df);
-      pathname <- Arguments$getReadablePathname(filename, path=path, 
+      pathname <- Arguments$getReadablePathname(filename, path=path,
                                                           mustExist=FALSE);
 
       # Skip?
@@ -423,8 +417,8 @@ setMethodS3("allocateOutputDataSets", "CalMaTeCalibration", function(this, ..., 
     dsOut <- extract(dsOut, keep);
 
     res[[kk]] <- dsOut;
-    rm(ds, dsOut);
-    
+    ds <- dsOut <- NULL  ## Not needed anymore
+
     verbose && exit(verbose);
   } # for (kk ...)
 
@@ -449,14 +443,14 @@ setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=F
   if (verbose) {
     pushState(verbose);
     on.exit(popState(verbose));
-  } 
+  }
 
 
   verbose && enter(verbose, "Finding units to do");
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # (a) Check for missing values in total CNs, because then we will 
+  # (a) Check for missing values in total CNs, because then we will
   #     check both non-polymorphic loci and SNPs.
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   dsList <- getOutputDataSets(this);
@@ -520,8 +514,8 @@ setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=F
   # Potentially unfitted units?
   if (length(units) > 0) {
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # (c) Now, for BAFs we will get missing values for all non-polymorphic 
-    #     loci.  The problem is that we don't know which they are (without 
+    # (c) Now, for BAFs we will get missing values for all non-polymorphic
+    #     loci.  The problem is that we don't know which they are (without
     #     turning to chip type-specific annotation data files which cannot
     #     assume exist).  Instead, we will check the corresponding input
     #     BAF file to see whether those units also have missing values.
@@ -530,33 +524,33 @@ setMethodS3("findUnitsTodo", "CalMaTeCalibration", function(this, ..., verbose=F
     # The last data set is always updated last
     dsB <- dsList$fracB;
     verbose && print(verbose, dsB);
-  
+
     idxs <- indexOf(dsB, getFullName(dfB));
     # Sanity check
-    stopifnot(length(idxs) > 0);
-  
+    .stop_if_not(length(idxs) > 0);
+
     idx <- idxs[1];
     dfB <- getFile(dsB, idx);
     verbose && print(verbose, dfB);
-  
+
     values <- dfB[,1,drop=TRUE];
-  
+
     # Identify all missing values
     nokBin <- is.na(values);
     unitsB <- which(nokBin);
     verbose && printf(verbose, "Number of input BAFs with missing values: %d (%.2f%%)\n", length(unitsB), 100*length(unitsB)/nbrOfUnits);
-  
+
     # Conclusions
     nokB <- (nokB & !nokBin);
     unitsB <- which(nokB);
     verbose && printf(verbose, "Number of BAFs with missing values in output but not in input: %d (%.2f%%)\n", length(unitsB), 100*length(unitsB)/nbrOfUnits);
-  
+
     # Update units that are unfitted.
     nok <- (nokT | nokB);
     units <- which(nok);
   } # if (length(units) > 0)
 
-  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
+  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n",
                      length(units), 100*length(units)/length(values));
 
   verbose && cat(verbose, "Units to do (with missing values):");
@@ -575,7 +569,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
   dsList <- getDataSets(this);
   dsTCN <- dsList$total;
   dsBAF <- dsList$fracB;
-  
+
   # Argument 'units':
   if (is.null(units)) {
     units <- "remaining";
@@ -583,7 +577,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
   df <- getFile(dsTCN, 1);
   nbrOfUnits <- nbrOfUnits(df);
   if (identical(units, "remaining")) {
-    units <- seq(length=nbrOfUnits);
+    units <- seq_len(nbrOfUnits);
   } else {
     units <- Arguments$getIndices(units, max=nbrOfUnits);
   }
@@ -643,18 +637,18 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     verbose && cat(verbose, "Units:");
     verbose && str(verbose, units);
 
-    rm(unitsTodo);
+    unitsTodo <- NULL  ## Not needed anymore
     verbose && exit(verbose);
   }
 
   nbrOfUnits <- length(units);
-  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n", 
+  verbose && printf(verbose, "Number of units to do: %d (%.2f%%)\n",
                       length(units), 100*length(units)/nbrOfUnits(df));
 
 
   chipType <- getChipType(dsTCN, fullname=FALSE);
   verbose && cat(verbose, "Chip type: ", chipType);
-  rm(dsList);
+  dsList <- NULL  ## Not needed anymore
 
 
   sampleNames <- getNames(dsTCN);
@@ -723,14 +717,14 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     verbose && str(verbose, fracB);
     verbose && exit(verbose);
 
-    
+
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     # Calibration
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     verbose && enter(verbose, "Combining into an (total,fracB) array");
     dim <- c(nrow(total), ncol(total), 2);
     data <- c(total, fracB);
-    rm(total, fracB);
+    total <- fracB <- NULL  ## Not needed anymore
     data <- array(data, dim=dim, dimnames=dimnames);
     data <- aperm(data, perm=c(1,3,2));
     verbose && str(verbose, data);
@@ -747,14 +741,14 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     verbose && str(verbose, args);
     args$verbose <- verbose;
 
-    dataN <- do.call("calmateByTotalAndFracB", args=args);
+    dataN <- do.call(calmateByTotalAndFracB, args=args);
 
     fit <- attr(dataN, "modelFit");
     verbose && str(verbose, fit);
     verbose && str(verbose, dataN);
     verbose && exit(verbose);
 
-    rm(data);  # Not needed anymore
+    data <- NULL  ## Not needed anymore
     gc <- gc();
     verbose && print(verbose, gc);
 
@@ -768,25 +762,25 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
     # Storing calibrated data
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     verbose && enter(verbose, "Storing calibrated data");
-    for (kk in seq(along=res)) {
+    for (kk in seq_along(res)) {
       ds <- res[[kk]];
-      verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d", 
+      verbose && enter(verbose, sprintf("Data set #%d ('%s') of %d",
                                            kk, getName(ds), length(res)));
 
       # Store in lexicograph ordering
       fullnames <- getFullNames(ds);
       idxsT <- order(fullnames, decreasing=FALSE);
-      
+
       for (ii in idxsT) {
         df <- getFile(ds, ii);
-        verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d", 
+        verbose && enter(verbose, sprintf("Data file #%d ('%s') of %d",
                                         ii, getName(df), nbrOfFiles(ds)));
 
         signals <- dataN[,kk,ii];
         verbose && cat(verbose, "Signals:");
         verbose && str(verbose, signals);
         df[units[uu],1] <- signals;
-        rm(signals);
+        signals <- NULL  ## Not needed anymore
 
         verbose && exit(verbose);
       } # for (ii ...)
@@ -816,7 +810,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 ############################################################################
 # HISTORY:
 # 2013-01-05 [HB]
-# o CLEANUP: Dropped getParametersAsString() since CalMaTeCalibration 
+# o CLEANUP: Dropped getParametersAsString() since CalMaTeCalibration
 #   now implements ParametersInterface.
 # 2012-02-19 [HB]
 # o Made findUnitsTodo() for CalMaTeCalibration smarter. Before it would
@@ -853,10 +847,10 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 # 2010-07-30
 # o Renamed CalMaTeNormalization to CalMaTeCalibration.
 # 2010-07-22
-# o BUG FIX: Now process() for CalMaTeCalibration returns immediately 
+# o BUG FIX: Now process() for CalMaTeCalibration returns immediately
 #   if there are no units left.
 # o BUG FIX: process(..., verbose=TRUE) would give "Error in sprintf("Chunk
-#   #%d of %d", count, nbrOfChunks) :  invalid format '%d'; use format %f, 
+#   #%d of %d", count, nbrOfChunks) :  invalid format '%d'; use format %f,
 #   %e, %g or %a for numeric objects".
 # 2010-06-29
 # o Added support for process(..., force=TRUE) in CalMaTeNormalization.
@@ -868,7 +862,7 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 # o Added minor Rdoc comments.
 # o ROBUSTNESS: Added more assertions to the CalMaTe constructor.
 # o ROBUSTNESS: Now process() stores results in lexicograph ordering to
-#   assure that the lexicographicly last file is updated last, which is 
+#   assure that the lexicographicly last file is updated last, which is
 #   the file that findUnitsTodo() is querying.
 # o Added getOutputDataSets().
 # o Added findUnitsTodo().
@@ -876,4 +870,4 @@ setMethodS3("process", "CalMaTeCalibration", function(this, units="remaining", f
 # 2010-06-20
 # o First test shows that it seems to work.
 # o Created.
-############################################################################ 
+############################################################################

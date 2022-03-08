@@ -1,22 +1,19 @@
 #----------------------------
 # Git and SVN related
 #----------------------------
-^.svn
 ^.git
 ^.make
-INSTALL[.]md
-OVERVIEW[.]md
-README[.]md
+^INSTALL[.]md$
+^OVERVIEW[.]md$
+^CONDUCT[.]md$
+^CONTRIBUTING[.]md$
+^docs/
 
 #----------------------------
-# Travis-CI et al.
+# devtools
 #----------------------------
-^[.]travis[.]yml$
-^travis-tool[.]sh$
-^pkg-build[.]sh$
-^appveyor[.]yml$
-^covr-utils.R$
-^[.]covr[.]R$
+^revdep/
+
 
 #----------------------------
 # R related
@@ -27,11 +24,7 @@ README[.]md
 ^vignettes/[.]install_extras$
 ^Makefile$
 ^incl
-^NAMESPACE,.*[.]txt$
-^nohup.*$
 ^[.]R
-^[.]benchmark
-^[.]devel
-^[.]test
-^[.]check
+^[.]local
 ^.*[.]tar[.]gz$
+^.aspell/WORDLIST$

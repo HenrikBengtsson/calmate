@@ -45,14 +45,14 @@ pairs <- getPairs(dsList);
 pair <- pairs[sampleName,,drop=TRUE];
 verbose && cat(verbose, "Tumor: ", pair["tumor"]);
 verbose && cat(verbose, "Normal: ", pair["normal"]);
-pairName <- paste(pair, collapse="vs"); 
+pairName <- paste(pair, collapse="vs");
 verbose && cat(verbose, "Pair: ", pairName);
-  
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Segments to be studied
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-for (kk in seq(along=segments)) {
+for (kk in seq_along(segments)) {
   segName <- names(segments)[kk];
   segment <- segments[[segName]];
   chr <- segment[1];
@@ -74,7 +74,7 @@ for (kk in seq(along=segments)) {
   # Extract (gammaT, gammaN)
   gammaT <- getSignals(dataList$tumor$tcn);
   gammaN <- getSignals(dataList$normal$tcn);
-  
+
   # Extract (betaT, betaN)
   betaT <- getSignals(dataList$tumor$baf);
   betaN <- getSignals(dataList$normal$baf);

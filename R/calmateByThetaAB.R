@@ -2,7 +2,7 @@
 # @set "class=array"
 # @RdocMethod calmateByThetaAB
 # @alias calmateByThetaAB
-# 
+#
 # @title "Normalize allele-specific copy numbers (CA,CB)"
 #
 # \description{
@@ -14,7 +14,7 @@
 # \arguments{
 #  \item{data}{An Jx2xI @numeric @array, where J is the number of SNPs,
 #          2 is the number of alleles, and I is the number of samples.}
-#  \item{references}{An index @vector in [1,I] or a @logical @vector 
+#  \item{references}{An index @vector in [1,I] or a @logical @vector
 #     of length I specifying which samples are used when calculating the
 #     reference signals.  If @NULL, all samples are used. At least 3 samples.}
 #  \item{...}{Additional arguments passed to the internal fit function
@@ -24,7 +24,7 @@
 #  \item{refAvgFcn}{(optional) A @function that takes a JxI @numeric @matrix
 #     an argument \code{na.rm} and returns a @numeric @vector of length J.
 #     It should calculate some type of average for each of the J rows, e.g.
-#     @see "matrixStats::rowMedians".  
+#     @see "matrixStats::rowMedians".
 #     If specified, then the total copy numbers of the calibrated ASCNs
 #     are standardized toward (twice) the average of the total copy numbers
 #     of the calibrated reference ASCNs.}
@@ -43,18 +43,18 @@
 #   the CalMaTe algorithm available.  Older versions can be used by
 #   specifying argument \code{flavor}.
 #   The default flavor is \code{v2}.
-#   For more information about the different flavors, 
+#   For more information about the different flavors,
 #   see @see "fitCalMaTeInternal".
 # }
 #
 # @examples "../incl/calmateByThetaAB.Rex"
 #
 # \references{
-#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr 
+#  [1] @include "../incl/OrtizM_etal_2012.Rd" \cr
 # }
 #
 # \seealso{
-#  To calibrate (total,fracB) data, 
+#  To calibrate (total,fracB) data,
 #  see @seemethod "calmateByTotalAndFracB".
 #  We strongly recommend to always work with (total,fracB) data
 #  instead of (CA,CB) data, because it is much more general.
@@ -64,9 +64,9 @@
 # }
 #*/###########################################################################
 setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., truncate=FALSE, refAvgFcn=NULL, flavor=c("v2", "v1"), verbose=FALSE) {
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'data':
   if (!is.array(data)) {
     throw("Argument 'data' is not an array: ", class(data)[1]);
@@ -74,11 +74,11 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   dim <- dim(data);
   dimnames <- dimnames(data);
   if (length(dim) != 3) {
-    throw("Argument 'data' is not a 3-dimensional array: ", 
+    throw("Argument 'data' is not a 3-dimensional array: ",
                                                 paste(dim, collapse="x"));
   }
   if (dim[2] != 2) {
-    throw("Argument 'data' is not a Jx2xI-dimensional array: ", 
+    throw("Argument 'data' is not a Jx2xI-dimensional array: ",
                                                 paste(dim, collapse="x"));
   }
   if (!is.null(dimnames[[2]])) {
@@ -95,7 +95,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   # Argument 'references':
   if (is.null(references)) {
     # The default is that all samples are used to calculate the reference.
-    references <- seq(length=nbrOfSamples);
+    references <- seq_len(nbrOfSamples);
   } else if (is.logical(references)) {
     if (length(references) != nbrOfSamples) {
       throw("Length of argument 'references' does not match the number of samples in argument 'data': ", length(references), " != ", nbrOfSamples);
@@ -104,7 +104,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   } else if (is.numeric(references)) {
     references <- as.integer(references);
     if (any(references < 1 | references > nbrOfSamples)) {
-      throw(sprintf("Argument 'references' is out of range [1,%d]: %d", nbrOfSamples), length(references));
+      throw(sprintf("Argument 'references' is out of range [1,%d]: %d", nbrOfSamples, length(references)));
     }
   }
   if (length(references) < 3) {
@@ -115,14 +115,14 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   flavor <- match.arg(flavor);
 
   # Argument 'verbose':
-  verbose <- Arguments$getVerbose(verbose);    
+  verbose <- Arguments$getVerbose(verbose);
 
 
 
   # From here on we force dimension names on the 2nd dimension
   dimnames(data)[[2]] <- c("A", "B");
 
-  
+
   verbose && enter(verbose, "calmateByThetaAB()");
   verbose && cat(verbose, "ASCN signals:");
   verbose && str(verbose, data);
@@ -151,6 +151,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
   verbose && enter(verbose, "Fitting CalMaTe");
   verbose && cat(verbose, "Algorithm flavor: ", flavor);
+
   if (flavor == "v2") {
     fitFcn <- fitCalMaTeV2;
   } else if (flavor == "v1") {
@@ -159,6 +160,34 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     throw("Unknown algorithm flavor: ", flavor);
   }
 
+  ## Inject troubleshooting code?
+  troubleshoot <- getOption("calmate.troubleshoot", FALSE)
+  if (troubleshoot) {
+    verbose && cat(verbose, "Fitting CalMaTe model with troubleshooting mode enabled")
+    fitFcnOrg <- fitFcn
+    fitFcn <- function(...) {
+      tryCatch({
+        fitFcnOrg(...)
+      }, error = function(ex) {
+        .calmate.troubleshoot <- list(
+          method      = "calmateByThetaAB.array()",
+          flavor      = flavor,
+          args        = list(...),
+          calls       = sys.calls(),
+          fitFcn      = fitFcn,
+          error       = ex,
+          sessionInfo = sessionInfo()
+        )
+        base_assign <- base::assign
+        base_assign(".calmate.troubleshoot", .calmate.troubleshoot, envir = globalenv(), inherits = FALSE)
+        verbose && cat(verbose, "CalMaTe troubleshooting mode save '.calmate.troubleshoot' to the global environment:")
+        verbose && str(verbose, .calmate.troubleshoot)
+        stop(ex)
+      })
+    }
+  }
+  
+
   nbrOfSNPs <- dim(dataS)[1];
   verbose && cat(verbose, "Number of SNPs: ", nbrOfSNPs);
   verbose && printf(verbose, "Number of SNPs left: ");
@@ -166,7 +195,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   dimnames(dataS) <- NULL;
   # Used for sanity check inside loop
   dimCjj <- dim(dataS)[-1];
-  for (jj in seq(length=nbrOfSNPs)) {
+  for (jj in seq_len(nbrOfSNPs)) {
     if (verbose && (jj %% 500 == 1)) {
       writeRaw(verbose, sprintf("%d, ", nbrOfSNPs-jj+1));
     }
@@ -174,7 +203,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     dim(Cjj) <- dimCjj;             # A 2xI matrix
     CCjj <- fitFcn(Cjj, references=references, ...);
     # Sanity check
-    stopifnot(identical(dim(CCjj), dimCjj));
+    .stop_if_not(identical(dim(CCjj), dimCjj));
     dataS[jj,,] <- CCjj;
   } # for (jj ...)
   if (verbose) writeRaw(verbose, "done.\n");
@@ -190,10 +219,10 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     dataC <- dataS;
     dimnames(dataC) <- dimnames(data);
   }
-  rm(dataS);
+  dataS <- NULL ## Not needed anymore
 
   # Sanity check
-  stopifnot(identical(dim(dataC), dim(data)));
+  .stop_if_not(identical(dim(dataC), dim(data)));
 
   verbose && cat(verbose, "Calibrated ASCN signals:");
   verbose && str(verbose, dataC);
@@ -202,7 +231,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
     dataC <- truncateThetaAB(dataC);
     verbose && cat(verbose, "Truncated ASCN signals:");
     verbose && str(verbose, dataC);
-  } 
+  }
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Standardize toward a custom average of the references?
@@ -244,7 +273,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 #   to be able to use previous versions of CalMaTe model estimators.
 #   Flavor "v2" was introduced 2011-12-05.
 # o SPEEDUP: the internal CalMaTe fit function is now called directly,
-#   which avoids the method dispatch overhead that otherwise applies 
+#   which avoids the method dispatch overhead that otherwise applies
 #   to each SNP fitted.
 # 2011-12-15 [HB]
 # o CLEANUP: Tidied up the validation of argument 'references' and

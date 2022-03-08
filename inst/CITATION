@@ -1,0 +1,29 @@
+citHeader("Please cite 'calmate' and use of the CalMaTe method using the following reference:")
+
+citEntry(
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # BibTeX entry:
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  key       = "OrtizEstevez2012",
+  entry     = "article",
+  author    = "Ortiz-Estevez, Maria and Aramburu, Ander and Bengtsson, Henrik and Neuvial, Pierre and Rubio, Angel",
+  journal   = "Bioinformatics",
+  title     = "CalMaTe: A method and software to improve allele-specific copy number of SNP arrays for downstream segmentation",
+  year      = "2012",
+  number    = "13",
+  pages     = "1793--1794",
+  volume    = "28",
+  publisher = "Oxford University Press",
+  doi = "10.1093/bioinformatics/bts248",
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Plain-text citation:
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  textVersion = paste(sep="",
+    "M. Ortiz-Estevez, A. Aramburu, H. Bengtsson, P. Neuvial, and A. Rubio, ",
+    "CalMaTe: A method and software to improve allele-specific copy number of SNP arrays for downstream segmentation, ",
+    "Bioinformatics, Volume 28, Issue 13, 2012, Pages 1793-1794, ",
+    "doi:10.1093/bioinformatics/bts248"
+  )
+)
+

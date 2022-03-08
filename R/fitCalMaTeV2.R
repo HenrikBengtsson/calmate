@@ -43,7 +43,7 @@ fitCalMaTeV2 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   onlyOneAllele <- (abs(sum(naiveGenoDiff)/2) == length(naiveGenoDiff));
   if (onlyOneAllele) {
-    idxsSwap <- references[seq(length=ncol(TR)/2)];
+    idxsSwap <- references[seq_len(ncol(TR)/2)];
     dataT[1:2,idxsSwap] <- dataT[2:1,idxsSwap, drop=FALSE];
 
     # Update precalcalculated signals
@@ -61,7 +61,7 @@ fitCalMaTeV2 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
   });
 
   # Use fallback estimator, iff failed to converge
-  if (!fit$converged) { 
+  if (!fit$converged) {
     return(fitCalMaTeMedians(dataInit, references=references, fB1=fB1, fB2=fB2));
   }
 
@@ -139,14 +139,14 @@ fitCalMaTeV2 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
 # o Created internal fit functions for the different versions of CalMaTe.
 # 2012-01-31 [HB]
 # o CLEANUP: Pruning up the code, e.g. dropping extraneous spaces and
-#   parenthesis and adding missing ones. Dropping ambigous comments 
+#   parenthesis and adding missing ones. Dropping ambigous comments
 #   using terminologies such as "previous", "latest" and "final".
 # o DOCUMENTATION: Argument "references" have to be an index vector
 #   (and cannot be a logical vector as previously said).
 # 2012-01-31 [MO]
-# o BUG FIX: the index "idxs" was recalculated to undo the change when 
+# o BUG FIX: the index "idxs" was recalculated to undo the change when
 #   there is only one allele, and it was done as the previous version,
-#   taking into account all the samples, not only the references.     
+#   taking into account all the samples, not only the references.
 # 2011-12-15 [HB]
 # o CORRECTION: Now doing x[x < eps] <- eps instead of x[x < 0] <- eps.
 # o Dropped the validation of argument 'references'.  This is an internal
@@ -155,7 +155,7 @@ fitCalMaTeV2 <- function(dataT, references, fB1=1/3, fB2=2/3, maxIter=50, ...) {
 # o At least 3 reference samples.
 # 2011-12-04 [AR]
 # o BUG FIX: there was a bug for SNPs with a single allele when using a
-#   set of references. 
+#   set of references.
 # o Set some initial weights based on the median that improves the
 #   breakdown point if no reference samples are provided when using a set
 #   of references.

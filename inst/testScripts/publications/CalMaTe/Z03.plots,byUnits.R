@@ -16,7 +16,7 @@ path <- dirname(pathname);
 pathT <- file.path(path, "R/");
 sourceDirectory(path=pathT);
 
-  
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Calibrated or not?
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,7 +46,7 @@ units <- 1000+1:100;
 dd <- extractCACB(dsList, units=units);
 
 tagsT <- dsTags;
-for (uu in seq(along=units)) {
+for (uu in seq_along(units)) {
   unit <- units[uu];
   unitTag <- sprintf("unit%06d", unit);
   unitName <- unit;

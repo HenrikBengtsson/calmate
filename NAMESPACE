@@ -39,7 +39,7 @@ importFrom("R.filesets", "getFullNames")
 importFrom("R.filesets", "getNames")
 importFrom("R.filesets", "getPathname")
 importFrom("R.filesets", "indexOf")
-importFrom("R.methodsS3", "throw")
+importFrom("R.oo", "throw")
 importFrom("R.oo", "newInstance")
 importFrom("R.oo", "startupMessage")
 importFrom("R.oo", "trim")
@@ -63,6 +63,7 @@ importFrom("R.utils", "writeRaw")
 
 importFrom("stats", "median", "pnorm")
 importFrom("utils", "str")
+importFrom("utils", "sessionInfo")
 
 ## Manually adjusted
 importFrom("R.filesets", "extract") ## Multi-sources: R.utils, R.filesets

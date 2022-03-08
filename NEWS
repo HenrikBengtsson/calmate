@@ -1,272 +1,492 @@
 Package: calmate
 ================
 
+Version: 0.13.0 [2022-03-08]
+
+NEW FEATURES:
+
+ * Setting option 'calmate.troubleshoot' to TRUE will result in an object
+   '.calmate.troubleshoot' useful for troubleshooting being saved to the
+   global environment if and only if qr.solve() produces an error, e.g.
+   singular matrix 'a' in solve.
+
+SOFTWARE QUALITY:
+
+ * Package now requires R (>= 3.2.1) because of aroma.core.
+
+ * Updated package dependencies.
+
+ * SPEEDUP: Utilizing subsetted matrixStats (>= 0.50.0) calculations.
+
+ * Package test coverage is 49% (was 32%).
+
+DOCUMENTATION:
+
+ * Add CITATION file.
+
+BUG FIXES:
+
+ * calmateByThetaAB() and calmateByTotalAndFracB() generated a "too few
+   arguments" error when they tried to generate another error.
+
+
 Version: 0.12.1 [2015-10-26]
-o ROBUSTNESS: Explicitly importing core R functions.
-o Package now requires R (>= 3.1.1) released July 2014.
-  This allows us to use BioC (>= 3.0) (October 2014).
+
+SIGNIFICANT CHANGES:
+
+ * Package now requires R (>= 3.1.1) released July 2014. This allows us to
+   use Bioconductor (>= 3.0) (October 2014).
+  
+SOFTWARE QUALITY:
+
+ * Explicitly importing core R functions.
 
 
 Version: 0.12.0 [2015-02-23]
-o ROBUSTNESS: Package test coverage is 32%.
-o ROBUSTNESS: Added missing import.
-o Updated package dependencies.
+
+SOFTWARE QUALITY:
+
+ * Package test coverage is 32%.
+
+ * Updated package dependencies.
+
+BUG FIXES:
+
+ * Added missing import.
 
 
 Version: 0.11.2 [2014-01-30]
-o Updated package dependencies.
+
+SOFTWARE QUALITY:
+
+ * Updated package dependencies.
 
 
 Version: 0.11.1 [2013-10-17]
-o Updated the reference to the CalMaTe paper.
+
+DOCUMENTATION:
+
+ * Updated the reference to the CalMaTe paper.
 
 
 Version: 0.11.0 [2013-10-17]
-o ROBUSTNESS: Now importing only what needs to be imported and
-  formally declaring all S3 methods in NAMESPACE.
-o Package now requires R (>= 2.15.0) [and Bioc (>= 2.10.0)].
-o Updated package dependencies.
+
+SIGNIFICANT CHANGES:
+
+ * Package now requires R (>= 2.15.0) [and Bioc (>= 2.10.0)].
+
+SOFTWARE QUALITY:
+
+ * Now importing only what needs to be imported and formally declaring all
+   S3 methods in NAMESPACE.
+
+ * Updated package dependencies.
 
 
 Version: 0.10.3 [2013-09-21]
-o CLEANUP: Now only using 'Authors@R' in DESCRIPTION, which is possible
-  since R (>= 2.14.0).
-o Updated package dependencies.
+
+SOFTWARE QUALITY:
+
+ * Now using only 'Authors@R' in DESCRIPTION available since R (>= 2.14.0).
+
+ * Updated package dependencies.
 
 
 Version: 0.10.2 [2013-08-03]
-o Updated examples and system tests to use matrixStats::rowMedians()
-  so that they work with aroma.core (>= 2.10.0) without having to 
-  load the 'matrixStats' package.
-o Forgot to import rowAlls() from 'matrixStats'.
-o Added an Authors@R field to DESCRIPTION.
-o Updated package dependencies.
+
+SOFTWARE QUALITY:
+
+ * Updated examples and system tests to use matrixStats::rowMedians() so that
+   they work with aroma.core (>= 2.10.0) without having to load the
+   'matrixStats' package.
+
+ * Added an Authors@R field to DESCRIPTION.
+
+ * Updated package dependencies.
+
+BUG FIXES:
+
+ * Forgot to import rowAlls() from 'matrixStats'.
 
 
 Version: 0.10.1 [2013-05-22]
-o CRAN POLICY: Now all Rd \usage{} lines are at most 90 characters long.
-o Updated package dependencies.
+
+CRAN POLICY:
+
+ * Now all Rd \usage{} lines are at most 90 characters long.
+
+SOFTWARE QUALITY:
+
+ * Updated package dependencies.
 
 
 Version: 0.10.0 [2013-01-05]
-o Updated package dependencies.
-o Now CalMaTeCalibration implements ParametersInterface.
-o ROBUSTNESS: Now package declares S3 methods in the namespace.
-o CLEANUP: Now packages MASS, matrixStats, R.methodsS3 and
-  R.oo are only imported (not loaded/attached).
-o BUG FIX: Previous version was not compatible with R.filesets 
-  1.9.0 and aroma.core 2.8.0 resulting in "Error: 'sapply' is not
-  an exported object from 'namespace:R.filesets'".  Thanks
-  to Zheng Siyuan (MD Anderson) for reporting on this.
+
+NEW FEATURES:
+
+ * Now CalMaTeCalibration implements ParametersInterface.
+
+SOFTWARE QUALITY:
+
+ * Updated package dependencies.
+
+ * Now package declares S3 methods in the namespace.
+
+ * CLEANUP: Now packages MASS, matrixStats, R.methodsS3 and R.oo are only
+   imported (not loaded/attached).
+
+BUG FIXES:
+
+ * Previous version was not compatible with R.filesets 1.9.0 and aroma.core
+   2.8.0 resulting in "Error: 'sapply' is not an exported object from
+   'namespace:R.filesets'".  Thanks to Zheng Siyuan (MD Anderson) for reporting
+   on this.
 
 
 Version: 0.9.3 [2012-04-24]
-o Updated package dependencies.
-o Updated references to the CalMaTe manuscript.
+
+NEW FEATURES:
+
+ * Updated package dependencies.
+
+DOCUMENTATION:
+
+ * Updated references to the CalMaTe manuscript.
 
 
 Version: 0.9.2 [2012-03-18]
-o Updated help("calmate").
+
+DOCUMENTATION:
+
+ * Updated help("calmate").
 
 
 Version: 0.9.1 [2012-02-23]
-o Now package explicitly imports 'utils' and no longer relies on
-  'R.oo' and/or 'R.utils' for loading 'utils'.
+
+SOFTWARE QUALITY:
+
+ * Now package explicitly imports 'utils' and no longer relies on 'R.oo'
+   and/or 'R.utils' for loading 'utils'.
 
 
 Version: 0.9.0 [2012-02-21]
-o UPDATE: CalMaTe algorithm v2 is being finalized. Main updates are:
-  (a) The estimation of the model parameters are now done solely
-      based on reference samples.  In previous versions, some of the
-      initial estimation steps were using also non-reference samples.
-  (b) For a small number of SNPs, the main CalMaTe scheme for 
-      estimating parameters would not converge or converge poorly.
-      For such SNPs, CalMaTe now falls back to using a median-based
-      estimator.  For more details, see help(fitCalMaTeInternal).
+
+SIGNIFICANT CHANGES:
+
+ * CalMaTe algorithm v2 is being finalized. Main updates are:
+ 
+   (a) The estimation of the model parameters are now done solely based on
+       reference samples.  In previous versions, some of the initial estimation
+       steps were using also non-reference samples.
+       
+   (b) For a small number of SNPs, the main CalMaTe scheme for estimating
+       parameters would not converge or converge poorly.  For such SNPs,
+       CalMaTe now falls back to using a median-based estimator.  For more
+       details, see help(fitCalMaTeInternal).
 
 
 Version: 0.8.1 [2012-02-19]
-o Made findUnitsTodo() for CalMaTeCalibration smarter. Before it would
-  detect all non-polymorphic loci as non-fitted.
+
+SIGNIFICANT CHANGES:
+
+ * Made findUnitsTodo() for CalMaTeCalibration smarter. Before it would detect
+   all non-polymorphic loci as non-fitted.
 
 
 Version: 0.8.0 [2012-02-19]
-o BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB()
-  and CalMaTeCalibration so that it is possible use previous versions
-  of CalMaTe model estimators.  The flavor is now reflected in the
-  "asterisk" (the default) tags of CalMaTeCalibration.
-o SPEEDUP: the internal CalMaTe fit function is now called directly,
-  which avoids the method dispatch overhead that otherwise applies 
-  to each SNP fitted.
-o ROBUSTNESS: Added system tests to test all flavors of the fitting
-  algorithms.
+
+NEW FEATURES:
+
+ * BACKWARD COMPATIBILITY: Added argument 'flavor' to calmateByThetaAB() and
+   CalMaTeCalibration so that it is possible use previous versions of CalMaTe
+   model estimators.  The flavor is now reflected in the "asterisk" (the
+   default) tags of CalMaTeCalibration.
+
+SOFTWARE QUALITY:
+
+ * SPEEDUP: The internal CalMaTe fit function is now called directly, which
+   avoids the method dispatch overhead that otherwise applies to each SNP
+   fitted.
+
+ * ROBUSTNESS: Added system tests to test all flavors of the fitting algorithms.
 
 
 Version: 0.7.4 [2012-02-06]
-o Now additional arguments '...' of CalMaTeCalibration(...) are
-  passed to calmateByTotalAndFracB() by process().  This makes
-  it possible to specify all tuning parameters of the CalMaTe method.
-o DEPRECATED: Now argument 'references' of process() is obsolete and
-  gives an error.  Specify it via CalMaTeCalibration() instead.
+
+NEW FEATURES:
+
+ * Now additional arguments '...' of CalMaTeCalibration(...) are passed to
+   calmateByTotalAndFracB() by process().  This makes it possible to specify
+   all tuning parameters of the CalMaTe method.
+
+DEPRECATED AND DEFUNCT:
+
+ * Now argument 'references' of process() is obsolete and gives an error.
+   Specify it via CalMaTeCalibration() instead.
 
 
 Version: 0.7.3 [2012-01-31]
-o Updated package dependencies.
-o BUG FIX: The bug fix in v0.7.2 for handling the special case where
-  a SNP has the same genotype in all samples introduced another bug
-  giving incorrect results in that special case.
+
+ * Updated package dependencies.
+
+BUG FIXES:
+
+ * The bug fix in v0.7.2 for handling the special case where a SNP has the same
+   genotype in all samples introduced another bug giving incorrect results in
+   that special case.
 
 
 Version: 0.7.2 [2011-11-15]
-o ROBUSTNESS: Improved validation of argument 'references' to
-  CalMaTeCalibration(), calmateByTotalAndFracB(), and calmateByThetaAB().
-o DOCUMENTATION: Added a section 'Reference samples' to the help
-  of CalMaTeCalibration.
-o DEPRECATED: Argument 'references' of process() of CalMaTeCalibration
-  is deprecated.  Instead, pass it to CalMaTeCalibration().
-o ROBUSTNESS/BUG FIX: If in some SNPs, the samples include only a single
-  genotype (usually AA or BB), the genotype AA is interpreted as BB in
-  half of the samples and vice verse (and the returned value is
-  reversed again). There was a bug in the code that occurred iff all
-  the reference samples have the same genotype and the number of 
-  reference samples is smaller than half of the total number of samples.
+
+NEW FEATURES:
+
+ * ROBUSTNESS: Improved validation of argument 'references' to
+   CalMaTeCalibration(), calmateByTotalAndFracB(), and calmateByThetaAB().
+
+DOCUMENTATION:
+
+ * Added a section 'Reference samples' to the help of CalMaTeCalibration.
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'references' of process() of CalMaTeCalibration is deprecated.
+   Instead, pass it to CalMaTeCalibration().
+
+BUG FIXES:
+
+ * If in some SNPs, the samples include only a single genotype (usually AA or
+   BB), the genotype AA is interpreted as BB in half of the samples and vice
+   verse (and the returned value is reversed again). There was a bug in the
+   code that occurred iff all the reference samples have the same genotype and
+   the number of reference samples is smaller than half of the total number of
+   samples.
 
 
 Version: 0.7.1 [2011-11-30]
-o DOCUMENTATION: Updated links on help pages.
-o Updated package dependencies.
+
+DOCUMENTATION:
+
+ * Updated links on help pages.
+
+SOFTWARE QUALITY:
+
+ * Updated package dependencies.
 
 
 Version: 0.7.0 [2011-10-24]
-o Added a NAMESPACE.
+
+SOFTWARE QUALITY:
+
+ * Added a NAMESPACE.
 
 
 Version: 0.6.7 [2011-09-16]
-o Added missing authors to the DESCRIPTION.
+
+SOFTWARE QUALITY:
+
+ * Added missing authors to the DESCRIPTION.
 
 
 Version: 0.6.6 [2011-08-01]
-o Added some more test scripts.
-o WORKAROUND: In order for the package to work with the most recent
-  version of R devel, which automatically add namespaces to packages
-  who do not have one, we explicitly have specify that this package
-  should use, for instance, cat() of R.utils (instead of 'base').
+
+SOFTWARE QUALITY:
+
+ * Added some more test scripts.
+
+ * WORKAROUND: In order for the package to work with the most recent version of
+   R devel, which automatically add namespaces to packages who do not have one,
+   we explicitly have specify that this package should use, for instance, cat()
+   of R.utils (instead of 'base').
 
 
 Version: 0.6.5 [2011-03-18]
-o BUG FIX: calmateByTotalAndFracB() required that the 2nd dimension
-  of argument 'data' had names "total" and "fracB".  Likewise,
-  calmateByThetaAB() required that they were "A" and "B".
+
+BUG FIXES:
+
+ * calmateByTotalAndFracB() required that the 2nd dimension of argument 'data'
+   had names "total" and "fracB".  Likewise, calmateByThetaAB() required that
+   they were "A" and "B".
 
 
 Version: 0.6.4 [2011-03-12]
-o GENERALIZATION: Now allocateOutputDataSets() for CalMaTeCalibration
-  no longer requires write permissions if the data set already exists.
-o Added argument 'references' to the CalMaTeCalibration constructor.
-o REPRODUCIBLE RESEARCH: Added scripts to process the data and
-  generate the figures used in the CalMaTe manuscript(s).  These
-  scripts are available under testScripts/publications/.
+
+NEW FEATURES:
+
+ * GENERALIZATION: allocateOutputDataSets() for CalMaTeCalibration no longer
+   requires write permissions if the data set already exists.
+
+ * Added argument 'references' to the CalMaTeCalibration constructor.
+
+ * REPRODUCIBLE RESEARCH: Added scripts to process the data and generate the
+   figures used in the CalMaTe manuscript(s).  These scripts are available
+   under testScripts/publications/.
 
 
 Version: 0.6.3 [2010-11-02]
-o Updated the help page for the package itself.
+
+DOCUMENTATION:
+
+ * Updated the help page for the package itself.
 
 
 Version: 0.6.2 [2010-09-28]
-o Updated the example for the CalMaTeCalibration help page to
-  illustrate how to extract the total copy numbers correctly.
+
+DOCUMENTATION:
+
+ * Updated the example for the CalMaTeCalibration help page to illustrate how
+   to extract the total copy numbers correctly.
 
 
 Version: 0.6.1 [2010-08-05]
-o ROBUSTNESS: Now calmateByThetaAB() and calmateByTotalAndFracB() 
-  asserts that there are at least two samples.
-o BUG FIX: calmateByTotalAndFracB() assumed that there where enough
-  units and samples so that subsetting would not drop singleton 
-  dimension.  Now we use drop=FALSE everywhere.
-o BUG FIX: calmateByThetaAB() would not work if there was only one unit.
+
+NEW FEATURES:
+
+ * Now calmateByThetaAB() and calmateByTotalAndFracB() asserts that there are
+   at least two samples.
+
+BUG FIXES:
+
+ * calmateByTotalAndFracB() assumed that there where enough units and samples
+   so that subsetting would not drop singleton dimension. Now we use drop=FALSE
+   everywhere.
+
+ * calmateByThetaAB() would not work if there was only one unit.
 
 
 Version: 0.6.0 [2010-08-02]
-o Added argument 'refAvgFcn' to calmateByTotalAndFracB() and
-  calmateByThetaAB().  It is used to standardize the total copy number
-  of both SNPs and non-polymorphic loci using the same estimator
-  for the average reference signal.
+
+NEW FEATURES:
+
+ * Added argument 'refAvgFcn' to calmateByTotalAndFracB() and
+  calmateByThetaAB().  It is used to standardize the total copy number of both
+  SNPs and non-polymorphic loci using the same estimator for the average
+  reference signal.
 
 
 Version: 0.5.2 [2010-08-02]
-o CLEANUP: Dropped obsolete internal calmate() and refineCN() functions.
+
+DEPRECATED AND DEFUNCT:
+
+ * Dropped obsolete internal calmate() and refineCN() functions.
 
 
 Version: 0.5.1 [2010-07-31]
-o BUG FIX: process() for CalMaTeCalibration would only run one chunk.
+
+BUG FIXES:
+
+ * process() for CalMaTeCalibration would only run one chunk.
 
 
 Version: 0.5.0 [2010-07-30]
-o Renamed CalMaTeNormalization to CalMaTeCalibration.
+
+SIGNIFICANT CHANGES:
+
+ * Renamed CalMaTeNormalization to CalMaTeCalibration.
 
 
 Version: 0.4.2 [2010-07-22]
-o BUG FIX: Now process() for CalMaTeNormalization returns immediately 
-  if there are no units left.
+
+BUG FIXES:
+
+ * Now process() for CalMaTeNormalization returns immediately if there are no
+   units left.
 
 
 Version: 0.4.1 [2010-06-29]
-o Added support for process(..., force=TRUE) in CalMaTeNormalization.
+
+NEW FEATURES:
+
+ * Added support for process(..., force=TRUE) in CalMaTeNormalization.
 
 
 Version: 0.4.0 [2010-06-21]
-o Added an early version (really!) of CalMaTeNormalization.
-  It still does not store parameter estimates; only the
-  normalized signals.
+
+NEW FEATURES:
+
+ * Added an early version (really!) of CalMaTeNormalization.  It still does not
+   store parameter estimates; only the normalized signals.
 
 
 Version: 0.3.1 [2010-06-19]
-o Now the default CalMaTe method is no longer truncating
-  negative ASCN signals.
-o Added argument 'truncate=FALSE' to internal calmateByThetaAB()
-  and rewrote the code to do the truncation in (CA,CB) space.
-  The truncation is done such that CA+CB is preserved.
+
+NEW FEATURES:
+
+ * Now the default CalMaTe method is no longer truncating negative ASCN signals.
+
+ * Added argument 'truncate=FALSE' to internal calmateByThetaAB() and rewrote
+   the code to do the truncation in (CA,CB) space. The truncation is done such
+   that CA+CB is preserved.
 
 
 Version: 0.3.0 [2010-06-18]
-o CLEAN UP: Rewrote calmateByThetaAB() so it is no longer 
-  using old calmate() but a new internal fitCalMaTe().
-  The latter should probably we incorporated "inline" in
-  calmateByThetaAB() to better make use of vectorization.
+
+SOFTWARE QUALITY:
+
+ * CLEANUP: Rewrote calmateByThetaAB() so it is no longer using old calmate()
+   but a new internal fitCalMaTe(). The latter should probably we incorporated
+   "inline" in calmateByThetaAB() to better make use of vectorization.
 
 
 Version: 0.2.2 [2010-06-18]
-o BUG FIX: Now "truncating" by x[x < eps] <- eps (was x[x == 0] <- eps).
-o BUG FIX: A few potential bugs where removed.
-o CLEAN UP: Tidied up the code.
-o CLEAN UP: Removed obsolete files.
+
+BUG FIXES:
+
+ * Now "truncating" by x[x < eps] <- eps (was x[x == 0] <- eps).
+
+ * A few potential bugs where removed.
+
+SOFTWARE QUALITY:
+
+ * CLEANUP: Tidied up the code.
+
+ * CLEANUP: Removed obsolete files.
 
 
 Version: 0.2.1 [2010-05-19]
-o Added weightedCalMaTeByThetaAB() and weightedCalMaTeByTotalAndFracB().
-  The former replaces weightedCalMaTeByASCN().
-o Added internal thetaAB2TotalAndFracB() and totalAndFracB2ThetaAB().
-o Decreased the package dependencies.  Now aroma.core is
-  only suggested, but not required.
+
+NEW FEATURES:
+
+ * Added weightedCalMaTeByThetaAB() and weightedCalMaTeByTotalAndFracB(). The
+   former replaces weightedCalMaTeByASCN().
+
+SOFTWARE QUALITY:
+
+ * Added internal thetaAB2TotalAndFracB() and totalAndFracB2ThetaAB().
+
+ * Decreased the package dependencies.  Now aroma.core is only suggested, but
+   not required.
 
 
 Version: 0.2.0 [2010-05-18]
-o Added weightedCalMaTeByASCN() which takes an Jx2xI array
-  of allele-specific signals, where J is the number of SNPs,
-  2 is the number of alleles, and I is the number of samples.
+
+NEW FEATURES:
+
+ * Added weightedCalMaTeByASCN() which takes an Jx2xI array of allele-specific
+   signals, where J is the number of SNPs, 2 is the number of alleles, and I is
+   the number of samples.
 
 
 Version: 0.1.2 [2010-05-18]
-o CLEAN UP: Source code cleanup and standardization.
-o ROBUSTNESS: Added a redundancy test.
+
+SOFTWARE QUALITY:
+
+ * CLEANUP: Source code cleanup and standardization.
+
+ * ROBUSTNESS: Added a redundancy test.
 
 
 Version: 0.1.1 [2010-05-04]
 
+ * ...
+ 
 
 Version: 0.1.0 [2010-05-04]
-o Made into an R package.
+
+SIGNIFICANT CHANGES:
+
+ * Made into an R package.
 
 
 Version: 0.0.1 [2010-05-03]
-o Created.
+
+ * Created.

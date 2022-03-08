@@ -58,7 +58,7 @@ dsTags <- getTags(dsList$total, collapse=",");
 dsTags <- gsub("ACC(|,ra)-XY,BPN,-XY,RMA,FLN,-XY", "ASCRMAv2", dsTags);
 dsTags <- gsub("ACC(|,ra),-XY,BPN,-XY,AVG,FLN,-XY", "ASCRMAv2", dsTags);
 dsTags <- gsub("CMTN", "CalMaTe", dsTags);
-  
+
 
 ugp <- getAromaUgpFile(dsList$total);
 print(ugp);
@@ -75,19 +75,19 @@ dataSetT <- paste(c(getName(dsList[[1]]), dsTags), collapse=",");
 figPathT <- file.path(figPath, dataSetT, chipType);
 figPathT <- Arguments$getWritablePath(figPathT);
 
-for (ii in seq(along=sampleNames)) {
+for (ii in seq_along(sampleNames)) {
   sampleName <- sampleNames[ii];
   verbose && enter(verbose, sprintf("Sample #%d ('%s') of %d", ii, sampleName, length(sampleNames)));
 
-  for (kk in seq(along=chromosomes)) {
+  for (kk in seq_along(chromosomes)) {
     chr <- chromosomes[kk];
     chrTag <- sprintf("chr%02d", chr);
-  
+
     verbose && enter(verbose, sprintf("Chromosome #%d ('%s') of %d", kk, chrTag, length(chromosomes)));
-  
-    data <- extractSignals(dsList, sampleName=sampleName, chromosome=chr, verbose=verbose); 
+
+    data <- extractSignals(dsList, sampleName=sampleName, chromosome=chr, verbose=verbose);
     verbose && print(verbose, data);
-  
+
     # Extract (gamma, beta)
     gamma <- getSignals(data$tcn);
     beta <- getSignals(data$baf);
@@ -102,14 +102,14 @@ for (ii in seq(along=sampleNames)) {
     devEval("png", name=fullname, width=840, height=300, {
       plotTrackBAF(beta, x=x, col=col, sampleName=sampleName, chrTag=chrTag, dataSet=dataSet, chipType=chipType);
     }, path=figPathT);
- 
+
     verbose && exit(verbose);
   } # for (kk ...)
 
   verbose && exit(verbose);
 } # for (ii ...)
 
- 
+
 
 ###########################################################################
 # HISTORY:

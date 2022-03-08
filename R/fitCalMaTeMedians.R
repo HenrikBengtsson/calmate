@@ -8,7 +8,7 @@ fitCalMaTeMedians <- function(dataT, references, fB1=1/3, fB2=2/3, ...) {
   eps <- 1e-6;
   dataT[dataT < eps] <- eps;
 
-  eps2 <- 1e-4;  
+  eps2 <- 1e-4;
   a <- max(max(dataT[2,references] / (pmax(dataT[1,references],0) + eps2)), max(dataT[1,references] / (pmax(dataT[2,references],0) + eps2)));
   Giro <- matrix(c(1, 1/a, 1/a, 1), nrow=2, ncol=2, byrow=FALSE);
   Giro <- solve(Giro);
@@ -16,40 +16,40 @@ fitCalMaTeMedians <- function(dataT, references, fB1=1/3, fB2=2/3, ...) {
 
   # Extract the signals for the reference set
   TR <- dataT[,references, drop=FALSE];
-  
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Genotyping
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   fracB <- TR[2,] / (TR[1,] + TR[2,]);
   naiveGenoDiff <- 2*(fracB < fB1) - 2*(fracB > fB2);
-  
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Group the three possibilities
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  wgths <- c(sum(naiveGenoDiff == +2),
-             sum(naiveGenoDiff ==  0),
-             sum(naiveGenoDiff == -2))
-  
-  TR <- cbind(rowMedians(TR[,naiveGenoDiff ==+2, drop=FALSE]),
-              rowMedians(TR[,naiveGenoDiff == 0, drop=FALSE]),
-              rowMedians(TR[,naiveGenoDiff ==-2, drop=FALSE]));
+  idxsAA <- which(naiveGenoDiff == +2)
+  idxsAB <- which(naiveGenoDiff ==  0)
+  idxsBB <- which(naiveGenoDiff == -2)
+  wgths <- c(length(idxsAA), length(idxsAB), length(idxsBB))
+
+  TR <- cbind(rowMedians(TR, cols=idxsAA),
+              rowMedians(TR, cols=idxsAB),
+              rowMedians(TR, cols=idxsBB));
   # Remove possible missing values
   TR[is.nan(TR)] <- 0;
-  
+
   # Handle cases a single genotype is present in the samples
 
-  # A very unlikely case: all the samples are heterozygous
   if ((wgths[1] == 0) && (wgths[3] == 0)) {
+    ## A very unlikely case: all the samples are heterozygous
     TR[1,1] <- 2.0*TR[1,2];
     TR[2,1] <- 0.1*TR[2,2];
     wgths[1] <- wgths[2];
-  }
-  # Only BB
-  if ((wgths[1] == 0) && (wgths[2] == 0)) {
+  } else if ((wgths[1] == 0) && (wgths[2] == 0)) {
+    ## All BB
     TR[,1] <- TR[2:1,3];
     wgths[1] <- wgths[3];
-  }
-  if ((wgths[3] == 0) && (wgths[2] == 0)) {
+  } else if ((wgths[3] == 0) && (wgths[2] == 0)) {
+    ## All AA
     TR[,3] <- TR[2:1,1];
     wgths[3] <- wgths[1];
   }
@@ -60,7 +60,7 @@ fitCalMaTeMedians <- function(dataT, references, fB1=1/3, fB2=2/3, ...) {
   Genotypes <- cbind(c(2,0), c(1,1), c(0,2));
   P <- qr.solve(t(TR) * wgths^2, t(Genotypes) * wgths^2);
   res <- t(P) %*% dataT;
-  
+
   dataT <- res;
 
   TR <- dataT[,references, drop=FALSE];
@@ -70,34 +70,34 @@ fitCalMaTeMedians <- function(dataT, references, fB1=1/3, fB2=2/3, ...) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   fracB <- TR[2,] / (TR[1,] + TR[2,]);
   naiveGenoDiff_1 <- 2*(fracB < fB1) - 2*(fracB > fB2);
-  
+
   if (!identical(naiveGenoDiff_1, naiveGenoDiff)) {
     # Repeat the process once
     naiveGenoDiff <- naiveGenoDiff_1;
-    wgths <- c(sum(naiveGenoDiff == +2),
-               sum(naiveGenoDiff ==  0),
-               sum(naiveGenoDiff == -2))
+    idxsAA <- which(naiveGenoDiff == +2)
+    idxsAB <- which(naiveGenoDiff ==  0)
+    idxsBB <- which(naiveGenoDiff == -2)
+    wgths <- c(length(idxsAA), length(idxsAB), length(idxsBB))
 
-    TR <- cbind(rowMedians(TR[,naiveGenoDiff == +2, drop=FALSE]),
-                rowMedians(TR[,naiveGenoDiff ==  0, drop=FALSE]),
-                rowMedians(TR[,naiveGenoDiff == -2, drop=FALSE]));
+    TR <- cbind(rowMedians(TR, cols=idxsAA),
+                rowMedians(TR, cols=idxsAB),
+                rowMedians(TR, cols=idxsBB));
     # Remove possible missing values
     TR[is.nan(TR)] <- 0;
 
     # Handle cases in which not all the genotypes are present in the samples
 
-    # A very unlikely case: all the samples are heterozygous
     if ((wgths[1] == 0) && (wgths[3] == 0)) {
+      ## A very unlikely case: all the samples are heterozygous
       TR[1,1] <- 2.0*TR[1,2];
       TR[2,1] <- 0.1*TR[2,2];
       wgths[1] <- wgths[2];
-    }
-    # Only BB
-    if ((wgths[1] == 0) && (wgths[2] == 0)) {
+    } else if ((wgths[1] == 0) && (wgths[2] == 0)) {
+      ## All BB
       TR[,1] <- TR[2:1,3];
       wgths[1] <- wgths[3];
-    }
-    if ((wgths[3] == 0) && (wgths[2] == 0)) {
+    } else if ((wgths[3] == 0) && (wgths[2] == 0)) {
+      ## All AA
       TR[,3] <- TR[2:1,1];
       wgths[3] <- wgths[1];
     }

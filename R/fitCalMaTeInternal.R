@@ -55,7 +55,7 @@
 #          CalMaTe now falls back to using a plain median estimator,
 #          i.e. \code{fitCalMaTeMedians()}.
 #    \item The above fallback estimator is also used in cases where
-#          all samples are indentified to be homozygous.
+#          all samples are identified to be homozygous.
 #   }
 #
 #   The \code{fitCalMaTeMedians()} method is used as a fallback method
