@@ -63,6 +63,7 @@ importFrom("R.utils", "writeRaw")
 
 importFrom("stats", "median", "pnorm")
 importFrom("utils", "str")
+importFrom("utils", "sessionInfo")
 
 ## Manually adjusted
 importFrom("R.filesets", "extract") ## Multi-sources: R.utils, R.filesets

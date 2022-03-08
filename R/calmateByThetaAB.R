@@ -151,6 +151,7 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
 
   verbose && enter(verbose, "Fitting CalMaTe");
   verbose && cat(verbose, "Algorithm flavor: ", flavor);
+
   if (flavor == "v2") {
     fitFcn <- fitCalMaTeV2;
   } else if (flavor == "v1") {
@@ -158,6 +159,34 @@ setMethodS3("calmateByThetaAB", "array", function(data, references=NULL, ..., tr
   } else {
     throw("Unknown algorithm flavor: ", flavor);
   }
+
+  ## Inject troubleshooting code?
+  troubleshoot <- getOption("calmate.troubleshoot", FALSE)
+  if (troubleshoot) {
+    verbose && cat(verbose, "Fitting CalMaTe model with troubleshooting mode enabled")
+    fitFcnOrg <- fitFcn
+    fitFcn <- function(...) {
+      tryCatch({
+        fitFcnOrg(...)
+      }, error = function(ex) {
+        .calmate.troubleshoot <- list(
+          method      = "calmateByThetaAB.array()",
+          flavor      = flavor,
+          args        = list(...),
+          calls       = sys.calls(),
+          fitFcn      = fitFcn,
+          error       = ex,
+          sessionInfo = sessionInfo()
+        )
+        base_assign <- base::assign
+        base_assign(".calmate.troubleshoot", .calmate.troubleshoot, envir = globalenv(), inherits = FALSE)
+        verbose && cat(verbose, "CalMaTe troubleshooting mode save '.calmate.troubleshoot' to the global environment:")
+        verbose && str(verbose, .calmate.troubleshoot)
+        stop(ex)
+      })
+    }
+  }
+  
 
   nbrOfSNPs <- dim(dataS)[1];
   verbose && cat(verbose, "Number of SNPs: ", nbrOfSNPs);

@@ -1,7 +1,14 @@
 Package: calmate
 ================
 
-Version: 0.12.1-9000 [2015-12-18]
+Version: 0.12.1-9000 [2020-12-13]
+
+NEW FEATURES:
+
+ * Setting option 'calmate.troubleshoot' to TRUE will result in an object
+   '.calmate.troubleshoot' useful for troubleshooting being saved to the
+   global environment if and only if qr.solve() produces an error, e.g.
+   singular matrix 'a' in solve.
 
 SOFTWARE QUALITY:
 
@@ -11,7 +18,7 @@ SOFTWARE QUALITY:
 
  * SPEEDUP: Utilizing subsetted matrixStats (>= 0.50.0) calculations.
 
- * Package test coverage is 51% (was 32%).
+ * Package test coverage is 49% (was 32%).
 
 BUG FIXES:
 
