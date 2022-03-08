@@ -15,7 +15,7 @@
 
 
  \description{
-   A multi-array post-processing method of allele-specific copy-number estimates (ASCNs).
+   The CalMaTe method calibrates preprocessed allele-specific copy number estimates (ASCNs) from DNA microarrays by controlling for single-nucleotide polymorphism-specific allelic crosstalk. The resulting ASCNs are on average more accurate, which increases the power of segmentation methods for detecting changes between copy number states in tumor studies including copy neutral loss of heterozygosity. CalMaTe applies to any ASCNs regardless of preprocessing method and microarray technology, e.g. Affymetrix and Illumina.
  }
 
  \section{Requirements}{

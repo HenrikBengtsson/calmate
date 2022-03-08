@@ -1,7 +1,7 @@
 Package: calmate
 ================
 
-Version: 0.12.1-9001 [2022-03-08]
+Version: 0.13.0 [2022-03-08]
 
 NEW FEATURES:
 
@@ -19,6 +19,10 @@ SOFTWARE QUALITY:
  * SPEEDUP: Utilizing subsetted matrixStats (>= 0.50.0) calculations.
 
  * Package test coverage is 49% (was 32%).
+
+DOCUMENTATION:
+
+ * Add CITATION file.
 
 BUG FIXES:
 
