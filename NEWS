@@ -1,7 +1,7 @@
 Package: calmate
 ================
 
-Version: 0.12.1-9000 [2020-12-13]
+Version: 0.12.1-9001 [2022-03-08]
 
 NEW FEATURES:
 
@@ -12,7 +12,7 @@ NEW FEATURES:
 
 SOFTWARE QUALITY:
 
- * Package now requires R (>= 3.1.1) because of aroma.core.
+ * Package now requires R (>= 3.2.1) because of aroma.core.
 
  * Updated package dependencies.
 
