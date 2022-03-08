@@ -1,5 +1,5 @@
 Package: calmate
-Version: 0.13.0
+Version: 0.13.0-9000
 Depends:
   R (>= 3.2.1),
   R.utils (>= 2.11.0),
